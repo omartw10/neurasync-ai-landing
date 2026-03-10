@@ -1,6 +1,5 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import Title from "./Title";
-import assets from "../assets/assets";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 
@@ -36,16 +35,15 @@ const ContactUs = ({
     }
 
     setLoading(true);
-
     formData.append("subject", subject);
 
-try {
-  const response = await fetch("http://localhost:5678/webhook/neurasyncai", {
-    method: "POST",
-    body: formData,
-  });
+    try {
+      const response = await fetch("http://localhost:5678/webhook-test/neurasyncai", {
+        method: "POST",
+        body: formData,
+      });
 
-  if (response.ok) { 
+      if (response.ok) {
         toast.success("Message sent successfully 🚀", {
           duration: 4000,
           position: "top-center",
@@ -69,9 +67,9 @@ try {
       }
     } catch (error) {
       toast.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
@@ -92,6 +90,7 @@ try {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
         className="w-full max-w-3xl mx-auto"
+        whileHover={{ scale: 1.01 }}
       >
         <div
           className="
@@ -103,16 +102,6 @@ try {
     dark:shadow-[0_20px_60px_rgba(0,0,0,0.6)]
   "
         >
-          {/* Soft Glow */}
-          <div
-            className="
-      absolute -inset-1 rounded-3xl
-      bg-gradient-to-r from-[#00C2D1]/20 via-transparent to-[#00C2D1]/20
-      blur-2xl opacity-40
-      pointer-events-none
-    "
-          />
-
           <form
             onSubmit={onSubmit}
             className="relative grid sm:grid-cols-2 gap-8"
@@ -183,7 +172,7 @@ try {
 
             {/* Button */}
             <div className="sm:col-span-2 mt-6">
-              <button
+              <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                 type="submit"
                 disabled={loading}
                 className="
@@ -195,7 +184,7 @@ try {
           "
               >
                 {loading ? "Sending..." : "Send Message"}
-              </button>
+              </motion.button>
             </div>
           </form>
         </div>

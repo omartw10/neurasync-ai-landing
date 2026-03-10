@@ -1,13 +1,66 @@
-import React from "react";
-import { motion } from "framer-motion";
+/* eslint-disable no-unused-vars */
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const OurWork = () => {
-  return (
-    <section className="px-6 sm:px-12 lg:px-24 xl:px-40 py-28 text-gray-900 dark:text-white">
+  const containerRef = useRef(null);
 
+  useGSAP(() => {
+    // Header Animation
+    gsap.fromTo(
+      ".our-work-header",
+      { opacity: 0, scale: 0.9, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1,
+        ease: "power4.out",
+        scrollTrigger: {
+          trigger: ".our-work-header",
+          start: "top 85%",
+          toggleActions: "play reverse play reverse",
+        },
+      }
+    );
+
+    // Cards Animation with 3D Flip
+    gsap.fromTo(
+      ".our-work-card",
+      { opacity: 0, rotationY: -15, z: -100, y: 60, scale: 0.9 },
+      {
+        opacity: 1,
+        rotationY: 0,
+        z: 0,
+        y: 0,
+        scale: 1,
+        duration: 1,
+        stagger: 0.3,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".our-work-cards-wrapper",
+          start: "top 80%",
+          toggleActions: "play reverse play reverse",
+        },
+      }
+    );
+  }, { scope: containerRef });
+
+  return (
+    <section 
+      id="our-work"
+      ref={containerRef}
+      className="px-6 sm:px-12 lg:px-24 xl:px-40 py-28 text-gray-900 dark:text-white"
+    >
       {/* ===== Section Header ===== */}
-      <div className="text-center max-w-3xl mx-auto mb-16">
+      <div 
+        className="our-work-header text-center max-w-3xl mx-auto mb-16 opacity-0 transform-gpu"
+      >
         <h2 className="text-4xl sm:text-5xl font-semibold">
           Product <span className="text-[#00C2D1]">&</span> Studio
         </h2>
@@ -17,15 +70,13 @@ const OurWork = () => {
       </div>
 
       {/* ===== Cards ===== */}
-      <div className="grid md:grid-cols-2 gap-10 max-w-6xl mx-auto">
+      <div className="our-work-cards-wrapper grid md:grid-cols-2 gap-10 max-w-6xl mx-auto perspective-1000">
 
         {/* ===== PRODUCT CARD ===== */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="group relative p-10 rounded-3xl bg-white dark:bg-[#0E1624] border border-gray-200 dark:border-gray-700 shadow-xl hover:shadow-2xl transition-all duration-300"
+        <div
+          onMouseEnter={(e) => gsap.to(e.currentTarget, { y: -10, scale: 1.02, duration: 0.3 })}
+          onMouseLeave={(e) => gsap.to(e.currentTarget, { y: 0, scale: 1, duration: 0.3 })}
+          className="our-work-card group relative p-10 rounded-3xl bg-white dark:bg-[#0E1624] border border-gray-200 dark:border-gray-700 shadow-xl hover:shadow-[#00C2D1]/20 transition-colors duration-300 transform-style-3d opacity-0"
         >
           <div className="mb-6 text-sm font-medium text-[#00C2D1] uppercase tracking-wide">
             Product
@@ -46,15 +97,13 @@ const OurWork = () => {
           >
             Explore Product →
           </Link>
-        </motion.div>
+        </div>
 
         {/* ===== STUDIO CARD ===== */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="group relative p-10 rounded-3xl bg-white dark:bg-[#0E1624] border border-gray-200 dark:border-gray-700 shadow-xl hover:shadow-2xl transition-all duration-300"
+        <div
+          onMouseEnter={(e) => gsap.to(e.currentTarget, { y: -10, scale: 1.02, duration: 0.3 })}
+          onMouseLeave={(e) => gsap.to(e.currentTarget, { y: 0, scale: 1, duration: 0.3 })}
+          className="our-work-card group relative p-10 rounded-3xl bg-white dark:bg-[#0E1624] border border-gray-200 dark:border-gray-700 shadow-xl hover:shadow-[#00C2D1]/20 transition-colors duration-300 transform-style-3d opacity-0"
         >
           <div className="mb-6 text-sm font-medium text-[#00C2D1] uppercase tracking-wide">
             Studio
@@ -76,7 +125,7 @@ const OurWork = () => {
           >
             Build With Us →
           </a>
-        </motion.div>
+        </div>
 
       </div>
     </section>

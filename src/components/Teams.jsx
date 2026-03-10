@@ -1,79 +1,192 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import assets from "../assets/assets";
 
-const Founder = () => {
+export default function Founder() {
+  const containerRef = useRef(null);
+
+  // We make the container 200vh tall and sticky the content.
+  // The scroll progress goes from 0 to 1 as the user scrolls through this extra 100vh.
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"] 
+  });
+
+  // Smooth out the scroll value for high-end SaaS feel
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 70,
+    damping: 20,
+    restDelta: 0.001
+  });
+
+  // --- Scroll-Linked Transformations ---
+  
+  // Portrait subtle scaling as you scroll
+  const portraitScale = useTransform(smoothProgress, [0, 1], [0.95, 1.02]);
+  
+  // Title & Label
+  const labelOpacity = useTransform(smoothProgress, [0, 0.15], [0, 1]);
+  const labelY = useTransform(smoothProgress, [0, 0.15], [20, 0]);
+  const lineScale = useTransform(smoothProgress, [0.05, 0.2], [0, 1]);
+  
+  // Name
+  const nameOpacity = useTransform(smoothProgress, [0.05, 0.25], [0, 1]);
+  const nameY = useTransform(smoothProgress, [0.05, 0.25], [20, 0]);
+  
+  // Paragraphs
+  const p1Opacity = useTransform(smoothProgress, [0.15, 0.35], [0, 1]);
+  const p1Y = useTransform(smoothProgress, [0.15, 0.35], [20, 0]);
+
+  const p2Opacity = useTransform(smoothProgress, [0.25, 0.45], [0, 1]);
+  const p2Y = useTransform(smoothProgress, [0.25, 0.45], [20, 0]);
+
+  const p3Opacity = useTransform(smoothProgress, [0.35, 0.55], [0, 1]);
+  const p3Y = useTransform(smoothProgress, [0.35, 0.55], [20, 0]);
+
+  const p4Opacity = useTransform(smoothProgress, [0.45, 0.65], [0, 1]);
+  const p4Y = useTransform(smoothProgress, [0.45, 0.65], [20, 0]);
+
+  // Focus & Stack Divider
+  const botLineScale = useTransform(smoothProgress, [0.55, 0.75], [0, 1]);
+
+  // Focus area
+  const focusOpacity = useTransform(smoothProgress, [0.65, 0.85], [0, 1]);
+  const focusY = useTransform(smoothProgress, [0.65, 0.85], [20, 0]);
+
+  // Tech stack
+  const stackOpacity = useTransform(smoothProgress, [0.75, 0.95], [0, 1]);
+  const stackY = useTransform(smoothProgress, [0.75, 0.95], [20, 0]);
+
+  // General wrapper opacity for fading in when reaching the section
+  const sectionOpacity = useTransform(smoothProgress, [0, 0.05, 0.95, 1], [0.6, 1, 1, 0.6]);
+
   return (
-    <section className="px-6 sm:px-12 lg:px-24 xl:px-40 py-36 text-gray-900 dark:text-white">
-      <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6 items-center">
-        {" "}
-        <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="flex justify-center md:justify-start"
+    <section 
+      id="founder" 
+      ref={containerRef}
+      className="w-full h-[200vh] relative z-10 transition-colors duration-500 bg-white dark:bg-[#030712]"
+    >
+      {/* Sticky Viewport Container */}
+      <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
+        
+        {/* Soft background highlight */}
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-blue-100/30 dark:bg-[#00C2D1]/[0.03] blur-[150px] rounded-full pointer-events-none" />
+
+        <motion.div 
+          style={{ opacity: sectionOpacity }}
+          className="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-16 lg:gap-24 items-center relative z-20 w-full"
         >
-          <div className="relative">
-            {/* Subtle Border Frame */}
-            <div className="rounded-2xl border border-[#00C2D1]/25 p-2 bg-[#0E1624]/30 backdrop-blur-sm">
-              <img
-                src={assets.omar_photo}
-                alt="Founder of NeuraSync AI"
-                className="w-[300px] sm:w-[340px] rounded-xl object-cover md:-ml-10g-10"
-              />
-            </div>
-          </div>
-        </motion.div>
-        {/* ===== Content Side ===== */}
-        <motion.div
-          initial={{ opacity: 0, x: 40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <div className="text-sm font-semibold tracking-widest text-[#00C2D1] mb-4">
-            FOUNDER
-          </div>
-
-          <h2 className="text-4xl sm:text-5xl font-semibold leading-tight mb-6">
-            Omar Abutwairat
-          </h2>
-
-          <p className="text-lg text-gray-300 leading-relaxed mb-6">
-            Omar Abutwairat is a Software Engineer focused on AI automation,
-            workflow engineering, and scalable infrastructure design. He builds
-            production-ready systems that eliminate operational complexity and
-            enable sustainable growth.
-          </p>
-
-          <p className="text-gray-400 leading-relaxed mb-8">
-            By combining automation frameworks, intelligent classification
-            systems, and modern web architecture, he transforms chaotic business
-            processes into streamlined, performance-driven ecosystems.
-          </p>
-
-          {/* Divider */}
-          <div className="w-16 h-[2px] bg-[#00C2D1]/60 rounded-full mb-8" />
-
-          {/* Meta Info */}
-          <div className="flex flex-wrap gap-10 text-sm">
-            <div>
-              <div className="text-[#00C2D1] font-medium mb-1">Focus</div>
-              <div className="text-gray-400">Automation Architecture</div>
-            </div>
-
-            <div>
-              <div className="text-[#00C2D1] font-medium mb-1">Stack</div>
-              <div className="text-gray-400">
-                n8n · AI Systems · Web Infrastructure
+          
+          {/* Left Side: Portrait */}
+          <div className="md:col-span-4 lg:col-span-5 flex justify-center md:justify-end perspective-1200">
+            <motion.div 
+              style={{ scale: portraitScale }}
+              whileHover={{ scale: 1.05, rotateY: -5, rotateX: 5, transition: { type: "spring", stiffness: 300, damping: 20 } }}
+              className="relative group cursor-pointer transform-style-3d"
+            >
+              {/* Hover Glow Behind Image */}
+              <div className="absolute -inset-4 rounded-[40px] bg-gradient-to-tr from-[#00C2D1]/30 to-blue-500/30 blur-2xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
+              
+              {/* Premium Portrait Frame */}
+              <div className="relative rounded-[32px] p-[1.5px] bg-gradient-to-tr from-gray-200 dark:from-white/10 to-gray-50 dark:to-transparent shadow-xl dark:shadow-[0_20px_40px_rgba(0,0,0,0.4)] group-hover:shadow-[0_30px_60px_rgba(0,194,209,0.2)] dark:group-hover:shadow-[0_30px_60px_rgba(0,194,209,0.2)] transition-all duration-700">
+                <div className="rounded-[30.5px] overflow-hidden bg-white dark:bg-[#0A101C] aspect-[4/5] w-[280px] sm:w-[320px] lg:w-[380px] relative">
+                   <img
+                     src={assets.omar_photo}
+                     alt="Omar Abutwairat - Founder"
+                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                   />
+                   {/* Internal soft overlay for premium feel */}
+                   <div className="absolute inset-0 border border-black/5 dark:border-white/10 rounded-[30.5px] pointer-events-none z-10 mix-blend-overlay"></div>
+                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 dark:from-black/40 to-transparent pointer-events-none transition-opacity duration-700 group-hover:opacity-0" />
+                </div>
               </div>
+            </motion.div>
+          </div>
+
+          {/* Right Side: Content scrolled progressively */}
+          <div className="md:col-span-8 lg:col-span-7 flex flex-col items-start">
+            
+            {/* Label */}
+            <motion.div 
+              style={{ opacity: labelOpacity, y: labelY }}
+              className="inline-flex items-center gap-4 mb-6 relative"
+            >
+              <span className="text-[11px] font-bold tracking-[0.2em] text-[#00C2D1] uppercase">Founder</span>
+              <motion.div 
+                style={{ scaleX: lineScale }}
+                className="h-px w-16 bg-gradient-to-r from-[#00C2D1] to-transparent origin-left"
+              ></motion.div>
+            </motion.div>
+
+            {/* Name */}
+            <motion.div 
+              style={{ opacity: nameOpacity, y: nameY }}
+              className="relative group mb-10 cursor-default inline-block"
+            >
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white tracking-tight leading-none pb-2">
+                Omar Abutwairat
+              </h2>
+              {/* Animated Underline */}
+              <div className="absolute bottom-0 left-0 w-12 h-[3px] bg-[#00C2D1] rounded-full group-hover:w-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] opacity-80"></div>
+            </motion.div>
+
+            {/* Biography Paragraphs */}
+            <div className="space-y-6 mb-12 text-lg text-gray-600 dark:text-gray-400 font-medium leading-relaxed">
+               <motion.p style={{ opacity: p1Opacity, y: p1Y }}>
+                 Omar Abutwairat is a software engineer specializing in AI-powered automation systems, workflow orchestration, and scalable digital infrastructure.
+               </motion.p>
+               <motion.p style={{ opacity: p2Opacity, y: p2Y }}>
+                 He focuses on building intelligent systems that transform how companies handle operations, communication, and decision flows. His work centers around eliminating manual bottlenecks by designing automation pipelines that operate reliably at scale.
+               </motion.p>
+               <motion.p style={{ opacity: p3Opacity, y: p3Y }}>
+                 Through the combination of AI classification models, workflow automation frameworks, and modern web architecture, Omar builds production-grade systems that allow businesses to process information faster, route opportunities intelligently, and operate with significantly less operational overhead.
+               </motion.p>
+               <motion.p style={{ opacity: p4Opacity, y: p4Y }}>
+                 His approach prioritizes clarity, efficiency, and long-term scalability — turning fragmented processes into cohesive automation ecosystems that support business growth.
+               </motion.p>
             </div>
+
+            {/* Focus & Stack */}
+            <div className="grid sm:grid-cols-2 gap-10 w-full pt-6 relative">
+              {/* Soft divider */}
+              <motion.div 
+                 style={{ scaleX: botLineScale }}
+                 className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-gray-200 dark:from-white/10 to-transparent origin-left"
+              ></motion.div>
+              
+              <motion.div 
+                style={{ opacity: focusOpacity, y: focusY }}
+                className="flex flex-col gap-4"
+              >
+                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Focus Area</span>
+                <div className="flex flex-wrap gap-2.5">
+                  {['Automation Architecture', 'AI Systems', 'Workflow Engineering'].map((item, i) => (
+                    <span key={i} className="px-3.5 py-1.5 rounded-lg bg-white dark:bg-white/5 border border-gray-200 dark:border-white/5 text-sm font-semibold text-gray-800 dark:text-gray-300 shadow-sm transition-all hover:bg-gray-50 hover:-translate-y-0.5 hover:border-[#00C2D1]/50 hover:text-[#00C2D1] dark:hover:text-[#00C2D1] duration-300">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div 
+                style={{ opacity: stackOpacity, y: stackY }}
+                className="flex flex-col gap-4"
+              >
+                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Tech Stack</span>
+                <div className="flex flex-wrap gap-2.5">
+                  {['n8n', 'AI Infrastructure', 'Modern Web Systems'].map((item, i) => (
+                    <span key={i} className="px-3.5 py-1.5 rounded-lg bg-blue-50/80 dark:bg-[#00C2D1]/10 border border-blue-100 dark:border-[#00C2D1]/20 text-sm font-semibold text-blue-700 dark:text-[#00C2D1] shadow-sm transition-all hover:bg-blue-100 hover:-translate-y-0.5 hover:dark:bg-[#00C2D1]/20 duration-300">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+
           </div>
         </motion.div>
+        
       </div>
     </section>
   );
-};
-
-export default Founder;
+}

@@ -1,7 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import InboxPilot from "./pages/InboxPilot";
+import { DashboardLayout } from "./layouts/DashboardLayout";
+import { DashboardOverview } from "./pages/dashboard/Overview";
+import { InboxPilotDashboard } from "./pages/dashboard/InboxPilotDashboard";
 
 const getInitialTheme = () => {
   const saved = localStorage.getItem("theme");
@@ -14,76 +17,35 @@ const getInitialTheme = () => {
   return "light";
 };
 
+import { AuthProvider } from "./context/AuthContext";
+import SmoothScroll from "./components/SmoothScroll";
+
 const App = () => {
   const [theme, setTheme] = useState(getInitialTheme);
-
-  // ===== Custom Cursor =====
-  const dotRef = useRef(null);
-  const outlineRef = useRef(null);
-  const mouse = useRef({ x: 0, y: 0 });
-  const position = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      mouse.current.x = e.clientX;
-      mouse.current.y = e.clientY;
-    };
-
-    document.addEventListener("mousemove", handleMouseMove);
-
-    const animate = () => {
-      position.current.x += (mouse.current.x - position.current.x) * 0.1;
-      position.current.y += (mouse.current.y - position.current.y) * 0.1;
-
-      if (dotRef.current && outlineRef.current) {
-        dotRef.current.style.transform = `translate3D(${mouse.current.x - 6}px, ${mouse.current.y - 6}px, 0)`;
-        outlineRef.current.style.transform = `translate3D(${position.current.x - 20}px, ${position.current.y - 20}px, 0)`;
-      }
-
-      requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => document.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home theme={theme} setTheme={setTheme} />} />
-          <Route
-            path="/inboxpilot"
-            element={<InboxPilot theme={theme} setTheme={setTheme} />}
-          />
-        </Routes>
-      </BrowserRouter>
-
-      {/* Cursor Outline */}
-      <div
-        ref={outlineRef}
-        className="fixed top-0 left-0 h-10 w-10 rounded-full border border-[#00C2D1] pointer-events-none z-[9999]"
-        style={{
-          transition: "transform 0.1s ease-out",
-          boxShadow: "0 0 20px rgba(0,194,209,0.5)",
-        }}
-      />
-
-      {/* Cursor Dot */}
-      <div
-        ref={dotRef}
-        className="fixed top-0 left-0 h-3 w-3 rounded-full bg-[#00C2D1] pointer-events-none z-[9999]"
-        style={{
-          boxShadow: "0 0 12px rgba(0,194,209,0.8)",
-        }}
-      />
-    </>
+    <AuthProvider>
+      <SmoothScroll>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home theme={theme} setTheme={setTheme} />} />
+            <Route
+              path="/inboxpilot"
+              element={<InboxPilot theme={theme} setTheme={setTheme} />}
+            />
+            <Route path="/dashboard" element={<DashboardLayout theme={theme} setTheme={setTheme} />}>
+              <Route index element={<DashboardOverview />} />
+              <Route path="inboxpilot" element={<InboxPilotDashboard />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </SmoothScroll>
+    </AuthProvider>
   );
 };
 

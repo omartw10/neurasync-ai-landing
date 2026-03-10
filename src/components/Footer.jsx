@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import assets from "../assets/assets";
 import { motion } from "framer-motion";
@@ -12,12 +13,9 @@ const Footer = ({ theme }) => {
       viewport={{ once: true }}
       className="
         mt-32
-        bg-gradient-to-b
-        from-[#F4F8FB]
-        to-[#EAF2F7]
-        dark:from-[#060D18]
-        dark:to-[#0B1626]
-        border-t border-gray-200 dark:border-gray-800
+        bg-white/5 dark:bg-[#0E1624]/20 
+        backdrop-blur-xl
+        border-t border-gray-200 dark:border-gray-800/50
       "
     >
       <div className="px-6 sm:px-12 lg:px-24 xl:px-40 py-16">

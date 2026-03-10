@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import assets from "../assets/assets";
 import ThemeToggleBtn from "./ThemeToggleBtn";
@@ -5,7 +6,6 @@ import { motion } from "framer-motion";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = ({ theme, setTheme }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -13,11 +13,15 @@ const Navbar = ({ theme, setTheme }) => {
 
   const handleEmailClick = () => {
     setContactOpen(false);
+    scrollToSection(null, "contact-us");
+  };
 
+  const scrollToSection = (e, id) => {
+    if (e) e.preventDefault();
     if (location.pathname !== "/") {
-      navigate("/#contact-us");
+      navigate(`/#${id}`);
     } else {
-      const section = document.getElementById("contact-us");
+      const section = document.getElementById(id);
       section?.scrollIntoView({ behavior: "smooth" });
     }
   };
@@ -40,21 +44,26 @@ const Navbar = ({ theme, setTheme }) => {
         </Link>
 
         {/* Links */}
-        <div className="hidden sm:flex items-center gap-6 text-sm text-gray-700 dark:text-white">
-          <Link to="/" className="hover:text-[#00C2D1] transition">
+        <div className="hidden lg:flex items-center gap-6 text-sm font-medium text-gray-700 dark:text-gray-200">
+          <button onClick={(e) => scrollToSection(e, "hero")} className="hover:text-[#00C2D1] transition">
             Home
-          </Link>
+          </button>
 
-          <a href="#solutions" className="hover:text-[#00C2D1] transition">
-            Solutions
-          </a>
-
-          <Link
-            to="/inboxpilot"
-            className="hover:text-[#00C2D1] transition"
-          >
+          <button onClick={(e) => scrollToSection(e, "inboxpilot")} className="hover:text-[#00C2D1] transition">
             InboxPilot
-          </Link>
+          </button>
+
+          <button onClick={(e) => scrollToSection(e, "solutions")} className="hover:text-[#00C2D1] transition">
+            Services
+          </button>
+
+          <button onClick={(e) => scrollToSection(e, "our-work")} className="hover:text-[#00C2D1] transition">
+            Our Work
+          </button>
+          
+          <button onClick={(e) => scrollToSection(e, "founder")} className="hover:text-[#00C2D1] transition">
+            Founder
+          </button>
         </div>
 
         {/* Right Controls */}
@@ -63,10 +72,24 @@ const Navbar = ({ theme, setTheme }) => {
 
           <button
             onClick={() => setContactOpen(true)}
-            className="bg-[#00C2D1] text-[#0B1F3B] px-6 py-2.5 rounded-lg font-semibold hover:bg-[#00A8B5] transition shadow-lg shadow-[#00C2D1]/30"
+            className="hidden lg:block text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-[#00C2D1] transition"
           >
-            Contact
+            Contact Sales
           </button>
+
+          <Link
+            to="/dashboard"
+            className="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-[#00C2D1] transition"
+          >
+            Log in
+          </Link>
+
+          <Link
+            to="/dashboard"
+            className="bg-[#00C2D1] text-[#0B1F3B] px-5 py-2 rounded-lg font-semibold hover:bg-[#00A8B5] transition shadow-lg shadow-[#00C2D1]/30 text-sm hidden sm:block"
+          >
+            Go to Dashboard &rarr;
+          </Link>
         </div>
       </motion.div>
 
