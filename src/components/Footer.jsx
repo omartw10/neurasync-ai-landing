@@ -12,15 +12,47 @@ const Footer = ({ theme }) => {
       transition={{ duration: 0.6 }}
       viewport={{ once: true }}
       className="
-        mt-32
-        bg-white/5 dark:bg-[#0E1624]/20 
-        backdrop-blur-xl
-        border-t border-gray-200 dark:border-gray-800/50
+        mt-0 pt-16
+        bg-white dark:bg-[#030712] relative z-10
       "
     >
       <div className="px-6 sm:px-12 lg:px-24 xl:px-40 py-16">
-        {/* ===== TOP SECTION ===== */}
-        <div className="grid md:grid-cols-3 gap-12">
+        {/* ===== MASSIVE CTA BANNER ===== */}
+        <div className="relative w-full rounded-[2.5rem] bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-[#060D18] dark:to-[#0A1628] border border-blue-100 dark:border-[#00C2D1]/20 p-10 sm:p-16 lg:p-24 text-center mb-24 overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.02)] dark:shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+          {/* Background Glows */}
+          <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#00C2D1]/20 blur-[100px] rounded-full pointer-events-none" />
+          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-500/10 blur-[100px] rounded-full pointer-events-none" />
+
+          <div className="relative z-10 max-w-4xl mx-auto">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white mb-6 tracking-tight leading-tight">
+              Ready to automate your workflows <br className="hidden sm:block" /> and <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-[#00C2D1] dark:from-[#00C2D1] dark:to-blue-500">scale faster?</span>
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto font-medium">
+              Join forward-thinking companies saving thousands of hours every month using NeuraSync AI.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href="#contact-us"
+                className="group relative w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-[#00C2D1] to-[#00A8B5] text-[#0B1F3B] rounded-xl font-bold text-[15px] sm:text-base hover:shadow-[0_0_30px_rgba(0,194,209,0.4)] transition-all duration-300 active:scale-95 overflow-hidden"
+              >
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  Start your automation journey
+                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                </span>
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+              </a>
+              <Link
+                to="/dashboard"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-gray-700 dark:text-white bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-50 hover:dark:bg-white/10 transition-colors text-[15px] sm:text-base text-center"
+              >
+                View Dashboard
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* ===== BOTTOM SECTION ===== */}
+        <div className="grid md:grid-cols-2 gap-12 lg:gap-24">
           {/* ===== Brand Column ===== */}
           <div>
             <img
@@ -34,130 +66,42 @@ const Footer = ({ theme }) => {
               manual work and unlock scalable growth.
             </p>
 
-            <div className="mt-6 space-y-4 text-sm">
-              {/* Email */}
-              <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=neurasyncagency@gmail.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-gray-400 hover:text-[#00C2D1] transition-all duration-300"
-              >
-                <img
-                  src={assets.email_icon}
-                  alt="Email"
-                  className="w-4 h-4 opacity-80"
-                />
+            <div className="mt-8 space-y-4 text-[15px] font-medium">
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=neurasyncagency@gmail.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-gray-500 hover:text-[#00C2D1] transition-colors rounded-lg w-max">
+                <img src={assets.email_icon} alt="Email" className="w-4 h-4 opacity-70" />
                 neurasyncagency@gmail.com
               </a>
 
-              {/* WhatsApp */}
-              <a
-                href="https://wa.me/218926467332"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-gray-400 hover:text-[#00C2D1] transition-all duration-300"
-              >
-                <img
-                  src={theme === "dark" ? assets.whatsapp_icon_dark : assets.whatsapp_icon}
-                  alt="WhatsApp"
-                  className="w-4 h-4 opacity-80"
-                />
+              <a href="https://wa.me/218926467332" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-gray-500 hover:text-[#00C2D1] transition-colors rounded-lg w-max">
+                <img src={theme === "dark" ? assets.whatsapp_icon_dark : assets.whatsapp_icon} alt="WhatsApp" className="w-4 h-4 opacity-70" />
                 +218926467332
-              </a>
-
-              {/* LinkedIn */}
-              <a
-                href="https://www.linkedin.com/in/omar-twerat-59788935b/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-gray-400 hover:text-[#00C2D1] transition-all duration-300"
-              >
-                <img
-                  src={assets.linkedin_icon}
-                  alt="LinkedIn"
-                  className="w-4 h-4 opacity-80"
-                />
-                Connect on LinkedIn
               </a>
             </div>
           </div>
 
           {/* ===== Navigation ===== */}
-          <div>
-            <h3 className="font-semibold mb-6 text-gray-900 dark:text-white">
-              Navigation
-            </h3>
-
-            <ul className="space-y-3 text-gray-600 dark:text-gray-400">
-              <li>
-                <Link to="/" className="hover:text-[#00C2D1] transition">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="#solutions"
-                  className="hover:text-[#00C2D1] transition"
-                >
-                  Solutions
-                </a>
-              </li>
-              <li>
-                <Link
-                  to="/inboxpilot"
-                  className="hover:text-[#00C2D1] transition"
-                >
-                  InboxPilot
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="#contact-us"
-                  className="hover:text-[#00C2D1] transition"
-                >
-                  Contact
-                </a>
-                <div className="mt-4 text-sm">
-                  <a
-                    href="https://www.linkedin.com/in/omar-twerat-59788935b/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#00C2D1] hover:underline transition"
-                  >
-                    Connect with me on LinkedIn →
+          <div className="grid grid-cols-2 gap-8">
+            <div>
+              <h3 className="font-bold mb-6 text-gray-900 dark:text-white tracking-wide">Platform</h3>
+              <ul className="space-y-4 text-gray-500 dark:text-gray-400 font-medium text-[15px]">
+                <li><Link to="/" className="hover:text-[#00C2D1] transition-colors">Home</Link></li>
+                <li><a href="#solutions" className="hover:text-[#00C2D1] transition-colors">Services</a></li>
+                <li><Link to="/inboxpilot" className="hover:text-[#00C2D1] transition-colors">InboxPilot CRM</Link></li>
+                <li><a href="#our-work" className="hover:text-[#00C2D1] transition-colors">Our Work</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold mb-6 text-gray-900 dark:text-white tracking-wide">Company</h3>
+              <ul className="space-y-4 text-gray-500 dark:text-gray-400 font-medium text-[15px]">
+                <li><a href="#founder" className="hover:text-[#00C2D1] transition-colors">Founder</a></li>
+                <li><a href="#contact-us" className="hover:text-[#00C2D1] transition-colors">Contact Us</a></li>
+                <li>
+                  <a href="https://www.linkedin.com/in/omar-twerat-59788935b/" target="_blank" rel="noopener noreferrer" className="hover:text-[#00C2D1] transition-colors flex items-center gap-2">
+                    LinkedIn ↗
                   </a>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          {/* ===== Call To Action ===== */}
-          <div>
-            <h3 className="font-semibold mb-6 text-gray-900 dark:text-white">
-              Let’s Build Something Smart
-            </h3>
-
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Ready to automate your workflows and scale faster?
-            </p>
-
-            <a
-              href="#contact-us"
-              className="
-                inline-block
-                bg-[#00C2D1]
-                text-[#0B1F3B]
-                px-6 py-3
-                rounded-xl
-                font-semibold
-                hover:bg-[#00A8B5]
-                transition
-                shadow-lg
-                shadow-[#00C2D1]/30
-              "
-            >
-              Start a Conversation
-            </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 

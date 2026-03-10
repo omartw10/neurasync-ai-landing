@@ -64,13 +64,13 @@ export default function Founder() {
     <section 
       id="founder" 
       ref={containerRef}
-      className="w-full h-[200vh] relative z-10 transition-colors duration-500 bg-white dark:bg-[#030712]"
+      className="w-full relative z-10 transition-colors duration-500 bg-white dark:bg-[#030712] py-[100px] md:py-[120px] lg:py-[160px]"
     >
-      {/* Sticky Viewport Container */}
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
+      <div className="relative h-[200vh]">
+        {/* Sticky Viewport Container */}
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
         
-        {/* Soft background highlight */}
-        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-blue-100/30 dark:bg-[#00C2D1]/[0.03] blur-[150px] rounded-full pointer-events-none" />
+
 
         <motion.div 
           style={{ opacity: sectionOpacity }}
@@ -182,10 +182,10 @@ export default function Founder() {
                 </div>
               </motion.div>
             </div>
-
           </div>
         </motion.div>
         
+        </div>
       </div>
     </section>
   );

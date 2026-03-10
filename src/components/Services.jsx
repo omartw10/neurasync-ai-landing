@@ -71,7 +71,7 @@ const Services = () => {
     <section
       ref={sectionRef}
       id="solutions"
-      className="px-6 sm:px-12 lg:px-24 xl:px-40 py-32 text-gray-900 dark:text-white perspective-1000"
+      className="px-6 sm:px-12 lg:px-24 xl:px-40 py-[100px] md:py-[120px] lg:py-[140px] text-gray-900 dark:text-white perspective-1000"
     >
       {/* Header */}
       <div className="services-header text-center max-w-3xl mx-auto mb-20 opacity-0 transform-gpu">

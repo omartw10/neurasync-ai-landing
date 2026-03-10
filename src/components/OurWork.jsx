@@ -55,7 +55,7 @@ const OurWork = () => {
     <section 
       id="our-work"
       ref={containerRef}
-      className="px-6 sm:px-12 lg:px-24 xl:px-40 py-28 text-gray-900 dark:text-white"
+      className="px-6 sm:px-12 lg:px-24 xl:px-40 py-[100px] md:py-[120px] lg:py-[160px] text-gray-900 dark:text-white"
     >
       {/* ===== Section Header ===== */}
       <div 

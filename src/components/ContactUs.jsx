@@ -8,6 +8,7 @@ const ContactUs = ({
   defaultMessage = ""
 }) => {
   const [loading, setLoading] = useState(false);
+  const [messageLength, setMessageLength] = useState(defaultMessage ? defaultMessage.length : 0);
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -75,118 +76,113 @@ const ContactUs = ({
   return (
     <section
       id="contact-us"
-      className="px-6 sm:px-12 lg:px-24 xl:px-40 py-28"
+      className="relative w-full px-6 sm:px-12 lg:px-24 xl:px-40 py-[100px] md:py-[120px] lg:py-[160px] overflow-hidden transition-colors duration-500"
     >
-      {" "}
-      <div className="max-w-4xl mx-auto text-center mb-14">
-        <h2 className="text-4xl sm:text-5xl font-semibold text-white mb-4">
-          Send Us a Message
-        </h2>
-        <p className="text-gray-400">Tell us about your automation needs.</p>
+      <div className="max-w-4xl mx-auto text-center mb-16 relative z-10">
+        <motion.div
+           initial={{ opacity: 0, scale: 0.9, y: 20 }}
+           whileInView={{ opacity: 1, scale: 1, y: 0 }}
+           transition={{ duration: 0.6, ease: "easeOut" }}
+           viewport={{ once: true }}
+        >
+          <h2 className="text-4xl sm:text-5xl lg:text-5xl font-black text-gray-900 dark:text-white mb-5 tracking-tight">
+            Start Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-[#00C2D1] dark:from-[#00C2D1] dark:to-blue-500">Automation</span>
+          </h2>
+        </motion.div>
+        
+        <motion.p 
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+          viewport={{ once: true }}
+          className="text-lg text-gray-600 dark:text-gray-400 font-medium max-w-xl mx-auto"
+        >
+          Tell us about the workflow you want to automate and our team will design the right AI system for you.
+        </motion.p>
       </div>
+
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
         viewport={{ once: true }}
-        className="w-full max-w-3xl mx-auto"
-        whileHover={{ scale: 1.01 }}
+        className="w-full max-w-3xl mx-auto relative z-10"
       >
-        <div
-          className="
-    relative rounded-3xl p-12
-    bg-white/70 dark:bg-[#0E1624]/70
-    backdrop-blur-xl
-    border border-transparent
-    shadow-[0_20px_60px_rgba(0,0,0,0.15)]
-    dark:shadow-[0_20px_60px_rgba(0,0,0,0.6)]
-  "
-        >
-          <form
-            onSubmit={onSubmit}
-            className="relative grid sm:grid-cols-2 gap-8"
-          >
-            <input type="checkbox" name="botcheck" className="hidden" />
+        {/* Premium Form Container with Glow & Glassmorphism */}
+        <div className="relative group/form">
+          {/* Subtle gradient glow behind the card that activates on interaction */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-[#00C2D1]/10 to-blue-500/10 dark:from-[#00C2D1]/30 dark:to-blue-600/30 rounded-[2rem] blur-xl opacity-0 group-hover/form:opacity-100 transition duration-700 pointer-events-none" />
+          
+          <div className="relative rounded-3xl p-8 sm:p-12 bg-white/70 dark:bg-[#0A101C]/80 backdrop-blur-2xl border border-gray-200/50 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.4)] transition-all duration-300 group-hover/form:border-gray-300 dark:group-hover/form:border-white/20">
+            <form onSubmit={onSubmit} className="relative grid sm:grid-cols-2 gap-x-6 gap-y-8">
+              <input type="checkbox" name="botcheck" className="hidden" />
 
-            {/* Name */}
-            <div className="space-y-2">
-              <label className="text-sm text-gray-600 dark:text-gray-400">
-                Your Name
-              </label>
-              <input
-                type="text"
-                name="name"
-                required
-                placeholder="John Doe"
-                className="
-  w-full rounded-xl px-5 py-3 outline-none transition-all duration-300
-  bg-white dark:bg-[#0F1B2D]
-  text-gray-900 dark:text-white
-  placeholder-gray-400
-  border border-gray-300 dark:border-white/10
-  focus:border-[#00C2D1]
-  focus:ring-2 focus:ring-[#00C2D1]/40
-"
-              />
-            </div>
+              {/* Name */}
+              <div className="space-y-2.5">
+                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1">Your Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  placeholder="John Doe"
+                  className="w-full rounded-xl px-5 py-3.5 outline-none transition-all duration-300 bg-white/50 dark:bg-[#060D18]/80 text-gray-900 dark:text-white placeholder-gray-400 border border-gray-200 dark:border-white/10 focus:-translate-y-0.5 focus:border-[#00C2D1] focus:ring-4 focus:ring-[#00C2D1]/10 focus:shadow-[0_8px_20px_rgba(0,194,209,0.1)] focus:bg-white dark:focus:bg-[#060D18]"
+                />
+              </div>
 
-            {/* Email */}
-            <div className="space-y-2">
-              <label className="text-sm text-gray-600 dark:text-gray-400">
-                Email Address
-              </label>
-              <input
-                type="email"
-                name="email"
-                required
-                placeholder="you@company.com"
-                className="
-  w-full rounded-xl px-5 py-3 outline-none transition-all duration-300
-  bg-white dark:bg-[#0F1B2D]
-  text-gray-900 dark:text-white
-  placeholder-gray-400
-  border border-gray-300 dark:border-white/10
-  focus:border-[#00C2D1]
-  focus:ring-2 focus:ring-[#00C2D1]/40
-"
-              />
-            </div>
+              {/* Email */}
+              <div className="space-y-2.5">
+                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1">Email Address</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="you@company.com"
+                  className="w-full rounded-xl px-5 py-3.5 outline-none transition-all duration-300 bg-white/50 dark:bg-[#060D18]/80 text-gray-900 dark:text-white placeholder-gray-400 border border-gray-200 dark:border-white/10 focus:-translate-y-0.5 focus:border-[#00C2D1] focus:ring-4 focus:ring-[#00C2D1]/10 focus:shadow-[0_8px_20px_rgba(0,194,209,0.1)] focus:bg-white dark:focus:bg-[#060D18]"
+                />
+              </div>
 
-            {/* Message */}
-            <div className="sm:col-span-2 space-y-2">
-              <label className="text-sm text-gray-600 dark:text-gray-400">
-                Project Details
-              </label>
-              <textarea
-  rows={6}
-  name="message"
-  defaultValue={defaultMessage}
-  placeholder="Tell us what you want to automate..."
-  required
-  className="w-full bg-transparent border border-gray-300 dark:border-gray-600 
-             focus:border-[#00C2D1] focus:ring-1 focus:ring-[#00C2D1] 
-             transition-all rounded-lg px-4 py-3 outline-none resize-none
-             text-gray-800 dark:text-white placeholder-gray-400"
-/>
-            </div>
+              {/* Message */}
+              <div className="sm:col-span-2 space-y-2.5">
+                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1">Project Details</label>
+                <div className="relative group/textarea">
+                  {/* Writing Hint Overlay */}
+                  <div className={`absolute inset-0 pointer-events-none pl-[22px] pt-[18px] text-gray-500/70 dark:text-gray-500/80 text-[15px] leading-relaxed select-none transition-opacity duration-300 z-10 ${messageLength > 0 ? 'opacity-0' : 'opacity-100'}`}>
+                    Tell us what you want to automate...<br/><br/>
+                    <span className="text-gray-400/80 dark:text-gray-600/90 text-sm block mt-1 leading-loose">
+                      Examples:<br/>
+                      • Email intent classification & routing<br/>
+                      • Multi-channel outbound lead generation<br/>
+                      • Automated invoice OCR data extraction
+                    </span>
+                  </div>
+                  
+                  <textarea
+                    rows={7}
+                    name="message"
+                    defaultValue={defaultMessage}
+                    onChange={(e) => setMessageLength(e.target.value.length)}
+                    required
+                    className="relative z-20 w-full rounded-xl px-5 py-4 outline-none transition-all duration-300 bg-transparent text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 resize-none focus:-translate-y-0.5 focus:border-[#00C2D1] focus:ring-4 focus:ring-[#00C2D1]/10 focus:shadow-[0_8px_20px_rgba(0,194,209,0.1)]"
+                  />
+                  <div className="absolute inset-0 bg-white/50 dark:bg-[#060D18]/80 rounded-xl z-0 pointer-events-none transition-colors duration-300 group-focus-within/textarea:bg-white dark:group-focus-within/textarea:bg-[#060D18]" />
+                </div>
+              </div>
 
-            {/* Button */}
-            <div className="sm:col-span-2 mt-6">
-              <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                type="submit"
-                disabled={loading}
-                className="
-            w-full py-4 rounded-xl font-semibold transition-all duration-300
-            bg-[#00C2D1] hover:bg-[#00AEBB]
-            text-[#06121F]
-            shadow-[0_0_30px_rgba(0,194,209,0.35)]
-            disabled:opacity-60
-          "
-              >
-                {loading ? "Sending..." : "Send Message"}
-              </motion.button>
-            </div>
-          </form>
+              {/* Button */}
+              <div className="sm:col-span-2 mt-4 relative">
+                <motion.button 
+                  whileHover={{ scale: 1.01 }} 
+                  whileTap={{ scale: 0.98 }}
+                  type="submit"
+                  disabled={loading}
+                  className="group relative w-full py-4 rounded-xl font-bold transition-all duration-300 disabled:opacity-60 overflow-hidden bg-gradient-to-r from-[#00A8B5] to-[#00C2D1] hover:from-[#00C2D1] hover:to-[#2EE2F0] text-[#0B1F3B] shadow-[0_4px_20px_rgba(0,194,209,0.25)] hover:shadow-[0_8px_30px_rgba(0,194,209,0.4)]"
+                >
+                  <span className="relative z-10 text-base">{loading ? "Sending..." : "Send Message"}</span>
+                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+                </motion.button>
+              </div>
+            </form>
+          </div>
         </div>
       </motion.div>
     </section>

@@ -7,7 +7,7 @@ const SECTIONS = [
   { id: "solutions", label: "Services" },
   { id: "our-work", label: "Our Work" },
   { id: "founder", label: "Founder", internalScroll: true },
-  { id: "contact-us", label: "Send Us A Message" }
+  { id: "contact-us", label: "Start Automation" }
 ];
 
 const ScrollJourneyMap = () => {
@@ -81,8 +81,8 @@ const ScrollJourneyMap = () => {
                   {/* Subtle Pulse behind active node */}
                   {isActive && (
                     <motion.div 
-                      layoutId="journeyPulse"
                       className="absolute inset-0 rounded-full bg-[#00C2D1]/30 blur-[2px]"
+                      initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ scale: [1, 1.8, 1], opacity: [0.3, 0.7, 0.3] }}
                       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     />

@@ -77,64 +77,63 @@ export default function PoweredByInboxPilot() {
   const lineChartPathProgress = useTransform(smoothProgress, [0.85, 0.95], [0.8, 1]);
 
   return (
-    <section id="inboxpilot" className="w-full pt-24 pb-32 relative z-10 transition-colors duration-700">
+    <section id="inboxpilot" className="w-full relative z-10 transition-colors duration-700 bg-white dark:bg-[#030712]">
       
-      {/* Premium Animated Intro Section */}
-      <div className="w-full max-w-5xl mx-auto px-6 pb-24 pt-12 text-center relative z-20">
-        <motion.div
-           initial={{ opacity: 0, scale: 0.9 }}
-           whileInView={{ opacity: 1, scale: 1 }}
-           viewport={{ once: true }}
-           transition={{ duration: 0.6, ease: "easeOut" }}
-           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-[#00C2D1]/10 border border-blue-200 dark:border-[#00C2D1]/30 text-blue-600 dark:text-[#00C2D1] text-sm font-bold tracking-widest uppercase mb-8 shadow-sm dark:shadow-[0_0_20px_rgba(0,194,209,0.2)]"
-        >
-          <Sparkles className="w-4 h-4" /> Autonomous Intelligence
-        </motion.div>
-        
-        <motion.h2 
-           initial={{ opacity: 0, y: 30 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
-           transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-           className="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 dark:text-white mb-6 tracking-tighter"
-        >
-          Powered by{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-[#00C2D1] dark:from-[#00C2D1] dark:to-blue-500">
-            InboxPilot
-          </span>
-        </motion.h2>
-
-        <motion.p 
-           initial={{ opacity: 0, y: 30 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
-           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-           className="text-lg md:text-xl text-gray-600 dark:text-gray-400 leading-relaxed font-medium max-w-3xl mx-auto"
-        >
-          Experience the ultimate fusion of AI and workflow automation. Watch as our proprietary engine instantly reads, classifies, and routes high-value emails with human-like precision.
-        </motion.p>
-      </div>
-
       {/* Animation Section */}
       <div ref={containerRef} className="relative h-[600vh]">
         
         {/* Sticky Viewport Container */}
-        <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
-        
-          <div className="max-w-[1400px] w-full mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center relative z-10">
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center overflow-hidden">
+          
+          {/* Premium Animated Intro Section - Now inside the sticky container */}
+          <div className="w-full max-w-5xl mx-auto px-6 text-center relative z-20 shrink-0 mb-8 md:mb-16">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 dark:bg-[#00C2D1]/10 border border-blue-200 dark:border-[#00C2D1]/30 text-blue-600 dark:text-[#00C2D1] text-[11px] font-bold tracking-[0.15em] uppercase mb-4 shadow-sm dark:shadow-[0_0_15px_rgba(0,194,209,0.2)]"
+            >
+              <Sparkles className="w-3.5 h-3.5" /> Powered by NeuraSync AI
+            </motion.div>
+            
+            <motion.h2 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+              className="text-4xl md:text-5xl lg:text-7xl font-black mb-5 tracking-tighter"
+            >
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-[#00C2D1] dark:from-[#00C2D1] dark:to-blue-500">
+                InboxPilot
+              </span>
+            </motion.h2>
+
+            <motion.p 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              className="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed font-medium max-w-2xl mx-auto"
+            >
+              InboxPilot is the AI engine inside the NeuraSync platform that reads, classifies, and routes emails automatically with human-level precision.
+            </motion.p>
+          </div>
+
+          <div className="max-w-[1400px] w-full mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center relative z-10 shrink-0">
             
             {/* LEFT COLUMN: The Story Text */}
-            <div className="lg:col-span-4 relative h-[400px] flex items-center">
+            <div className="lg:col-span-4 relative h-[380px] flex items-center">
               
               {/* Step 1 Text */}
               <motion.div style={{ opacity: text1Opacity, y: text1Y }} className="absolute inset-x-0">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 text-xs font-bold tracking-widest uppercase mb-6 shadow-sm">
                   <Send className="w-3 h-3 text-blue-500" /> Layer 1
                 </div>
-                <h3 className="text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-6 tracking-tight leading-tight">
+                <h3 className="text-3xl lg:text-4xl font-black text-gray-900 dark:text-white mb-4 tracking-tight leading-tight">
                   Email Ingestion
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed font-medium">
+                <p className="text-gray-600 dark:text-gray-400 text-base leading-relaxed font-medium">
                   InboxPilot seamlessly monitors your influx of messages from multiple sources like Gmail, Contact Forms, or integrations. The engine instantly detects and begins organizing new arrivals before anyone even opens them.
                 </p>
               </motion.div>

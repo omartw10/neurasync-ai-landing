@@ -91,7 +91,7 @@ const Hero = () => {
     <section
       ref={container}
       id="hero"
-      className="relative flex flex-col items-center text-center px-6 sm:px-12 lg:px-24 xl:px-40 pt-28 pb-24 text-gray-900 dark:text-white perspective-1000 z-10"
+      className="relative flex flex-col items-center text-center px-6 sm:px-12 lg:px-24 xl:px-40 pt-[160px] pb-[100px] lg:pt-[200px] lg:pb-[140px] text-gray-900 dark:text-white perspective-1000 z-10"
     >
 
       {/* ===== Heading ===== */}
