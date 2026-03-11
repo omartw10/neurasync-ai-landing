@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { Linkedin } from "lucide-react";
 import assets from "../assets/assets";
 
 export default function Founder() {
@@ -74,7 +75,7 @@ export default function Founder() {
 
         <motion.div 
           style={{ opacity: sectionOpacity }}
-          className="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-16 lg:gap-24 items-center relative z-20 w-full"
+          className="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-8 sm:gap-12 md:gap-16 lg:gap-24 items-center relative z-20 w-full"
         >
           
           {/* Left Side: Portrait */}
@@ -88,8 +89,8 @@ export default function Founder() {
               <div className="absolute -inset-4 rounded-[40px] bg-gradient-to-tr from-[#00C2D1]/30 to-blue-500/30 blur-2xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
               
               {/* Premium Portrait Frame */}
-              <div className="relative rounded-[32px] p-[1.5px] bg-gradient-to-tr from-gray-200 dark:from-white/10 to-gray-50 dark:to-transparent shadow-xl dark:shadow-[0_20px_40px_rgba(0,0,0,0.4)] group-hover:shadow-[0_30px_60px_rgba(0,194,209,0.2)] dark:group-hover:shadow-[0_30px_60px_rgba(0,194,209,0.2)] transition-all duration-700">
-                <div className="rounded-[30.5px] overflow-hidden bg-white dark:bg-[#0A101C] aspect-[4/5] w-[280px] sm:w-[320px] lg:w-[380px] relative">
+              <div className="relative rounded-[32px] p-[1.5px] bg-gradient-to-tr from-gray-200 dark:from-white/10 to-gray-50 dark:to-transparent shadow-xl dark:shadow-[0_20px_40px_rgba(0,0,0,0.4)] group-hover:shadow-[0_30px_60px_rgba(0,194,209,0.2)] dark:group-hover:shadow-[0_30px_60px_rgba(0,194,209,0.2)] transition-all duration-700 mx-auto md:mx-0">
+                <div className="rounded-[30.5px] overflow-hidden bg-white dark:bg-[#0A101C] aspect-[4/5] w-[140px] sm:w-[180px] md:w-[280px] lg:w-[380px] relative">
                    <img
                      src={assets.omar_photo}
                      alt="Omar Abutwairat - Founder"
@@ -109,7 +110,7 @@ export default function Founder() {
             {/* Label */}
             <motion.div 
               style={{ opacity: labelOpacity, y: labelY }}
-              className="inline-flex items-center gap-4 mb-6 relative"
+              className="inline-flex items-center gap-4 mb-4 md:mb-6 relative"
             >
               <span className="text-[11px] font-bold tracking-[0.2em] text-[#00C2D1] uppercase">Founder</span>
               <motion.div 
@@ -118,20 +119,31 @@ export default function Founder() {
               ></motion.div>
             </motion.div>
 
-            {/* Name */}
+            {/* Name & Socials */}
             <motion.div 
               style={{ opacity: nameOpacity, y: nameY }}
-              className="relative group mb-10 cursor-default inline-block"
+              className="relative group mb-6 md:mb-10 inline-flex flex-col items-start"
             >
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white tracking-tight leading-none pb-2">
-                Omar Abutwairat
-              </h2>
+              <div className="flex items-center gap-4 pb-2">
+                <h2 className="text-3xl sm:text-4xl lg:text-6xl font-black text-gray-900 dark:text-white tracking-tight leading-none cursor-default">
+                  Omar Abutwairat
+                </h2>
+                <a 
+                  href="https://www.linkedin.com/in/omar-abutwairat-59788935b/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  title="Omar's LinkedIn Profile"
+                  className="p-2 rounded-xl bg-blue-500/10 text-blue-500 dark:bg-white/5 dark:text-gray-300 hover:bg-[#0077b5] hover:text-white dark:hover:bg-[#0077b5] dark:hover:text-white transition-all duration-300 shadow-sm"
+                >
+                  <Linkedin className="w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8" strokeWidth={1.5} />
+                </a>
+              </div>
               {/* Animated Underline */}
-              <div className="absolute bottom-0 left-0 w-12 h-[3px] bg-[#00C2D1] rounded-full group-hover:w-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] opacity-80"></div>
+              <div className="absolute bottom-0 left-0 w-12 h-[3px] bg-[#00C2D1] rounded-full group-hover:w-[calc(100%-60px)] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] opacity-80"></div>
             </motion.div>
 
             {/* Biography Paragraphs */}
-            <div className="space-y-6 mb-12 text-lg text-gray-600 dark:text-gray-400 font-medium leading-relaxed">
+            <div className="space-y-4 md:space-y-6 mb-6 md:mb-12 text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-400 font-medium leading-relaxed">
                <motion.p style={{ opacity: p1Opacity, y: p1Y }}>
                  Omar Abutwairat is a software engineer specializing in AI-powered automation systems, workflow orchestration, and scalable digital infrastructure.
                </motion.p>
@@ -147,7 +159,7 @@ export default function Founder() {
             </div>
 
             {/* Focus & Stack */}
-            <div className="grid sm:grid-cols-2 gap-10 w-full pt-6 relative">
+            <div className="grid sm:grid-cols-2 gap-6 md:gap-10 w-full pt-4 md:pt-6 relative">
               {/* Soft divider */}
               <motion.div 
                  style={{ scaleX: botLineScale }}
@@ -159,9 +171,9 @@ export default function Founder() {
                 className="flex flex-col gap-4"
               >
                 <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Focus Area</span>
-                <div className="flex flex-wrap gap-2.5">
+                <div className="flex flex-wrap gap-2 md:gap-2.5">
                   {['Automation Architecture', 'AI Systems', 'Workflow Engineering'].map((item, i) => (
-                    <span key={i} className="px-3.5 py-1.5 rounded-lg bg-white dark:bg-white/5 border border-gray-200 dark:border-white/5 text-sm font-semibold text-gray-800 dark:text-gray-300 shadow-sm transition-all hover:bg-gray-50 hover:-translate-y-0.5 hover:border-[#00C2D1]/50 hover:text-[#00C2D1] dark:hover:text-[#00C2D1] duration-300">
+                    <span key={i} className="px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-lg bg-white dark:bg-white/5 border border-gray-200 dark:border-white/5 text-xs md:text-sm font-semibold text-gray-800 dark:text-gray-300 shadow-sm transition-all hover:bg-gray-50 hover:-translate-y-0.5 hover:border-[#00C2D1]/50 hover:text-[#00C2D1] dark:hover:text-[#00C2D1] duration-300">
                       {item}
                     </span>
                   ))}
@@ -170,12 +182,12 @@ export default function Founder() {
 
               <motion.div 
                 style={{ opacity: stackOpacity, y: stackY }}
-                className="flex flex-col gap-4"
+                className="flex flex-col gap-2 md:gap-4 hidden sm:flex"
               >
                 <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Tech Stack</span>
-                <div className="flex flex-wrap gap-2.5">
+                <div className="flex flex-wrap gap-2 md:gap-2.5">
                   {['n8n', 'AI Infrastructure', 'Modern Web Systems'].map((item, i) => (
-                    <span key={i} className="px-3.5 py-1.5 rounded-lg bg-blue-50/80 dark:bg-[#00C2D1]/10 border border-blue-100 dark:border-[#00C2D1]/20 text-sm font-semibold text-blue-700 dark:text-[#00C2D1] shadow-sm transition-all hover:bg-blue-100 hover:-translate-y-0.5 hover:dark:bg-[#00C2D1]/20 duration-300">
+                    <span key={i} className="px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-lg bg-blue-50/80 dark:bg-[#00C2D1]/10 border border-blue-100 dark:border-[#00C2D1]/20 text-xs md:text-sm font-semibold text-blue-700 dark:text-[#00C2D1] shadow-sm transition-all hover:bg-blue-100 hover:-translate-y-0.5 hover:dark:bg-[#00C2D1]/20 duration-300">
                       {item}
                     </span>
                   ))}

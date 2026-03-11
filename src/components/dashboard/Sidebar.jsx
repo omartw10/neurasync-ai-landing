@@ -30,8 +30,8 @@ export const Sidebar = () => {
       {/* Brand */}
       <div className="h-16 flex items-center px-6 border-b border-gray-200 dark:border-gray-800 shrink-0">
         <Link to="/" className="flex items-center">
-          <img src={assets.logo} alt="NeuraSync AI" className="h-8 w-auto object-contain dark:hidden" />
-          <img src={assets.logo_dark} alt="NeuraSync AI" className="h-8 w-auto object-contain hidden dark:block" />
+          <img src={assets.logo} alt="NeuraSyncAI" className="h-8 w-auto object-contain dark:hidden" />
+          <img src={assets.logo_dark} alt="NeuraSyncAI" className="h-8 w-auto object-contain hidden dark:block" />
         </Link>
       </div>
 

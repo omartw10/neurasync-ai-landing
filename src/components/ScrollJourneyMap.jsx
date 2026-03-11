@@ -59,7 +59,7 @@ const ScrollJourneyMap = () => {
   };
 
   return (
-    <div className="hidden xl:flex fixed left-8 lg:left-12 top-1/2 -translate-y-1/2 z-[100] flex-col items-start w-56 group pointer-events-none">
+    <div className="flex fixed left-3 sm:left-4 lg:left-8 xl:left-12 top-1/2 -translate-y-1/2 z-[100] flex-col items-start w-10 sm:w-16 lg:w-56 group pointer-events-none scale-[0.65] sm:scale-90 lg:scale-100 origin-left">
       
        {/* Removed the distracting ambient hover background that was causing a blocky glow */}
 
@@ -77,7 +77,7 @@ const ScrollJourneyMap = () => {
              <div key={sec.id} className="relative flex items-center h-20 w-full group/node cursor-pointer" onClick={() => scrollToSection(sec.id)}>
                 
                 {/* Node Circle Wrapper */}
-                <div className="relative flex items-center justify-center shrink-0 w-3 h-3 z-20">
+                <div className="relative flex items-center justify-center shrink-0 w-2.5 sm:w-3 h-2.5 sm:h-3 z-20">
                   {/* Subtle Pulse behind active node */}
                   {isActive && (
                     <motion.div 
@@ -94,7 +94,7 @@ const ScrollJourneyMap = () => {
                       backgroundColor: isActive || isPast ? "#00C2D1" : "",
                       borderColor: isActive || isPast ? "#00C2D1" : ""
                     }}
-                    className={`w-2.5 h-2.5 rounded-full border-[1.5px] border-gray-300 dark:border-gray-600 transition-colors duration-500 z-10 ${isActive || isPast ? 'bg-[#00C2D1] border-[#00C2D1]' : 'bg-white dark:bg-[#060D18]'}`}
+                    className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full border-[1.5px] border-gray-300 dark:border-gray-600 transition-colors duration-500 z-10 ${isActive || isPast ? 'bg-[#00C2D1] border-[#00C2D1]' : 'bg-white dark:bg-[#060D18]'}`}
                   />
                   
                   {/* Hover ring interaction */}
@@ -103,7 +103,7 @@ const ScrollJourneyMap = () => {
 
                 {/* Line connecting to the next node */}
                 {i < SECTIONS.length - 1 && (
-                  <div className="absolute left-[5px] top-[50%] w-[2px] h-20 z-0 pointer-events-none">
+                  <div className="absolute left-[3.5px] sm:left-[5px] top-[50%] w-[2px] h-20 z-0 pointer-events-none">
                     {/* Dim base line */}
                     <div className="absolute inset-0 bg-gray-200 dark:bg-gray-800" />
                     
@@ -134,7 +134,7 @@ const ScrollJourneyMap = () => {
 
                 {/* Node Label Text */}
                 <span 
-                  className={`ml-5 text-[11px] font-bold tracking-widest uppercase whitespace-nowrap transition-all duration-500 ${isActive ? 'text-[#00C2D1] opacity-100 translate-x-2' : 'text-gray-400 dark:text-gray-500 opacity-40 group-hover:opacity-100 hover:text-gray-900 dark:hover:text-gray-200'} pointer-events-none group-hover/node:text-[#00C2D1] group-hover/node:translate-x-1`}
+                  className={`hidden sm:block ml-5 text-[11px] font-bold tracking-widest uppercase whitespace-nowrap transition-all duration-500 ${isActive ? 'text-[#00C2D1] opacity-100 translate-x-2' : 'text-gray-400 dark:text-gray-500 opacity-40 group-hover:opacity-100 hover:text-gray-900 dark:hover:text-gray-200'} pointer-events-none group-hover/node:text-[#00C2D1] group-hover/node:translate-x-1`}
                   style={{ transformOrigin: 'left center' }}
                 >
                   {sec.label}

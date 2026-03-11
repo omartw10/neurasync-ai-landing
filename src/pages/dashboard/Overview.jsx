@@ -16,7 +16,7 @@ export const DashboardOverview = () => {
     <div className="space-y-6 fade-in">
       <h1 className="text-3xl font-bold tracking-tight">Welcome back, {user?.name.split(' ')[0]}</h1>
       <p className="text-gray-500 dark:text-gray-400">
-        Here's what's happening in your NeuraSync AI workspace for <span className="font-semibold">{user?.company_name}</span>.
+        Here's what's happening in your NeuraSyncAI workspace for <span className="font-semibold">{user?.company_name}</span>.
       </p>
 
       {/* Dashboard Renderer Block */}

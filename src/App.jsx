@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import InboxPilot from "./pages/InboxPilot";
+import About from "./pages/About";
 import { DashboardLayout } from "./layouts/DashboardLayout";
 import { DashboardOverview } from "./pages/dashboard/Overview";
 import { InboxPilotDashboard } from "./pages/dashboard/InboxPilotDashboard";
@@ -37,6 +38,10 @@ const App = () => {
             <Route
               path="/inboxpilot"
               element={<InboxPilot theme={theme} setTheme={setTheme} />}
+            />
+            <Route
+              path="/about"
+              element={<About theme={theme} setTheme={setTheme} />}
             />
             <Route path="/dashboard" element={<DashboardLayout theme={theme} setTheme={setTheme} />}>
               <Route index element={<DashboardOverview />} />

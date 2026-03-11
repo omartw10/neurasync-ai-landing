@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { 
   Send, BrainCircuit, Activity, Sparkles, GitMerge, 
@@ -7,6 +8,8 @@ import {
 
 export default function PoweredByInboxPilot() {
   const containerRef = useRef(null);
+  const location = useLocation();
+  const isHome = location.pathname === "/";
 
   // Smooth scroll progress using spring for Vercel/Linear feel
   const { scrollYProgress } = useScroll({
@@ -86,7 +89,7 @@ export default function PoweredByInboxPilot() {
         <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center overflow-hidden">
           
           {/* Premium Animated Intro Section - Now inside the sticky container */}
-          <div className="w-full max-w-5xl mx-auto px-6 text-center relative z-20 shrink-0 mb-8 md:mb-16">
+          <div className="w-full max-w-5xl mx-auto px-6 text-center relative z-20 shrink-0 mb-6 lg:mb-16 mt-12 lg:mt-0">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -94,7 +97,7 @@ export default function PoweredByInboxPilot() {
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 dark:bg-[#00C2D1]/10 border border-blue-200 dark:border-[#00C2D1]/30 text-blue-600 dark:text-[#00C2D1] text-[11px] font-bold tracking-[0.15em] uppercase mb-4 shadow-sm dark:shadow-[0_0_15px_rgba(0,194,209,0.2)]"
             >
-              <Sparkles className="w-3.5 h-3.5" /> Powered by NeuraSync AI
+              <Sparkles className="w-3.5 h-3.5" /> Powered by NeuraSyncAI
             </motion.div>
             
             <motion.h2 
@@ -116,18 +119,37 @@ export default function PoweredByInboxPilot() {
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
               className="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed font-medium max-w-2xl mx-auto"
             >
-              InboxPilot is the AI engine inside the NeuraSync platform that reads, classifies, and routes emails automatically with human-level precision.
+              InboxPilot is the AI engine inside the NeuraSyncAI platform that reads, classifies, and routes emails automatically with human-level precision.
             </motion.p>
+
+            {isHome && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                className="mt-8 flex justify-center"
+              >
+                <Link
+                  to="/inboxpilot"
+                  onClick={() => window.scrollTo(0, 0)}
+                  className="group relative inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-gray-900 to-[#0B1F3B] dark:from-[#00C2D1] dark:to-blue-600 text-white font-bold text-sm shadow-[0_10px_30px_rgba(0,194,209,0.2)] dark:shadow-[0_0_20px_rgba(0,194,209,0.3)] hover:shadow-[0_15px_40px_rgba(0,194,209,0.3)] dark:hover:shadow-[0_0_30px_rgba(0,194,209,0.5)] transition-all duration-300 hover:-translate-y-1 active:scale-95 border border-gray-700/50 dark:border-white/10"
+                >
+                  Discover InboxPilot AI deeper
+                  <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                </Link>
+              </motion.div>
+            )}
           </div>
 
-          <div className="max-w-[1400px] w-full mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center relative z-10 shrink-0">
+          <div className="max-w-[1400px] w-full mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-16 items-center relative z-10 shrink-0">
             
             {/* LEFT COLUMN: The Story Text */}
-            <div className="lg:col-span-4 relative h-[380px] flex items-center">
+            <div className="lg:col-span-4 relative h-[220px] sm:h-[280px] lg:h-[380px] flex items-start lg:items-center mt-4 border-b border-gray-100/10 lg:border-none pb-4 lg:pb-0">
               
               {/* Step 1 Text */}
-              <motion.div style={{ opacity: text1Opacity, y: text1Y }} className="absolute inset-x-0">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 text-xs font-bold tracking-widest uppercase mb-6 shadow-sm">
+              <motion.div style={{ opacity: text1Opacity, y: text1Y }} className="absolute inset-x-0 top-0 lg:top-auto">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 text-xs font-bold tracking-widest uppercase mb-4 lg:mb-6 shadow-sm">
                   <Send className="w-3 h-3 text-blue-500" /> Layer 1
                 </div>
                 <h3 className="text-3xl lg:text-4xl font-black text-gray-900 dark:text-white mb-4 tracking-tight leading-tight">
@@ -139,8 +161,8 @@ export default function PoweredByInboxPilot() {
               </motion.div>
 
               {/* Step 2 Text */}
-              <motion.div style={{ opacity: text2Opacity, y: text2Y }} className="absolute inset-x-0 pointer-events-none">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 text-xs font-bold tracking-widest uppercase mb-6 shadow-sm">
+              <motion.div style={{ opacity: text2Opacity, y: text2Y }} className="absolute inset-x-0 pointer-events-none top-0 lg:top-auto">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 text-xs font-bold tracking-widest uppercase mb-4 lg:mb-6 shadow-sm">
                   <BrainCircuit className="w-3 h-3 text-blue-500 dark:text-[#00C2D1]" /> Layer 2
                 </div>
                 <h3 className="text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-6 tracking-tight leading-tight">
@@ -152,8 +174,8 @@ export default function PoweredByInboxPilot() {
               </motion.div>
 
               {/* Step 3 Text */}
-              <motion.div style={{ opacity: text3Opacity, y: text3Y }} className="absolute inset-x-0 pointer-events-none">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 text-xs font-bold tracking-widest uppercase mb-6 shadow-sm">
+              <motion.div style={{ opacity: text3Opacity, y: text3Y }} className="absolute inset-x-0 pointer-events-none top-0 lg:top-auto">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 text-xs font-bold tracking-widest uppercase mb-4 lg:mb-6 shadow-sm">
                   <Activity className="w-3 h-3 text-orange-500" /> Layer 3
                 </div>
                 <h3 className="text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-6 tracking-tight leading-tight">
@@ -165,8 +187,8 @@ export default function PoweredByInboxPilot() {
               </motion.div>
 
               {/* Step 4 Text */}
-              <motion.div style={{ opacity: text4Opacity, y: text4Y }} className="absolute inset-x-0 pointer-events-none">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 text-xs font-bold tracking-widest uppercase mb-6 shadow-sm">
+              <motion.div style={{ opacity: text4Opacity, y: text4Y }} className="absolute inset-x-0 pointer-events-none top-0 lg:top-auto">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 text-xs font-bold tracking-widest uppercase mb-4 lg:mb-6 shadow-sm">
                   <Sparkles className="w-3 h-3 text-purple-500" /> Layer 4
                 </div>
                 <h3 className="text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-6 tracking-tight leading-tight">
@@ -178,8 +200,8 @@ export default function PoweredByInboxPilot() {
               </motion.div>
 
               {/* Step 5 Text */}
-              <motion.div style={{ opacity: text5Opacity, y: text5Y }} className="absolute inset-x-0 pointer-events-none">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 text-xs font-bold tracking-widest uppercase mb-6 shadow-sm">
+              <motion.div style={{ opacity: text5Opacity, y: text5Y }} className="absolute inset-x-0 pointer-events-none top-0 lg:top-auto">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 text-xs font-bold tracking-widest uppercase mb-4 lg:mb-6 shadow-sm">
                   <GitMerge className="w-3 h-3 text-emerald-500" /> Layer 5
                 </div>
                 <h3 className="text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-6 tracking-tight leading-tight">
@@ -193,17 +215,17 @@ export default function PoweredByInboxPilot() {
             </div>
 
             {/* RIGHT COLUMN: UI Simulations */}
-            <div className="lg:col-span-8 relative h-[650px] perspective-1200 w-full flex items-center justify-center lg:justify-end">
-              
-              {/* --- UI STEP 1: AI Organized Inbox View --- */}
-              <motion.div 
-                style={{ opacity: ui1Opacity, scale: ui1Scale, y: ui1Y, rotateX: 6, rotateY: -8 }}
-                className="absolute w-full max-w-2xl bg-white/80 dark:bg-[#070D18]/90 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 rounded-[24px] shadow-[0_20px_40px_rgba(0,0,0,0.05)] dark:shadow-[0_40px_60px_rgba(0,0,0,0.5)] p-4 flex flex-col pointer-events-none transform-style-3d transition-colors duration-500"
-              >
-                <div className="flex flex-col gap-2">
-                  
-                  {/* Highlighted Row */}
-                  <motion.div 
+            <div className="lg:col-span-8 relative h-[320px] sm:h-[450px] lg:h-[650px] perspective-1200 w-full flex items-start lg:items-center justify-center lg:justify-end mt-4 lg:mt-0">
+              <div className="w-full h-full relative flex items-start lg:items-center justify-center origin-top lg:origin-center scale-[0.6] sm:scale-[0.8] lg:scale-100">
+                {/* --- UI STEP 1: AI Organized Inbox View --- */}
+                <motion.div 
+                  style={{ opacity: ui1Opacity, scale: ui1Scale, y: ui1Y, rotateX: 6, rotateY: -8 }}
+                  className="absolute w-full max-w-2xl bg-white/80 dark:bg-[#070D18]/90 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 rounded-[24px] shadow-[0_20px_40px_rgba(0,0,0,0.05)] dark:shadow-[0_40px_60px_rgba(0,0,0,0.5)] p-4 flex flex-col pointer-events-none transform-style-3d transition-colors duration-500"
+                >
+                  <div className="flex flex-col gap-2">
+                    
+                    {/* Highlighted Row */}
+                    <motion.div 
                     style={{ 
                       scale: highlightScale, 
                       backgroundColor: useTransform(highlightShadowOpacity, [0, 1], ["rgba(255,255,255,0)", "rgba(0,194,209,0.05)"]),
@@ -347,9 +369,9 @@ export default function PoweredByInboxPilot() {
                 {/* Fake Sidebar */}
                 <div className="w-48 bg-gray-50/80 dark:bg-[#060D18]/80 backdrop-blur-md border-r border-gray-200 dark:border-white/5 p-5 flex flex-col gap-4">
                   <div className="flex items-center gap-2 text-gray-900 dark:text-white font-black mb-6">
-                    <img src="/logo_icon.png" alt="NeuraSync" className="w-6 h-6 object-contain dark:hidden" />
-                    <img src="/logo_icon_dark.png" alt="NeuraSync" className="w-6 h-6 object-contain hidden dark:block" />
-                    NeuraSync
+                    <img src="/logo_icon.png" alt="NeuraSyncAI" className="w-6 h-6 object-contain dark:hidden" />
+                    <img src="/logo_icon_dark.png" alt="NeuraSyncAI" className="w-6 h-6 object-contain hidden dark:block" />
+                    NeuraSyncAI
                   </div>
                   <div className="text-[10px] font-bold text-gray-400 tracking-wider mb-2">PLATFORM</div>
                   <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400 text-sm py-2 px-2 rounded-lg"><Activity className="w-4 h-4"/> Overview</div>
@@ -465,14 +487,15 @@ export default function PoweredByInboxPilot() {
                         className="grid grid-cols-4 p-3 px-5 text-xs border-b border-gray-50 dark:border-white/5 items-center transition-colors"
                       >
                         <span className="col-span-1 font-bold text-gray-900 dark:text-white truncate pr-4">omar.twerat@gma...</span>
-                        <span className="col-span-2 text-gray-600 dark:text-gray-300 truncate pr-4">New Inquiry - NeuraSync AI</span>
+                        <span className="col-span-2 text-gray-600 dark:text-gray-300 truncate pr-4">New Inquiry - NeuraSyncAI</span>
                         <span className="col-span-1 text-right text-emerald-600 dark:text-emerald-400 font-bold">98% Match</span>
                       </motion.div>
                    </div>
 
-                </div>
+                 </div>
               </motion.div>
 
+              </div>
             </div>
           </div>
         </div>

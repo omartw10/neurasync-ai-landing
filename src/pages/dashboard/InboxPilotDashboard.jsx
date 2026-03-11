@@ -80,7 +80,7 @@ const MOCK_EMAILS = [
     leadScore: null,
     confidence: 88,
     summary: 'AWS partner network inviting us to participate in upcoming Q3 joint webinar series.',
-    preview: 'We have selected NeuraSync AI for our upcoming intelligent automation webinar. Please sign the attached MOU...',
+    preview: 'We have selected NeuraSyncAI for our upcoming intelligent automation webinar. Please sign the attached MOU...',
     sla: 24,
     routed: 'Marketing Team'
   },

@@ -88,11 +88,11 @@ const Services = () => {
         <div
           className="
     relative
-    rounded-[36px]
+    rounded-[24px] md:rounded-[36px]
     border border-[#00C2D1]/30
     bg-white/40 dark:bg-[#0E1624]/40
     backdrop-blur-2xl
-    p-10
+    p-6 md:p-10
   "
         >
           <div className="grid md:grid-cols-3 gap-8">
@@ -108,7 +108,7 @@ const Services = () => {
                 }}
                 className="
             group
-            p-8
+            p-6 md:p-8
             rounded-2xl
             border border-gray-200 dark:border-gray-700
             bg-white/70 dark:bg-[#0E1624]/70

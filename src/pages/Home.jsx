@@ -4,8 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
-import TrustedBy from "../components/TrustedBy";
-import Services from "../components/Services";
+
 import OurWork from "../components/OurWork";
 import Teams from "../components/Teams";
 import ContactUs from "../components/ContactUs";
@@ -15,11 +14,18 @@ import ScrollJourneyMap from "../components/ScrollJourneyMap";
 const Home = ({ theme, setTheme }) => {
   const location = useLocation();
 
-  // ===== Scroll to hash (for email button navigation) =====
+  // ===== Scroll to hash (for cross-page navigation) =====
   useEffect(() => {
     if (location.hash) {
-      const el = document.querySelector(location.hash);
-      el?.scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => {
+        const el = document.querySelector(location.hash);
+        if (el) {
+          const y = el.getBoundingClientRect().top + window.scrollY - 100;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      }, 100);
+    } else if (location.pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [location]);
 
@@ -33,9 +39,8 @@ const Home = ({ theme, setTheme }) => {
       <ScrollJourneyMap />
 
       <Hero />
-      <TrustedBy />
       <PoweredByInboxPilot /> 
-      <Services />
+
       <OurWork />
       <Teams />
       <ContactUs />

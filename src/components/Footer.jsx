@@ -28,7 +28,7 @@ const Footer = ({ theme }) => {
               Ready to automate your workflows <br className="hidden sm:block" /> and <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-[#00C2D1] dark:from-[#00C2D1] dark:to-blue-500">scale faster?</span>
             </h2>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto font-medium">
-              Join forward-thinking companies saving thousands of hours every month using NeuraSync AI.
+              Join forward-thinking companies saving thousands of hours every month using NeuraSyncAI.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
@@ -57,7 +57,7 @@ const Footer = ({ theme }) => {
           <div>
             <img
               src={theme === "dark" ? assets.logo_dark : assets.logo}
-              alt="NeuraSync AI"
+              alt="NeuraSyncAI"
               className="w-36 mb-6"
             />
 
@@ -96,7 +96,7 @@ const Footer = ({ theme }) => {
                 <li><a href="#founder" className="hover:text-[#00C2D1] transition-colors">Founder</a></li>
                 <li><a href="#contact-us" className="hover:text-[#00C2D1] transition-colors">Contact Us</a></li>
                 <li>
-                  <a href="https://www.linkedin.com/in/omar-twerat-59788935b/" target="_blank" rel="noopener noreferrer" className="hover:text-[#00C2D1] transition-colors flex items-center gap-2">
+                  <a href="https://www.linkedin.com/in/omar-abutwairat-59788935b/" target="_blank" rel="noopener noreferrer" className="hover:text-[#00C2D1] transition-colors flex items-center gap-2">
                     LinkedIn ↗
                   </a>
                 </li>
@@ -110,7 +110,7 @@ const Footer = ({ theme }) => {
 
         {/* ===== Bottom ===== */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-          <p>© 2026 NeuraSync AI. All rights reserved.</p>
+          <p>© 2026 NeuraSyncAI. All rights reserved.</p>
 
           <p>
             Built by{" "}
