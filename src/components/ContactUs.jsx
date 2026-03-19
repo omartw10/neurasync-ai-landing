@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Check } from "lucide-react";
@@ -92,7 +91,8 @@ const ContactUs = ({
       } else {
         toast.error("Something went wrong. Please try again.");
       }
-    } catch (error) {
+    } catch (err) {
+      console.error("Contact form submission failed", err);
       toast.error("Network error. Please try again.");
     } finally {
       setLoading(false);

@@ -24,11 +24,10 @@ const ScrollJourneyMap = () => {
       let internalStates = {};
 
       SECTIONS.forEach((sec) => {
-        const el = document.getElementById(sec.id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          const elTop = rect.top + scrollY;
-          const elBottom = elTop + el.offsetHeight;
+          const el = document.getElementById(sec.id);
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            const elTop = rect.top + scrollY;
 
           // If the section's top has passed our trigger line, it's the active one
           if (elTop <= scrollTrigger + 50) {

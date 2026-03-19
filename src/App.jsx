@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import InboxPilot from "./pages/InboxPilot";
 import About from "./pages/About";
 import { DashboardLayout } from "./layouts/DashboardLayout";
 import { DashboardOverview } from "./pages/dashboard/Overview";
 import { InboxPilotDashboard } from "./pages/dashboard/InboxPilotDashboard";
+import { CodeGate } from "./pages/dashboard/CodeGate";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import SmoothScroll from "./components/SmoothScroll";
 
 const getInitialTheme = () => {
   const saved = localStorage.getItem("theme");
@@ -18,8 +21,27 @@ const getInitialTheme = () => {
   return "light";
 };
 
-import { AuthProvider } from "./context/AuthContext";
-import SmoothScroll from "./components/SmoothScroll";
+// Route protection component
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-[#060D18]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-10 h-10 border-4 border-gray-800 border-t-[#00C2D1] rounded-full animate-spin" />
+          <p className="text-gray-500 font-medium animate-pulse">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/dashboard/login" replace />;
+  }
+
+  return children;
+};
 
 const App = () => {
   const [theme, setTheme] = useState(getInitialTheme);
@@ -43,7 +65,19 @@ const App = () => {
               path="/about"
               element={<About theme={theme} setTheme={setTheme} />}
             />
-            <Route path="/dashboard" element={<DashboardLayout theme={theme} setTheme={setTheme} />}>
+            
+            {/* Dashboard Login */}
+            <Route path="/dashboard/login" element={<CodeGate />} />
+            
+            {/* Protected Dashboard Routes */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout theme={theme} setTheme={setTheme} />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<DashboardOverview />} />
               <Route path="inboxpilot" element={<InboxPilotDashboard />} />
             </Route>

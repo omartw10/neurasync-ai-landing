@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import assets from "../assets/assets";
 import ThemeToggleBtn from "./ThemeToggleBtn";
 import { motion } from "framer-motion";
@@ -24,53 +23,67 @@ const Navbar = ({ theme, setTheme }) => {
   const scrollToSection = (e, id) => {
     if (e) e.preventDefault();
 
+    const safeScroll = () => {
+      const section = document.getElementById(id);
+      if (!section) return false;
+      const offset = 100;
+      const y = section.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+      window.location.hash = `#${id}`;
+      return true;
+    };
+
     if (id === "about") {
       navigate("/about");
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
-    const section = document.getElementById(id);
-    
-    if (section) {
-      // Offset for fixed navbar to prevent overlapping titles
-      const y = section.getBoundingClientRect().top + window.scrollY - 100;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    } else {
-      if (id === "hero" || id === "home") {
-        navigate("/");
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else {
-        navigate(`/#${id}`);
-      }
+    if (safeScroll()) {
+      return;
     }
+
+    if (location.pathname !== "/") {
+      navigate("/", { replace: false });
+      window.location.hash = `#${id}`;
+    } else {
+      window.location.hash = `#${id}`;
+    }
+
+    setTimeout(() => {
+      safeScroll();
+    }, 200);
   };
 
-  const navLinks = isInboxPilotPage
-    ? [
+  const navLinks = useMemo(() => {
+    if (isInboxPilotPage) {
+      return [
         { id: "hero", label: "Home" },
         { id: "inboxpilot-hero", label: "Overview" },
         { id: "inboxpilot", label: "How It Works" },
         { id: "inboxpilot-video", label: "Demo" },
         { id: "inboxpilot-features", label: "Features" },
         { id: "inboxpilot-pricing", label: "Pricing" }
-      ]
-    : isAboutPage
-    ? [
+      ];
+    }
+    if (isAboutPage) {
+      return [
         { id: "hero", label: "Home" },
         { id: "about-hero", label: "About" },
         { id: "about-why", label: "Why Us" },
         { id: "about-what", label: "Products" },
         { id: "about-approach", label: "Approach" },
         { id: "about-founder", label: "Founder" }
-      ]
-    : [
-        { id: "hero", label: "Home" },
-        { id: "about", label: "About" },
-        { id: "inboxpilot", label: "InboxPilot" },
-        { id: "our-work", label: "Our Services" },
-        { id: "founder", label: "Founder" }
       ];
+    }
+    return [
+      { id: "hero", label: "Home" },
+      { id: "about", label: "About" },
+      { id: "inboxpilot", label: "InboxPilot" },
+      { id: "our-work", label: "Our Services" },
+      { id: "founder", label: "Founder" }
+    ];
+  }, [isInboxPilotPage, isAboutPage]);
 
   // Active section tracker
   React.useEffect(() => {
@@ -101,7 +114,7 @@ const Navbar = ({ theme, setTheme }) => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isInboxPilotPage, isAboutPage]); // navLinks changes when page changes
+  }, [navLinks]);
 
   return (
     <>
@@ -151,13 +164,8 @@ const Navbar = ({ theme, setTheme }) => {
             Contact Sales
           </button>
 
-          <Link
-            to="/dashboard"
-            className="hidden md:flex px-4 py-2 text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-[#00C2D1] inline-flex items-center gap-1 group transition-colors"
-          >
-            Log in
-            <span className="text-gray-400 group-hover:text-[#00C2D1] transition-colors">&rarr;</span>
-          </Link>
+
+
 
           <Link
             to="/dashboard"

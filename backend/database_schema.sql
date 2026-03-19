@@ -111,7 +111,10 @@ CREATE TABLE public.api_keys (
 CREATE TABLE public.integrations (
     id UUID PRIMARY KEY DEFAULT extensions.uuid_generate_v4(),
     organization_id UUID REFERENCES public.organizations(id) ON DELETE CASCADE,
+    service_id UUID REFERENCES public.services(id) ON DELETE CASCADE,
     provider TEXT NOT NULL, -- e.g. 'gmail', 'slack'
+    external_identifier TEXT, -- External system identifier
+    name TEXT, -- Display name for this integration
     credentials JSONB NOT NULL, -- Encrypted credentials
     status service_status DEFAULT 'active'::service_status NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
@@ -146,11 +149,19 @@ CREATE TABLE public.emails_processed (
   organization_id UUID REFERENCES public.organizations(id) ON DELETE CASCADE,
   sender TEXT,
   subject TEXT,
+  source TEXT, -- e.g. 'gmail', 'outlook'
+
   category TEXT, -- e.g. 'Lead', 'Support', 'Spam'
   priority TEXT, -- e.g. 'High', 'Medium', 'Low'
   lead_score INTEGER,
   confidence INTEGER, -- AI confidence score percentage
+  sla_hours INTEGER, -- Expected SLA response time in hours
+
+  summary TEXT, -- AI-generated summary of the email
+  preview TEXT, -- Short preview text
+
   route_to TEXT, -- Which department/person it was routed to
+
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -168,6 +179,17 @@ CREATE TABLE public.subscriptions (
     UNIQUE(organization_id)
 );
 
+
+-- Access Codes (Simple code-based dashboard access for clients)
+CREATE TABLE public.access_codes (
+  id UUID PRIMARY KEY DEFAULT extensions.uuid_generate_v4(),
+  organization_id UUID REFERENCES public.organizations(id) ON DELETE CASCADE,
+  code TEXT UNIQUE NOT NULL,
+  label TEXT, -- e.g. 'NeuraSyncAI March 2026'
+  expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
 
 -- ==========================================
 -- 4. ROW LEVEL SECURITY (RLS) POLICIES
@@ -188,6 +210,13 @@ ALTER TABLE public.webhooks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.workflows ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.emails_processed ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.access_codes ENABLE ROW LEVEL SECURITY;
+
+-- Anon policies for code-based dashboard access
+CREATE POLICY "Anon can validate access codes" ON public.access_codes FOR SELECT TO anon USING (true);
+CREATE POLICY "Anon can read emails by org_id" ON public.emails_processed FOR SELECT TO anon USING (true);
+CREATE POLICY "Anon can read org name" ON public.organizations FOR SELECT TO anon USING (true);
+CREATE POLICY "Anon can read automation events" ON public.automation_events FOR SELECT TO anon USING (true);
 
 -- Security Helper Function: Prevents infinite recursion by fetching user's orgs safely
 CREATE OR REPLACE FUNCTION get_user_orgs()

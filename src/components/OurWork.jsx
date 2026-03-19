@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import gsap from "gsap";
@@ -22,7 +22,7 @@ import {
 gsap.registerPlugin(ScrollTrigger);
 
 // Reusable Bento Card with Premium Mouse Glow Effect
-const BentoCard = ({ children, className, delay = 0 }) => {
+const BentoCard = ({ children, className }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef(null);

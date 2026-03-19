@@ -1,48 +1,257 @@
-/* eslint-disable no-unused-vars */
-// Simulated API service mimicking the Vercel Edge Function hitting Google Sheets
+import { supabase } from '../lib/supabase';
 
-// Google Sheets typically comes back as a flat array of objects
-const MOCK_GOOGLE_SHEETS_DB = [
-  // client_789 (Acme Corp) data
-  { client_id: 'client_789', id: 1042, sender: 'john@acmecorp.com', subject: 'Inquiry about Enterprise plan pricing', source: 'gmail', category: 'Sales', priority: 'High', leadScore: 92, confidence: 98, summary: 'Client requesting info on Enterprise SLA and pricing.', preview: 'Hi team, checking if you offer custom packages...', sla: 2, routed: 'Sales', created_at: 'Oct 24, 10:42 AM' },
-  { client_id: 'client_789', id: 1043, sender: 'support@billing.com', subject: 'Invoice #4920 payment failed', source: 'other integrations', category: 'Support', priority: 'Critical', leadScore: null, confidence: 95, summary: 'Notification of failed automatic card payment.', preview: 'We attempted to charge your card ending in 4242...', sla: 1, routed: 'Technical_Escalation', created_at: 'Oct 24, 09:15 AM' },
-  { client_id: 'client_789', id: 1044, sender: 'jane@marketing.io', subject: 'Partnership opportunity - Q4', source: 'contact form', category: 'Partnership', priority: 'Medium', leadScore: 65, confidence: 88, summary: 'Marketing agency looking to explore cross-promotion.', preview: 'Hey there, I love what NeuraSyncAI is building...', sla: 48, routed: 'Business_Development', created_at: 'Oct 24, 08:30 AM' },
-  { client_id: 'client_789', id: 1046, sender: 'contact@localclinic.com', subject: 'We need help with our automation', source: 'website', category: 'Client', priority: 'High', leadScore: 85, confidence: 94, summary: 'Local clinic wants to automate patient routing.', preview: 'Hello, our clinic is currently overwhelmed with...', sla: 2, routed: 'Client_Operations', created_at: 'Oct 23, 02:10 PM' },
-  
-  // client_abc (Another Company) data - shouldn't appear for client_789
-  { client_id: 'client_abc', id: 2001, sender: 'competitor@stealing.com', subject: 'Give us your pricing', source: 'gmail', category: 'Spam', priority: 'Low', leadScore: 5, confidence: 99, summary: 'Competitor intel.', preview: 'Can I get a copy of your...', sla: null, routed: 'Manual_Review', created_at: 'Oct 22, 10:10 AM' }
-];
+// ==========================================
+// ACCESS CODE VALIDATION
+// ==========================================
 
-export const fetchClientEmails = async (clientId) => {
-  // Simulate network delay to mimic a real Google Sheets fetch or Edge Function
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Filter the global sheet only by rows matching the client's specific ID
-      const filteredData = MOCK_GOOGLE_SHEETS_DB.filter(row => row.client_id === clientId);
-      
-      resolve({
-        data: filteredData,
-        status: 200,
-        metadata: {
-          totalRows: filteredData.length,
-          lastSynced: new Date().toISOString()
-        }
-      });
-    }, 800);
-  });
+export const validateAccessCode = async (code) => {
+  const { data, error } = await supabase
+    .from('access_codes')
+    .select('*')
+    .eq('code', code)
+    .eq('is_active', true)
+    .single();
+
+  if (error || !data) return null;
+  return data;
 };
 
-// Simulate fetching high-level dashboard metrics (e.g. from an aggregate sheet)
-export const fetchClientMetrics = async (_clientId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        emailsProcessed: '1,248',
-        hoursSaved: '42h 15m',
-        priorityLeads: '84',
-        spamBlocked: '643', // Returned as metric even though it's removed from tables
-        kpiTrends: { processed: 'up', hours: 'up', leads: 'up', spam: 'down' }
-      });
-    }, 800);
+// ==========================================
+// ORGANIZATION INFO
+// ==========================================
+
+export const fetchOrganization = async (orgId) => {
+  const { data, error } = await supabase
+    .rpc('get_org_by_id', { org_id: orgId })
+    .single();
+
+  if (error) return null;
+  return data;
+};
+
+// ==========================================
+// EMAILS (InboxPilot Data)
+// ==========================================
+
+export const fetchClientEmails = async (organizationId) => {
+  const { data, error } = await supabase
+    .rpc('get_emails_by_org', { org_id: organizationId });
+
+  if (error) {
+    console.error('Error fetching emails:', error);
+    return { data: [], error };
+  }
+
+  return { data: data || [], error: null };
+};
+
+// ==========================================
+// COMPREHENSIVE METRICS ENGINE
+// ==========================================
+
+const CATEGORY_COLORS = {
+  Sales: '#00C2D1',
+  Support: '#7C3AED',
+  Partnership: '#F59E0B',
+  Client: '#10B981',
+  Spam: '#6B7280',
+  Other: '#9CA3AF',
+};
+
+const PRIORITY_COLORS = {
+  Critical: '#DC2626',
+  High: '#EF4444',
+  Medium: '#F59E0B',
+  Low: '#10B981',
+};
+
+export const computeMetrics = (emails) => {
+  if (!emails || emails.length === 0) {
+    return {
+      emailsProcessed: 0,
+      avgConfidence: 0,
+      priorityLeads: 0,
+      hotLeads: 0,
+      warmLeads: 0,
+      coldLeads: 0,
+      estimatedHoursSaved: '0',
+      avgSLA: 0,
+      spamBlocked: 0,
+      spamRate: '0',
+      categoriesBreakdown: [],
+      priorityBreakdown: [],
+      weeklyVolume: [],
+      routingBreakdown: [],
+      sourceBreakdown: [],
+      topSenders: [],
+      recentEmails: [],
+      slaDistribution: [],
+      confidenceDistribution: [],
+    };
+  }
+
+  const total = emails.length;
+
+  // ── Core Stats ──
+  const totalConfidence = emails.reduce((sum, e) => sum + (e.confidence || 0), 0);
+  const avgConfidence = Math.round(totalConfidence / total);
+
+  // ── Lead Pipeline ──
+  const hotLeads = emails.filter(e => e.lead_score && e.lead_score >= 75).length;
+  const warmLeads = emails.filter(e => e.lead_score && e.lead_score >= 40 && e.lead_score < 75).length;
+  const coldLeads = emails.filter(e => e.lead_score != null && e.lead_score < 40).length;
+  const priorityLeads = hotLeads + warmLeads;
+
+  // ── Estimated Time Saved (2min per email manual processing) ──
+  const minutesSaved = total * 2;
+  const hoursSaved = (minutesSaved / 60).toFixed(1);
+
+  // ── Spam Blocked ──
+  const spamBlocked = emails.filter(e => e.category === 'Spam').length;
+  const spamRate = total > 0 ? ((spamBlocked / total) * 100).toFixed(1) : '0';
+
+  // ── Average SLA ──  
+  const emailsWithSLA = emails.filter(e => e.sla_hours != null);
+  const avgSLA = emailsWithSLA.length > 0
+    ? Math.round(emailsWithSLA.reduce((sum, e) => sum + e.sla_hours, 0) / emailsWithSLA.length)
+    : 0;
+
+  // ── Category Breakdown ──
+  const categoryMap = {};
+  emails.forEach(e => {
+    const cat = e.category || 'Other';
+    categoryMap[cat] = (categoryMap[cat] || 0) + 1;
   });
+  const categoriesBreakdown = Object.entries(categoryMap)
+    .map(([name, value]) => ({
+      name,
+      value,
+      percentage: Math.round((value / total) * 100),
+      color: CATEGORY_COLORS[name] || '#9CA3AF',
+    }))
+    .sort((a, b) => b.value - a.value);
+
+  // ── Priority Breakdown ──
+  const priorityMap = {};
+  emails.forEach(e => {
+    const pri = e.priority || 'Low';
+    priorityMap[pri] = (priorityMap[pri] || 0) + 1;
+  });
+  const priorityBreakdown = Object.entries(priorityMap)
+    .map(([name, value]) => ({
+      name,
+      value,
+      percentage: Math.round((value / total) * 100),
+      color: PRIORITY_COLORS[name] || '#9CA3AF',
+    }))
+    .sort((a, b) => {
+      const order = { Critical: 0, High: 1, Medium: 2, Low: 3 };
+      return (order[a.name] ?? 4) - (order[b.name] ?? 4);
+    });
+
+  // ── Routing Breakdown ──
+  const routeMap = {};
+  emails.forEach(e => {
+    const route = e.route_to || 'Unassigned';
+    routeMap[route] = (routeMap[route] || 0) + 1;
+  });
+  const routingBreakdown = Object.entries(routeMap)
+    .map(([name, value]) => ({ name, value, percentage: Math.round((value / total) * 100) }))
+    .sort((a, b) => b.value - a.value);
+
+  // ── Source Breakdown ──
+  const sourceMap = {};
+  emails.forEach(e => {
+    const src = e.source || 'unknown';
+    sourceMap[src] = (sourceMap[src] || 0) + 1;
+  });
+  const sourceBreakdown = Object.entries(sourceMap)
+    .map(([name, value]) => ({ name, value, percentage: Math.round((value / total) * 100) }));
+
+  // ── Top Senders ──
+  const senderMap = {};
+  emails.forEach(e => {
+    const sender = e.sender || 'Unknown';
+    if (!senderMap[sender]) {
+      senderMap[sender] = { count: 0, lastCategory: e.category, lastPriority: e.priority };
+    }
+    senderMap[sender].count++;
+    senderMap[sender].lastCategory = e.category;
+    senderMap[sender].lastPriority = e.priority;
+  });
+  const topSenders = Object.entries(senderMap)
+    .map(([sender, info]) => ({ sender, ...info }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
+
+  // ── Weekly Volume (last 7 days) ──
+  const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const now = new Date();
+  const weeklyMap = {};
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    const dayKey = `${d.getMonth() + 1}/${d.getDate()}`;
+    weeklyMap[dayKey] = { name: `${DAY_NAMES[d.getDay()]} ${dayKey}`, emails: 0 };
+  }
+  emails.forEach(e => {
+    const d = new Date(e.created_at);
+    const dayKey = `${d.getMonth() + 1}/${d.getDate()}`;
+    if (dayKey in weeklyMap) {
+      weeklyMap[dayKey].emails++;
+    }
+  });
+  const weeklyVolume = Object.values(weeklyMap);
+
+  // ── SLA Distribution ──
+  const slaRanges = { 'Urgent (≤2h)': 0, 'Fast (≤8h)': 0, 'Standard (≤24h)': 0, 'Extended (>24h)': 0 };
+  emailsWithSLA.forEach(e => {
+    if (e.sla_hours <= 2) slaRanges['Urgent (≤2h)']++;
+    else if (e.sla_hours <= 8) slaRanges['Fast (≤8h)']++;
+    else if (e.sla_hours <= 24) slaRanges['Standard (≤24h)']++;
+    else slaRanges['Extended (>24h)']++;
+  });
+  const SLA_COLORS = ['#DC2626', '#F59E0B', '#00C2D1', '#10B981'];
+  const slaDistribution = Object.entries(slaRanges)
+    .map(([name, value], i) => ({ name, value, color: SLA_COLORS[i] }))
+    .filter(x => x.value > 0);
+
+  // ── Confidence Distribution ──
+  const confRanges = { 'Very High (90-100%)': 0, 'High (70-89%)': 0, 'Medium (50-69%)': 0, 'Low (<50%)': 0 };
+  emails.forEach(e => {
+    const c = e.confidence || 0;
+    if (c >= 90) confRanges['Very High (90-100%)']++;
+    else if (c >= 70) confRanges['High (70-89%)']++;
+    else if (c >= 50) confRanges['Medium (50-69%)']++;
+    else confRanges['Low (<50%)']++;
+  });
+  const CONF_COLORS = ['#10B981', '#00C2D1', '#F59E0B', '#EF4444'];
+  const confidenceDistribution = Object.entries(confRanges)
+    .map(([name, value], i) => ({ name, value, color: CONF_COLORS[i] }))
+    .filter(x => x.value > 0);
+
+  // ── Recent 5 emails ──
+  const recentEmails = emails.slice(0, 5);
+
+  return {
+    emailsProcessed: total,
+    avgConfidence,
+    priorityLeads,
+    hotLeads,
+    warmLeads,
+    coldLeads,
+    estimatedHoursSaved: hoursSaved,
+    avgSLA,
+    spamBlocked,
+    spamRate,
+    categoriesBreakdown,
+    priorityBreakdown,
+    weeklyVolume,
+    routingBreakdown,
+    sourceBreakdown,
+    topSenders,
+    recentEmails,
+    slaDistribution,
+    confidenceDistribution,
+  };
 };

@@ -146,7 +146,7 @@ const Hero = () => {
             {/* Small Floating Value Tags */}
             <motion.div
                initial={{ opacity: 0, y: -20 }}
-               animate={{ opacity: 1, y: 0, y: [-4, 4, -4] }}
+               animate={{ opacity: 1, y: [-4, 4, -4] }}
                transition={{ 
                  opacity: { duration: 1, delay: 1 },
                  y: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }

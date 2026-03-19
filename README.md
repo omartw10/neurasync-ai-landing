@@ -34,18 +34,26 @@ Clone the repository:
 ```bash
 git clone https://github.com/omartw10/neurasync-ai.git
 cd neurasync-ai
+```
 
 Install dependencies:
 
+```bash
 npm install
+```
 
-Run development server:
+Run the development server:
 
+```bash
 npm run dev
+```
 
 Build for production:
 
+```bash
 npm run build
+```
+
 📬 Contact
 
 Email: neurasyncagency@gmail.com

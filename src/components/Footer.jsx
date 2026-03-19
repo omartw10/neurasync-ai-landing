@@ -1,10 +1,20 @@
-/* eslint-disable no-unused-vars */
 import React from "react";
 import assets from "../assets/assets";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const Footer = ({ theme }) => {
+  const scrollToContact = (event) => {
+    event.preventDefault();
+    if (typeof window === 'undefined') return;
+    const target = document.getElementById('contact-us');
+    if (target) {
+      const y = target.getBoundingClientRect().top + window.scrollY - 90;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    } else {
+      window.location.hash = 'contact-us';
+    }
+  };
   return (
     <motion.footer
       initial={{ opacity: 0, y: 40 }}
@@ -33,6 +43,7 @@ const Footer = ({ theme }) => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
                 href="#contact-us"
+                onClick={scrollToContact}
                 className="group relative w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-[#00C2D1] to-[#00A8B5] text-[#0B1F3B] rounded-xl font-bold text-[15px] sm:text-base hover:shadow-[0_0_30px_rgba(0,194,209,0.4)] transition-all duration-300 active:scale-95 overflow-hidden"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">

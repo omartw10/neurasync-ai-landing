@@ -1,0 +1,955 @@
+{
+  "name": "InboxPilot AI NeuraSyncAI",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -464,
+        -304
+      ],
+      "id": "0b76d7ba-56e0-45b8-acbe-91659aa32759",
+      "name": "Gmail Trigger",
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ick4P7XCeG8Ga8Pu",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "tweratomar@gmail.com",
+        "subject": "={{ \n  $json.priority === \"Critical\" ? \"🔴\" :\n  $json.priority === \"High\" ? \"🟠\" :\n  $json.priority === \"Medium\" ? \"🟡\" :\n  \"⚪\"\n}}\n{{ $json.category }} Update",
+        "message": "=<div style=\"padding:40px 0;font-family:Arial,Helvetica,sans-serif;\">\n\n  <div style=\"\n    max-width:640px;\n    margin:0 auto;\n    background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);\nborder:1px solid #e5e7eb;\n    border-radius:16px;\n    box-shadow:0 12px 30px rgba(0,0,0,0.08);\n    overflow:hidden;\n  \">\n\n    <!-- HEADER -->\n    <div style=\"padding:26px 30px;border-bottom:1px solid #eef2f7;\">\n      <h2 style=\"margin:0;font-size:20px;color:#111827;\">\n        📩 New Email Classified\n      </h2>\n      <p style=\"margin:6px 0 0;font-size:13px;color:#6b7280;\">\n        Smart Routing Notification\n      </p>\n<div style=\"margin-top:6px;font-size:11px;color:#9ca3af;\">\n  Source: <span style=\"font-weight:600;color:#6b7280;\">\n    {{ $json.source }}\n  </span>\n</div>\n    </div>\n<hr style=\"\n  border:none;\n  border-top:1px solid #eef2f7;\n  margin:0;\n\">\n    <!-- CLASSIFICATION CARD -->\n<div style = \"margin:40px 20px 40px 20px ;\">\n   <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"\n  background:\n    {{ $json.priority === 'Critical' ? 'linear-gradient(180deg,#fef2f2 0%,#fee2e2 100%)' :\n       $json.priority === 'High' ? 'linear-gradient(180deg,#fff7ed 0%,#ffedd5 100%)' :\n       $json.priority === 'Medium' ? 'linear-gradient(180deg,#fffbeb 0%,#fef3c7 100%)' :\n       'linear-gradient(180deg,#f1f5f9 0%,#e9eef5 100%)' }};\n       \n  border:1px solid\n    {{ $json.priority === 'Critical' ? '#dc2626' :\n       $json.priority === 'High' ? '#f97316' :\n       $json.priority === 'Medium' ? '#f59e0b' :\n       '#dbe2ea' }};\n       \n  box-shadow:inset 0 1px 0 rgba(255,255,255,0.7);\n  border-radius:12px;\n  margin:0px;\n  padding:0;\n\">\n <tr>\n\n  <!-- Category -->\n  <td style=\"padding:16px 20px;text-align:left;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Category\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n      {{ $json.category }}\n    </div>\n  </td>\n\n  <!-- Urgency -->\n  <td style=\"padding:16px 20px;text-align:center;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Urgency\n    </div>\n\n    <span style=\"\n  display:inline-block;\n  padding:4px 12px;\n  border-radius:999px;\n  font-size:13px;\n  font-weight:600;\n  color:white;\n  background:\n    {{ $json.priority === 'Critical' ? '#dc2626' :\n       $json.priority === 'High' ? '#f97316' :\n       $json.priority === 'Medium' ? '#f59e0b' :\n       '#6b7280' }};\n\">\n  {{ $json.priority }}\n</span>\n  </td>\n\n  <!-- Lead Score -->\n  <td style=\"padding:16px 20px;text-align:center;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Lead Score\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n      {{ $json.lead_score }}/100\n    </div>\n  </td>\n\n  <!-- SLA -->\n  <td style=\"padding:16px 20px;text-align:center;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      SLA\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n     {{ $json.sla_hours }}h\n    </div>\n  </td>\n\n  <!-- Confidence -->\n  <td style=\"padding:16px 20px;text-align:right;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Confidence\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n      {{ $json.confidence }}%\n    </div>\n  </td>\n\n</tr>\n</table>\n</div>\n\n    <!-- EMAIL INFO -->\n    <div style=\"padding:0 30px 24px;\">\n\n      <div style=\"margin-bottom:16px;\">\n        <div style=\"font-size:14px;color:#6b7280;margin-bottom:4px;\">\n          <b>From :</b>\n        </div>\n        <div style=\"font-size:14px;color:#2563eb;font-weight:600;\">\n          {{ $json.sender }}\n        </div>\n      </div>\n\n      <div style=\"margin-bottom:20px;\">\n        <div style=\"font-size:14px;color:#6b7280;margin-bottom:4px;\">\n          <b>Subject :</b>\n        </div>\n        <div style=\"font-size:15px;color:#111827;font-weight:600;\">\n          {{ $json.subject }}\n        </div>\n      </div>\n\n      \n\n    </div>\n\n    <!-- AI SUMMARY -->\n    <div style=\"padding:0 30px 26px;\">\n      <h4 style=\"margin:0 0 8px;font-size:14px;color:#111827;\">\n        AI Summary\n      </h4>\n\n      <div style=\"\n       background:#eef4ff;\nborder:1px solid #dbe6ff;\n        border-radius:10px;\n        padding:14px;\n        font-size:14px;\n        color:#374151;\n        line-height:1.6;\n      \">\n       {{ $json.summary }}\n      </div>\n    </div>\n\n<!-- EMAIL PREVIEW -->\n<div style=\"padding:0 30px 26px;\n\">\n  <h4 style=\"margin:0 0 8px;font-size:14px;color:#111827;\"> {{ $json.source === 'website' ? 'Email' : 'Email Preview' }} </h4>\n\n <div style=\"\n   background:#f8fafc;\n   border:1px dashed #d1d5db;\n   border-radius:10px;\n   padding:14px;\n   font-size:14px;\n   color:#374151;\n   line-height:1.6;\n\">\n  {{\n    $json.source === 'website'\n      ? $('Webhook').item.json.body.message || $json.message || $json.preview\n      : $json.preview\n  }}\n</div>\n<!-- CTA -->\n<div style=\"padding:20px 30px 30px;text-align:center;\">\n\n  {{ $json.source === 'gmail'\n  ? '<a href=\"https://mail.google.com/mail/u/0/#inbox/' + $json.threadId + '\" target=\"_blank\" style=\"display:inline-block;background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);color:white;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 20px rgba(37,99,235,0.30);\">Reply</a>'\n  : '<a href=\"https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent($json.from) + '&su=' + encodeURIComponent('Re: ' + $json.subject) + '\" target=\"_blank\" style=\"display:inline-block;background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);color:white;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 20px rgba(37,99,235,0.30);\">Reply</a>'\n  }}\n\n</div>\n\n    <!-- FOOTER -->\n    <div style=\"\n      background:#f9fafb;\n      padding:18px;\n      text-align:center;\n      font-size:12px;\n      color:#6b7280;\n    \">\n      Powered by <strong>NEURASYNC</strong><br/>\n      Intelligent Email Automation\n    </div>\n\n  </div>\n</div>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2000,
+        -880
+      ],
+      "id": "d41fc597-1cdc-489c-8333-dd4a253bd874",
+      "name": "Support",
+      "webhookId": "f61df08a-21f4-40b2-b27c-6c9b051a4bb5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ick4P7XCeG8Ga8Pu",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "tweratomar@gmail.com",
+        "subject": "={{ \n  $json.priority === \"Critical\" ? \"🔴\" :\n  $json.priority === \"High\" ? \"🟠\" :\n  $json.priority === \"Medium\" ? \"🟡\" :\n  \"⚪\"\n}}\n{{ $json.category }} Update",
+        "message": "=<div style=\"padding:40px 0;font-family:Arial,Helvetica,sans-serif;\">\n\n  <div style=\"\n    max-width:640px;\n    margin:0 auto;\n    background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);\nborder:1px solid #e5e7eb;\n    border-radius:16px;\n    box-shadow:0 12px 30px rgba(0,0,0,0.08);\n    overflow:hidden;\n  \">\n\n    <!-- HEADER -->\n    <div style=\"padding:26px 30px;border-bottom:1px solid #eef2f7;\">\n      <h2 style=\"margin:0;font-size:20px;color:#111827;\">\n        📩 New Email Classified\n      </h2>\n      <p style=\"margin:6px 0 0;font-size:13px;color:#6b7280;\">\n        Smart Routing Notification\n      </p>\n<div style=\"margin-top:6px;font-size:11px;color:#9ca3af;\">\n  Source: <span style=\"font-weight:600;color:#6b7280;\">\n    {{ $json.source }}\n  </span>\n</div>\n    </div>\n<hr style=\"\n  border:none;\n  border-top:1px solid #eef2f7;\n  margin:0;\n\">\n    <!-- CLASSIFICATION CARD -->\n<div style = \"margin:40px 20px 40px 20px ;\">\n   <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"\n  background:\n    {{ $json.priority === 'Critical' ? 'linear-gradient(180deg,#fef2f2 0%,#fee2e2 100%)' :\n       $json.priority === 'High' ? 'linear-gradient(180deg,#fff7ed 0%,#ffedd5 100%)' :\n       $json.priority === 'Medium' ? 'linear-gradient(180deg,#fffbeb 0%,#fef3c7 100%)' :\n       'linear-gradient(180deg,#f1f5f9 0%,#e9eef5 100%)' }};\n       \n  border:1px solid\n    {{ $json.priority === 'Critical' ? '#dc2626' :\n       $json.priority === 'High' ? '#f97316' :\n       $json.priority === 'Medium' ? '#f59e0b' :\n       '#dbe2ea' }};\n       \n  box-shadow:inset 0 1px 0 rgba(255,255,255,0.7);\n  border-radius:12px;\n  margin:0px;\n  padding:0;\n\">\n <tr>\n\n  <!-- Category -->\n  <td style=\"padding:16px 20px;text-align:left;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Category\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n      {{ $json.category }}\n    </div>\n  </td>\n\n  <!-- Urgency -->\n  <td style=\"padding:16px 20px;text-align:center;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Urgency\n    </div>\n\n    <span style=\"\n  display:inline-block;\n  padding:4px 12px;\n  border-radius:999px;\n  font-size:13px;\n  font-weight:600;\n  color:white;\n  background:\n    {{ $json.priority === 'Critical' ? '#dc2626' :\n       $json.priority === 'High' ? '#f97316' :\n       $json.priority === 'Medium' ? '#f59e0b' :\n       '#6b7280' }};\n\">\n  {{ $json.priority }}\n</span>\n  </td>\n\n  <!-- Lead Score -->\n  <td style=\"padding:16px 20px;text-align:center;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Lead Score\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n      {{ $json.lead_score }}/100\n    </div>\n  </td>\n\n  <!-- SLA -->\n  <td style=\"padding:16px 20px;text-align:center;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      SLA\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n     {{ $json.sla_hours }}h\n    </div>\n  </td>\n\n  <!-- Confidence -->\n  <td style=\"padding:16px 20px;text-align:right;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Confidence\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n      {{ $json.confidence }}%\n    </div>\n  </td>\n\n</tr>\n</table>\n</div>\n\n    <!-- EMAIL INFO -->\n    <div style=\"padding:0 30px 24px;\">\n\n      <div style=\"margin-bottom:16px;\">\n        <div style=\"font-size:14px;color:#6b7280;margin-bottom:4px;\">\n          <b>From :</b>\n        </div>\n        <div style=\"font-size:14px;color:#2563eb;font-weight:600;\">\n          {{ $json.sender }}\n        </div>\n      </div>\n\n      <div style=\"margin-bottom:20px;\">\n        <div style=\"font-size:14px;color:#6b7280;margin-bottom:4px;\">\n          <b>Subject :</b>\n        </div>\n        <div style=\"font-size:15px;color:#111827;font-weight:600;\">\n          {{ $json.subject }}\n        </div>\n      </div>\n\n      \n\n    </div>\n\n    <!-- AI SUMMARY -->\n    <div style=\"padding:0 30px 26px;\">\n      <h4 style=\"margin:0 0 8px;font-size:14px;color:#111827;\">\n        AI Summary\n      </h4>\n\n      <div style=\"\n       background:#eef4ff;\nborder:1px solid #dbe6ff;\n        border-radius:10px;\n        padding:14px;\n        font-size:14px;\n        color:#374151;\n        line-height:1.6;\n      \">\n       {{ $json.summary }}\n      </div>\n    </div>\n\n<!-- EMAIL PREVIEW -->\n<div style=\"padding:0 30px 26px;\n\">\n  <h4 style=\"margin:0 0 8px;font-size:14px;color:#111827;\"> {{ $json.source === 'website' ? 'Email' : 'Email Preview' }} </h4>\n\n <div style=\"\n   background:#f8fafc;\n   border:1px dashed #d1d5db;\n   border-radius:10px;\n   padding:14px;\n   font-size:14px;\n   color:#374151;\n   line-height:1.6;\n\">\n  {{\n    $json.source === 'website'\n      ? $('Webhook').item.json.body.message || $json.message || $json.preview\n      : $json.preview\n  }}\n</div>\n<!-- CTA -->\n<div style=\"padding:20px 30px 30px;text-align:center;\">\n\n  {{ $json.source === 'gmail'\n  ? '<a href=\"https://mail.google.com/mail/u/0/#inbox/' + $json.threadId + '\" target=\"_blank\" style=\"display:inline-block;background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);color:white;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 20px rgba(37,99,235,0.30);\">Reply</a>'\n  : '<a href=\"https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent($json.from) + '&su=' + encodeURIComponent('Re: ' + $json.subject) + '\" target=\"_blank\" style=\"display:inline-block;background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);color:white;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 20px rgba(37,99,235,0.30);\">Reply</a>'\n  }}\n\n</div>\n\n    <!-- FOOTER -->\n    <div style=\"\n      background:#f9fafb;\n      padding:18px;\n      text-align:center;\n      font-size:12px;\n      color:#6b7280;\n    \">\n      Powered by <strong>NEURASYNC</strong><br/>\n      Intelligent Email Automation\n    </div>\n\n  </div>\n</div>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2000,
+        -304
+      ],
+      "id": "a9f67191-1ca0-487e-9e4b-91ab764375f1",
+      "name": "Sales",
+      "webhookId": "1cb91cc5-a836-4503-9c92-d3af5ea6b1e7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ick4P7XCeG8Ga8Pu",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze the following email:\n\nSource: {{ $json.source }}\nFrom: {{ $json.from }}\nSubject: {{ $json.subject }}\nBody: {{ $json.body }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an AI email classification engine for a digital automation agency.\n\nYour task:\nAnalyze incoming emails and return structured JSON.\n\n- You MUST return the provided source field exactly as received.\nDo NOT modify it.\n\nYou MUST:\n\n1) Classify into EXACTLY ONE category:\n   - Sales\n   - Support\n   - Client\n   - Partnership\n   - Spam\n\n2) Assign EXACTLY ONE priority:\n   - Critical\n   - High\n   - Medium\n   - Low\n\n3) Assign a lead_score from 0 to 100 based on business value and revenue potential.\n\n-------------------------------------\nSPAM CLASSIFICATION RULES\n-------------------------------------\n\nClassify the email as Spam if it includes:\n\n- scams\n- \"make money fast\" offers\n- crypto promotions\n- newsletters\n- marketing blasts\n- irrelevant outreach\n- suspicious links\n- mass promotions\n- automated marketing messages\n- job applications\n- unrelated services\n\nSpam emails MUST follow:\n\ncategory → Spam\npriority → Low\nlead_score → 0–10\nsummary → null\npreview → null\n\n-------------------------------------\nLEAD SCORE RULES\n-------------------------------------\n\n0–20  → No real business value  \n21–40 → Low potential  \n41–60 → Moderate opportunity  \n61–80 → Strong opportunity  \n81–100 → Very high conversion probability or critical account  \n\nLead score must reflect:\n\n- Buying intent\n- Urgency\n- Business seriousness\n- Strategic value\n- Existing client importance\n\n-------------------------------------\nPRIORITY RULES\n-------------------------------------\n\nYou MUST assign a numeric lead_score from 0 to 100.\n\nScoring rules:\n\n- Strong buying intent + urgency = 85–100\n- Clear business intent without urgency = 60–84\n- Normal inquiry = 40–59\n- Weak intent / informational = 0–39\n\nPriority MUST be determined strictly from lead_score:\n\nCritical → 85–100  \nHigh → 65–84  \nMedium → 40–64  \nLow → 0–39  \n\nDo NOT randomly assign priority.  \nIt must strictly match the score range.\n\n-------------------------------------\nSUMMARY RULES\n-------------------------------------\n\nIf priority = Low:\n- summary = null\n- preview = null\n\nIf priority ≠ Low:\n- summary → 1–2 professional sentences\n- preview → short one-line overview\n\n-------------------------------------"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        288,
+        -544
+      ],
+      "id": "7957bb0c-689c-4e9f-ba6e-29b496635169",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "arcee-ai/trinity-large-preview:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        256,
+        -288
+      ],
+      "id": "e116b7f5-4cd2-4907-90f0-23b7a240012a",
+      "name": "OpenRouter Chat Model",
+      "alwaysOutputData": false,
+      "credentials": {
+        "openRouterApi": {
+          "id": "UkAnNoA4PmPR828K",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"from\": {\n      \"type\": \"string\"\n    },\n    \"subject\": {\n      \"type\": \"string\"\n    },\n    \"source\": {\n      \"type\": \"string\",\n      \"enum\": [\"gmail\", \"website\"]\n    },\n    \"category\": {\n      \"type\": \"string\",\n      \"enum\": [\"Sales\", \"Support\", \"Client\", \"Partnership\", \"Spam\"]\n    },\n    \"priority\": {\n      \"type\": \"string\",\n      \"enum\": [\"Critical\", \"High\", \"Medium\", \"Low\"]\n    },\n    \"lead_score\": {\n      \"type\": \"number\",\n      \"minimum\": 0,\n      \"maximum\": 100\n    },\n    \"confidence\": {\n      \"type\": \"number\",\n      \"minimum\": 0,\n      \"maximum\": 100\n    },\n    \"summary\": {\n      \"type\": [\"string\", \"null\"]\n    },\n    \"preview\": {\n      \"type\": [\"string\", \"null\"]\n    }\n  },\n  \"required\": [\n    \"from\",\n    \"subject\",\n    \"source\",\n    \"category\",\n    \"priority\",\n    \"lead_score\",\n    \"confidence\",\n    \"summary\",\n    \"preview\"\n  ],\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        464,
+        -288
+      ],
+      "id": "3479ad38-ef49-4b4f-bc3f-12437f4cf269",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "neurasyncai",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -496,
+        -816
+      ],
+      "id": "020a61b4-262d-4d89-ba4a-023d36e83f22",
+      "name": "Webhook",
+      "webhookId": "a52dec82-14d7-426c-8dc5-24f6ad28fa77"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ==========================\n// Gmail Sanitizer with Label Filter\n// ==========================\n\nconst email = items[0].json;\n\nconst fromEmail =\n  email.from?.value?.[0]?.address ||\n  email.from?.text ||\n  \"\";\n\nconst subject = email.subject || \"\";\n\nlet body =\n  email.text ||\n  email.textAsHtml ||\n  email.html ||\n  \"\";\n\nconst labelIds = email.labelIds || [];\n\n// --------------------------\n// 🚫 فلترة مبكرة لتقليل التوكنز\n// --------------------------\n\n// تجاهل الرسائل المرسلة\nif (labelIds.includes(\"SENT\")) {\n  return [];\n}\n\n// تجاهل Promotions\nif (labelIds.includes(\"CATEGORY_PROMOTIONS\")) {\n  return [];\n}\n\n// تجاهل Social\nif (labelIds.includes(\"CATEGORY_SOCIAL\")) {\n  return [];\n}\n\n// تجاهل Spam من Gmail\nif (labelIds.includes(\"SPAM\")) {\n  return [];\n}\n\n// تنظيف بسيط\nbody = body.replace(/<[^>]+>/g, \" \");\nbody = body.replace(/\\s+/g, \" \").trim();\n\n// إخراج موحد\nreturn [{\n  json: {\n    source: \"gmail\",\n    from: fromEmail,\n    subject,\n    body\n    \n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -192,
+        -304
+      ],
+      "id": "f69f716c-ac1b-441e-a4ef-37e830f428ff",
+      "name": "Email Sanitizer Node"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ==========================\n// Webhook Sanitizer\n// ==========================\n\nconst data = items[0].json.body || {};\n\n// استخراج البيانات القادمة من الفورم\nconst fromEmail = data.email || \"\";\nconst subject = data.subject || \"\";\nlet body = data.message || \"\";\n\n// تنظيف\nbody = body.replace(/<[^>]+>/g, \" \");\nbody = body.replace(/\\s+/g, \" \").trim();\n\n// إخراج موحد\nreturn [{\n  json: {\n    source: \"website\",\n    from: fromEmail,\n    subject,\n    body\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -208,
+        -816
+      ],
+      "id": "6022235b-f175-40c2-88ae-947a95ae29ae",
+      "name": "webhook Sanitizer Node"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        0,
+        -544
+      ],
+      "id": "28043c28-23e7-4b94-b9a5-6adefaa6da66",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "1c65d99c-762b-492d-9367-c6d8219d7bf9",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "Support",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Support"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "f35da9e4-74bf-4eca-ae9e-22c28556fefb",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "Client",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Client"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "46a32a16-2fba-4349-81e7-004d84528067",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "Partnership",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Partnership"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d2ef61b1-f7cf-470a-90ed-54a43ac7460c",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "Sales",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Sales"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "a0f6fccc-5d62-41e3-a7ea-89c25b42934a",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "Spam",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Spam"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1664,
+        -656
+      ],
+      "id": "953893ce-3e6c-4444-ac4b-fe73bba3c5a2",
+      "name": "Category"
+    },
+    {
+      "parameters": {
+        "sendTo": "tweratomar@gmail.com",
+        "subject": "={{ \n  $json.priority === \"Critical\" ? \"🔴\" :\n  $json.priority === \"High\" ? \"🟠\" :\n  $json.priority === \"Medium\" ? \"🟡\" :\n  \"⚪\"\n}}\n{{ $json.category }} Update",
+        "message": "=<div style=\"padding:40px 0;font-family:Arial,Helvetica,sans-serif;\">\n\n  <div style=\"\n    max-width:640px;\n    margin:0 auto;\n    background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);\nborder:1px solid #e5e7eb;\n    border-radius:16px;\n    box-shadow:0 12px 30px rgba(0,0,0,0.08);\n    overflow:hidden;\n  \">\n\n    <!-- HEADER -->\n    <div style=\"padding:26px 30px;border-bottom:1px solid #eef2f7;\">\n      <h2 style=\"margin:0;font-size:20px;color:#111827;\">\n        📩 New Email Classified\n      </h2>\n      <p style=\"margin:6px 0 0;font-size:13px;color:#6b7280;\">\n        Smart Routing Notification\n      </p>\n<div style=\"margin-top:6px;font-size:11px;color:#9ca3af;\">\n  Source: <span style=\"font-weight:600;color:#6b7280;\">\n    {{ $json.source }}\n  </span>\n</div>\n    </div>\n<hr style=\"\n  border:none;\n  border-top:1px solid #eef2f7;\n  margin:0;\n\">\n    <!-- CLASSIFICATION CARD -->\n<div style = \"margin:40px 20px 40px 20px ;\">\n   <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"\n  background:\n    {{ $json.priority === 'Critical' ? 'linear-gradient(180deg,#fef2f2 0%,#fee2e2 100%)' :\n       $json.priority === 'High' ? 'linear-gradient(180deg,#fff7ed 0%,#ffedd5 100%)' :\n       $json.priority === 'Medium' ? 'linear-gradient(180deg,#fffbeb 0%,#fef3c7 100%)' :\n       'linear-gradient(180deg,#f1f5f9 0%,#e9eef5 100%)' }};\n       \n  border:1px solid\n    {{ $json.priority === 'Critical' ? '#dc2626' :\n       $json.priority === 'High' ? '#f97316' :\n       $json.priority === 'Medium' ? '#f59e0b' :\n       '#dbe2ea' }};\n       \n  box-shadow:inset 0 1px 0 rgba(255,255,255,0.7);\n  border-radius:12px;\n  margin:0px;\n  padding:0;\n\">\n <tr>\n\n  <!-- Category -->\n  <td style=\"padding:16px 20px;text-align:left;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Category\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n      {{ $json.category }}\n    </div>\n  </td>\n\n  <!-- Urgency -->\n  <td style=\"padding:16px 20px;text-align:center;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Urgency\n    </div>\n\n    <span style=\"\n  display:inline-block;\n  padding:4px 12px;\n  border-radius:999px;\n  font-size:13px;\n  font-weight:600;\n  color:white;\n  background:\n    {{ $json.priority === 'Critical' ? '#dc2626' :\n       $json.priority === 'High' ? '#f97316' :\n       $json.priority === 'Medium' ? '#f59e0b' :\n       '#6b7280' }};\n\">\n  {{ $json.priority }}\n</span>\n  </td>\n\n  <!-- Lead Score -->\n  <td style=\"padding:16px 20px;text-align:center;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Lead Score\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n      {{ $json.lead_score }}/100\n    </div>\n  </td>\n\n  <!-- SLA -->\n  <td style=\"padding:16px 20px;text-align:center;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      SLA\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n     {{ $json.sla_hours }}h\n    </div>\n  </td>\n\n  <!-- Confidence -->\n  <td style=\"padding:16px 20px;text-align:right;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Confidence\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n      {{ $json.confidence }}%\n    </div>\n  </td>\n\n</tr>\n</table>\n</div>\n\n    <!-- EMAIL INFO -->\n    <div style=\"padding:0 30px 24px;\">\n\n      <div style=\"margin-bottom:16px;\">\n        <div style=\"font-size:14px;color:#6b7280;margin-bottom:4px;\">\n          <b>From :</b>\n        </div>\n        <div style=\"font-size:14px;color:#2563eb;font-weight:600;\">\n          {{ $json.sender }}\n        </div>\n      </div>\n\n      <div style=\"margin-bottom:20px;\">\n        <div style=\"font-size:14px;color:#6b7280;margin-bottom:4px;\">\n          <b>Subject :</b>\n        </div>\n        <div style=\"font-size:15px;color:#111827;font-weight:600;\">\n          {{ $json.subject }}\n        </div>\n      </div>\n\n      \n\n    </div>\n\n    <!-- AI SUMMARY -->\n    <div style=\"padding:0 30px 26px;\">\n      <h4 style=\"margin:0 0 8px;font-size:14px;color:#111827;\">\n        AI Summary\n      </h4>\n\n      <div style=\"\n       background:#eef4ff;\nborder:1px solid #dbe6ff;\n        border-radius:10px;\n        padding:14px;\n        font-size:14px;\n        color:#374151;\n        line-height:1.6;\n      \">\n       {{ $json.summary }}\n      </div>\n    </div>\n\n<!-- EMAIL PREVIEW -->\n<div style=\"padding:0 30px 26px;\n\">\n  <h4 style=\"margin:0 0 8px;font-size:14px;color:#111827;\"> {{ $json.source === 'website' ? 'Email' : 'Email Preview' }} </h4>\n\n <div style=\"\n   background:#f8fafc;\n   border:1px dashed #d1d5db;\n   border-radius:10px;\n   padding:14px;\n   font-size:14px;\n   color:#374151;\n   line-height:1.6;\n\">\n  {{\n    $json.source === 'website'\n      ? $('Webhook').item.json.body.message || $json.message || $json.preview\n      : $json.preview\n  }}\n</div>\n<!-- CTA -->\n<div style=\"padding:20px 30px 30px;text-align:center;\">\n\n  {{ $json.source === 'gmail'\n  ? '<a href=\"https://mail.google.com/mail/u/0/#inbox/' + $json.threadId + '\" target=\"_blank\" style=\"display:inline-block;background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);color:white;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 20px rgba(37,99,235,0.30);\">Reply</a>'\n  : '<a href=\"https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent($json.from) + '&su=' + encodeURIComponent('Re: ' + $json.subject) + '\" target=\"_blank\" style=\"display:inline-block;background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);color:white;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 20px rgba(37,99,235,0.30);\">Reply</a>'\n  }}\n\n</div>\n\n    <!-- FOOTER -->\n    <div style=\"\n      background:#f9fafb;\n      padding:18px;\n      text-align:center;\n      font-size:12px;\n      color:#6b7280;\n    \">\n      Powered by <strong>NEURASYNC</strong><br/>\n      Intelligent Email Automation\n    </div>\n\n  </div>\n</div>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2000,
+        -688
+      ],
+      "id": "d0c4f473-4c62-450f-a5c4-587b17aced79",
+      "name": "Client_request",
+      "webhookId": "1cb91cc5-a836-4503-9c92-d3af5ea6b1e7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ick4P7XCeG8Ga8Pu",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "tweratomar@gmail.com",
+        "subject": "={{ \n  $json.priority === \"Critical\" ? \"🔴\" :\n  $json.priority === \"High\" ? \"🟠\" :\n  $json.priority === \"Medium\" ? \"🟡\" :\n  \"⚪\"\n}}\n{{ $json.category }} Update",
+        "message": "=<div style=\"padding:40px 0;font-family:Arial,Helvetica,sans-serif;\">\n\n  <div style=\"\n    max-width:640px;\n    margin:0 auto;\n    background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);\nborder:1px solid #e5e7eb;\n    border-radius:16px;\n    box-shadow:0 12px 30px rgba(0,0,0,0.08);\n    overflow:hidden;\n  \">\n\n    <!-- HEADER -->\n    <div style=\"padding:26px 30px;border-bottom:1px solid #eef2f7;\">\n      <h2 style=\"margin:0;font-size:20px;color:#111827;\">\n        📩 New Email Classified\n      </h2>\n      <p style=\"margin:6px 0 0;font-size:13px;color:#6b7280;\">\n        Smart Routing Notification\n      </p>\n<div style=\"margin-top:6px;font-size:11px;color:#9ca3af;\">\n  Source: <span style=\"font-weight:600;color:#6b7280;\">\n    {{ $json.source }}\n  </span>\n</div>\n    </div>\n<hr style=\"\n  border:none;\n  border-top:1px solid #eef2f7;\n  margin:0;\n\">\n    <!-- CLASSIFICATION CARD -->\n<div style = \"margin:40px 20px 40px 20px ;\">\n   <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"\n  background:\n    {{ $json.priority === 'Critical' ? 'linear-gradient(180deg,#fef2f2 0%,#fee2e2 100%)' :\n       $json.priority === 'High' ? 'linear-gradient(180deg,#fff7ed 0%,#ffedd5 100%)' :\n       $json.priority === 'Medium' ? 'linear-gradient(180deg,#fffbeb 0%,#fef3c7 100%)' :\n       'linear-gradient(180deg,#f1f5f9 0%,#e9eef5 100%)' }};\n       \n  border:1px solid\n    {{ $json.priority === 'Critical' ? '#dc2626' :\n       $json.priority === 'High' ? '#f97316' :\n       $json.priority === 'Medium' ? '#f59e0b' :\n       '#dbe2ea' }};\n       \n  box-shadow:inset 0 1px 0 rgba(255,255,255,0.7);\n  border-radius:12px;\n  margin:0px;\n  padding:0;\n\">\n <tr>\n\n  <!-- Category -->\n  <td style=\"padding:16px 20px;text-align:left;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Category\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n      {{ $json.category }}\n    </div>\n  </td>\n\n  <!-- Urgency -->\n  <td style=\"padding:16px 20px;text-align:center;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Urgency\n    </div>\n\n    <span style=\"\n  display:inline-block;\n  padding:4px 12px;\n  border-radius:999px;\n  font-size:13px;\n  font-weight:600;\n  color:white;\n  background:\n    {{ $json.priority === 'Critical' ? '#dc2626' :\n       $json.priority === 'High' ? '#f97316' :\n       $json.priority === 'Medium' ? '#f59e0b' :\n       '#6b7280' }};\n\">\n  {{ $json.priority }}\n</span>\n  </td>\n\n  <!-- Lead Score -->\n  <td style=\"padding:16px 20px;text-align:center;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Lead Score\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n      {{ $json.lead_score }}/100\n    </div>\n  </td>\n\n  <!-- SLA -->\n  <td style=\"padding:16px 20px;text-align:center;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      SLA\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n     {{ $json.sla_hours }}h\n    </div>\n  </td>\n\n  <!-- Confidence -->\n  <td style=\"padding:16px 20px;text-align:right;\">\n    <div style=\"font-size:12px;color:#6b7280;margin-bottom:6px;\">\n      Confidence\n    </div>\n    <div style=\"font-size:16px;font-weight:600;color:#111827;\">\n      {{ $json.confidence }}%\n    </div>\n  </td>\n\n</tr>\n</table>\n</div>\n\n    <!-- EMAIL INFO -->\n    <div style=\"padding:0 30px 24px;\">\n\n      <div style=\"margin-bottom:16px;\">\n        <div style=\"font-size:14px;color:#6b7280;margin-bottom:4px;\">\n          <b>From :</b>\n        </div>\n        <div style=\"font-size:14px;color:#2563eb;font-weight:600;\">\n          {{ $json.sender }}\n        </div>\n      </div>\n\n      <div style=\"margin-bottom:20px;\">\n        <div style=\"font-size:14px;color:#6b7280;margin-bottom:4px;\">\n          <b>Subject :</b>\n        </div>\n        <div style=\"font-size:15px;color:#111827;font-weight:600;\">\n          {{ $json.subject }}\n        </div>\n      </div>\n\n      \n\n    </div>\n\n    <!-- AI SUMMARY -->\n    <div style=\"padding:0 30px 26px;\">\n      <h4 style=\"margin:0 0 8px;font-size:14px;color:#111827;\">\n        AI Summary\n      </h4>\n\n      <div style=\"\n       background:#eef4ff;\nborder:1px solid #dbe6ff;\n        border-radius:10px;\n        padding:14px;\n        font-size:14px;\n        color:#374151;\n        line-height:1.6;\n      \">\n       {{ $json.summary }}\n      </div>\n    </div>\n\n<!-- EMAIL PREVIEW -->\n<div style=\"padding:0 30px 26px;\n\">\n  <h4 style=\"margin:0 0 8px;font-size:14px;color:#111827;\"> {{ $json.source === 'website' ? 'Email' : 'Email Preview' }} </h4>\n\n <div style=\"\n   background:#f8fafc;\n   border:1px dashed #d1d5db;\n   border-radius:10px;\n   padding:14px;\n   font-size:14px;\n   color:#374151;\n   line-height:1.6;\n\">\n  {{\n    $json.source === 'website'\n      ? $('Webhook').item.json.body.message || $json.message || $json.preview\n      : $json.preview\n  }}\n</div>\n<!-- CTA -->\n<div style=\"padding:20px 30px 30px;text-align:center;\">\n\n  {{ $json.source === 'gmail'\n  ? '<a href=\"https://mail.google.com/mail/u/0/#inbox/' + $json.threadId + '\" target=\"_blank\" style=\"display:inline-block;background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);color:white;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 20px rgba(37,99,235,0.30);\">Reply</a>'\n  : '<a href=\"https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent($json.from) + '&su=' + encodeURIComponent('Re: ' + $json.subject) + '\" target=\"_blank\" style=\"display:inline-block;background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);color:white;text-decoration:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 20px rgba(37,99,235,0.30);\">Reply</a>'\n  }}\n\n</div>\n\n    <!-- FOOTER -->\n    <div style=\"\n      background:#f9fafb;\n      padding:18px;\n      text-align:center;\n      font-size:12px;\n      color:#6b7280;\n    \">\n      Powered by <strong>NEURASYNC</strong><br/>\n      Intelligent Email Automation\n    </div>\n\n  </div>\n</div>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2000,
+        -496
+      ],
+      "id": "18b179aa-e34c-4602-875c-a604f3f63c76",
+      "name": "Partnership",
+      "webhookId": "1cb91cc5-a836-4503-9c92-d3af5ea6b1e7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ick4P7XCeG8Ga8Pu",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const leadScore = $input.first().json.output.lead_score || 0;\nconst urgency = $input.first().json.output.urgency || \"Low\";\n\nlet priority = \"Low\";\nlet sla_hours = 48;\nlet routing_group = \"General\";\n\nif (leadScore >= 85 || urgency === \"High\") {\n  priority = \"Critical\";\n  sla_hours = 2;\n  routing_group = \"Immediate Action\";\n}\nelse if (leadScore >= 65) {\n  priority = \"High\";\n  sla_hours = 8;\n  routing_group = \"Sales Priority\";\n}\nelse if (leadScore >= 40) {\n  priority = \"Medium\";\n  sla_hours = 24;\n  routing_group = \"Follow Up\";\n}\nelse {\n  priority = \"Low\";\n  sla_hours = 72;\n  routing_group = \"Low Priority\";\n}\n\nconst ai = $json.output;\n\nreturn [{\n  json: {\n    \n      ...ai,\n      priority,\n      sla_hours,\n      routing_group\n    \n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        -672
+      ],
+      "id": "f68bcd91-7050-4c14-919d-44271db04d02",
+      "name": "Priority & SLA"
+    },
+    {
+      "parameters": {
+        "jsCode": "const { category, priority, lead_score } = $json;\n\nlet route_to = \"Manual_Review\";\nlet notify_level = \"Normal\";\nlet queue_name = \"General Queue\";\n\n// SALES\nif (category === \"Sales\") {\n  if (priority === \"Critical\") {\n    route_to = \"Immediate_Sales\";\n    notify_level = \"Urgent\";\n    queue_name = \"Hot Leads\";\n  } else {\n    route_to = \"Sales\";\n    notify_level = \"High\";\n    queue_name = \"Sales Queue\";\n  }\n}\n\n// SUPPORT\nelse if (category === \"Support\") {\n  if (priority === \"Critical\") {\n    route_to = \"Technical_Escalation\";\n    notify_level = \"Urgent\";\n    queue_name = \"Critical Support\";\n  } else {\n    route_to = \"Support_Team\";\n    notify_level = \"Normal\";\n    queue_name = \"Support Queue\";\n  }\n}\n\n// CLIENT\nelse if (category === \"Client\") {\n  route_to = \"Client_Operations\";\n  notify_level = \"High\";\n  queue_name = \"Active Clients\";\n}\n\n// PARTNERSHIP\nelse if (category === \"Partnership\") {\n  route_to = \"Business_Development\";\n  notify_level = \"Normal\";\n  queue_name = \"Partnerships\";\n}\n\nreturn [{\n  json: {\n    \n      ...$json,\n      route_to,\n      notify_level,\n      queue_name\n    \n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1008,
+        -672
+      ],
+      "id": "c0778a89-7a97-4467-af3b-01d924cf432a",
+      "name": "Routing Node"
+    },
+    {
+      "parameters": {
+        "tableId": "emails_processed",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "sender",
+              "fieldValue": "={{ $('Routing Node').item.json.from }}"
+            },
+            {
+              "fieldId": "subject",
+              "fieldValue": "={{ $('Routing Node').item.json.subject }}"
+            },
+            {
+              "fieldId": "category",
+              "fieldValue": "={{ $('Routing Node').item.json.category }}"
+            },
+            {
+              "fieldId": "priority",
+              "fieldValue": "={{ $('Routing Node').item.json.priority }}"
+            },
+            {
+              "fieldId": "lead_score",
+              "fieldValue": "={{ $('Routing Node').item.json.lead_score }}"
+            },
+            {
+              "fieldId": "confidence",
+              "fieldValue": "={{ $('Routing Node').item.json.confidence }}"
+            },
+            {
+              "fieldId": "route_to",
+              "fieldValue": "={{ $('Routing Node').item.json.route_to }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now.setZone(\"Africa/Tripoli\").format('yyyy-MM-dd hh:mm:ss') }}"
+            },
+            {
+              "fieldId": "organization_id",
+              "fieldValue": "={{ $json.organization_id }}"
+            },
+            {
+              "fieldId": "source",
+              "fieldValue": "={{ $('Routing Node').item.json.source }}"
+            },
+            {
+              "fieldId": "summary",
+              "fieldValue": "={{ $('Routing Node').item.json.summary }}"
+            },
+            {
+              "fieldId": "preview",
+              "fieldValue": "={{\n    $('Routing Node').item.json.source === 'website'\n      ? $('Webhook').item.json.body.message || $json.message || $json.preview\n      : $json.preview\n  }}"
+            },
+            {
+              "fieldId": "sla_hours",
+              "fieldValue": "={{ $('Routing Node').item.json.sla_hours }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        -304
+      ],
+      "id": "a4be57a4-7262-473a-8002-02759e473cad",
+      "name": "emails_processed",
+      "credentials": {
+        "supabaseApi": {
+          "id": "qtQDHhOQ4250HrIb",
+          "name": "Supabase account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "automation_events",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "organization_id",
+              "fieldValue": "={{ $json.organization_id }}"
+            },
+            {
+              "fieldId": "service_id",
+              "fieldValue": "={{ $('Get Integration').item.json.service_id }}"
+            },
+            {
+              "fieldId": "event_type",
+              "fieldValue": "email_processed"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "success"
+            },
+            {
+              "fieldId": "payload",
+              "fieldValue": "={{ JSON.stringify($json) }}"
+            },
+            {
+              "fieldId": "executed_at",
+              "fieldValue": "={{ $json.created_at }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1488,
+        -304
+      ],
+      "id": "8ab6effe-8932-40ea-b35c-056a1ee12a34",
+      "name": "automation_events",
+      "credentials": {
+        "supabaseApi": {
+          "id": "qtQDHhOQ4250HrIb",
+          "name": "Supabase account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "integrations",
+        "limit": 1,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "external_identifier",
+              "condition": "eq",
+              "keyValue": "={{ $json.integration_lookup_key }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        800,
+        -304
+      ],
+      "id": "5745dc03-2c6f-4936-a8c2-93488e7b20f0",
+      "name": "Get Integration",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "qtQDHhOQ4250HrIb",
+          "name": "Supabase account 3"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const source = item.json.source;\n\n  let integration_lookup_key = 'neurasyncagency@gmail.com';\n\n  if (source === 'gmail') {\n    integration_lookup_key = 'omaramoory619@gmail.com';\n  } else if (source === 'website') {\n    integration_lookup_key = 'neurasyncagency@gmail.com';//'neurasyncagency@gmail.com';\n  }\n\n  return {\n    json: {\n      ...item.json,\n      integration_lookup_key,\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1216,
+        -672
+      ],
+      "id": "0a3faa2c-aaed-4a4b-81ac-2c03cf0e99e6",
+      "name": "Resolve Integration Key"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2155de11-57c2-43fe-b572-97e4f912d941",
+              "leftValue": "={{ $json.organization_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1008,
+        -304
+      ],
+      "id": "0bbdafc1-ff6e-4240-8eca-c6ad23877872",
+      "name": "IF Integration Found"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "36899811-0194-414f-9523-4b642c55de26",
+              "name": "error_type",
+              "value": "integration_not_found",
+              "type": "string"
+            },
+            {
+              "id": "5cd2e434-ff20-4846-813b-a04dafab78d3",
+              "name": "error_message",
+              "value": "No integration record matched the provided integration_lookup_key.",
+              "type": "string"
+            },
+            {
+              "id": "3d5ccf0d-81d6-437d-9a4c-f72571ba762f",
+              "name": "integration_lookup_key",
+              "value": "={{ $('Resolve Integration Key').item.json.integration_lookup_key }}",
+              "type": "string"
+            },
+            {
+              "id": "693c2ca5-adfc-46ef-ba67-f32ec1849e61",
+              "name": "source",
+              "value": "={{ $('Resolve Integration Key').item.json.source }}",
+              "type": "string"
+            },
+            {
+              "id": "eda45a7f-7120-4621-a617-bc0bbb6d5c46",
+              "name": "from",
+              "value": "={{ $('Resolve Integration Key').item.json.from }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1120,
+        -112
+      ],
+      "id": "2ba11e66-efbc-482a-ac26-ff5f602def34",
+      "name": "Set Integration Error"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.payload.error_message }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1472,
+        -112
+      ],
+      "id": "d0f3041f-d490-4d62-a1e2-8b72a1a0f373",
+      "name": "Stop Missing Integration"
+    },
+    {
+      "parameters": {
+        "tableId": "automation_events",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "organization_id",
+              "fieldValue": "={{ null}}"
+            },
+            {
+              "fieldId": "service_id",
+              "fieldValue": "={{ null }}"
+            },
+            {
+              "fieldId": "event_type",
+              "fieldValue": "integration_lookup_failed"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "failed"
+            },
+            {
+              "fieldId": "payload",
+              "fieldValue": "={{ $json }}"
+            },
+            {
+              "fieldId": "executed_at",
+              "fieldValue": "={{ $now.setZone(\"Africa/Tripoli\").format('yyyy-MM-dd hh:mm:ss') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        -112
+      ],
+      "id": "5ed26a3d-f347-4102-8b58-03465810bab0",
+      "name": "automation_events (failure)",
+      "credentials": {
+        "supabaseApi": {
+          "id": "qtQDHhOQ4250HrIb",
+          "name": "Supabase account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Email Sanitizer Node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Priority & SLA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "webhook Sanitizer Node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "webhook Sanitizer Node": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Sanitizer Node": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Category": {
+      "main": [
+        [
+          {
+            "node": "Support",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Client_request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Partnership",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sales",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Priority & SLA": {
+      "main": [
+        [
+          {
+            "node": "Routing Node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Routing Node": {
+      "main": [
+        [
+          {
+            "node": "Resolve Integration Key",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "emails_processed": {
+      "main": [
+        [
+          {
+            "node": "automation_events",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Category",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "automation_events": {
+      "main": [
+        []
+      ]
+    },
+    "Get Integration": {
+      "main": [
+        [
+          {
+            "node": "IF Integration Found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolve Integration Key": {
+      "main": [
+        [
+          {
+            "node": "Get Integration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Integration Found": {
+      "main": [
+        [
+          {
+            "node": "emails_processed",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Integration Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Integration Error": {
+      "main": [
+        [
+          {
+            "node": "automation_events (failure)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "automation_events (failure)": {
+      "main": [
+        [
+          {
+            "node": "Stop Missing Integration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "9be32033-42a8-42fd-975f-6c10518c50cd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6d836d4b4aac294986f23ff4cbbd42b49d05b9166fc3cf454ff7614f5e42fafc"
+  },
+  "id": "Rx2LnAteez0Htygt",
+  "tags": []
+}
