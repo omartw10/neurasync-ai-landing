@@ -6,14 +6,10 @@ import { supabase } from '../lib/supabase';
 
 export const validateAccessCode = async (code) => {
   const { data, error } = await supabase
-    .from('access_codes')
-    .select('*')
-    .eq('code', code)
-    .eq('is_active', true)
-    .single();
+    .rpc('validate_access_code', { input_code: code });
 
-  if (error || !data) return null;
-  return data;
+  if (error || !data || data.length === 0) return null;
+  return data[0];
 };
 
 // ==========================================
@@ -38,7 +34,9 @@ export const fetchClientEmails = async (organizationId) => {
     .rpc('get_emails_by_org', { org_id: organizationId });
 
   if (error) {
-    console.error('Error fetching emails:', error);
+    if (import.meta.env.DEV) {
+      console.error('Error fetching emails:', error);
+    }
     return { data: [], error };
   }
 

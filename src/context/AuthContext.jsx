@@ -9,24 +9,47 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Restore session from sessionStorage on mount
-  useEffect(() => {
-    const stored = sessionStorage.getItem('neurasync_session');
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        // Check if the session is still valid (not expired)
-        if (parsed.expiresAt && new Date(parsed.expiresAt) > new Date()) {
-          setSession(parsed);
-        } else {
-          sessionStorage.removeItem('neurasync_session');
-        }
-      } catch {
-        sessionStorage.removeItem('neurasync_session');
-      }
-    }
-    setIsLoading(false);
+  const clearSession = useCallback(() => {
+    setSession(null);
+    sessionStorage.removeItem('neurasync_session');
   }, []);
+
+  const restoreSession = useCallback(() => {
+    try {
+      const stored = sessionStorage.getItem('neurasync_session');
+
+      if (!stored) {
+        setIsLoading(false);
+        return;
+      }
+
+      const parsed = JSON.parse(stored);
+
+      if (!parsed.expiresAt || new Date(parsed.expiresAt) <= new Date()) {
+        clearSession();
+        setIsLoading(false);
+        return;
+      }
+
+      const sessionData = {
+        organizationId: parsed.organizationId,
+        organizationName: parsed.organizationName || 'Client Workspace',
+        codeLabel: parsed.codeLabel,
+        expiresAt: parsed.expiresAt,
+        authenticatedAt: parsed.authenticatedAt || new Date().toISOString(),
+      };
+
+      setSession(sessionData);
+    } catch {
+      clearSession();
+    } finally {
+      setIsLoading(false);
+    }
+  }, [clearSession]);
+
+  useEffect(() => {
+    restoreSession();
+  }, [restoreSession]);
 
   const login = useCallback(async (code) => {
     setError(null);
@@ -35,23 +58,6 @@ export const AuthProvider = ({ children }) => {
     try {
       const trimmedCode = code.trim();
 
-      // ── Hardcoded code for NeuraSyncAI's own dashboard ──
-      const HARDCODED_CODE = 'neurasyncaidb';
-      if (trimmedCode === HARDCODED_CODE) {
-        const sessionData = {
-          organizationId: '7b51ae33-5a31-4795-8b60-8a566f48d955',
-          organizationName: 'NeuraSyncAI',
-          codeLabel: 'NeuraSyncAI Internal Dashboard',
-          expiresAt: '2099-12-31T23:59:59Z',
-          authenticatedAt: new Date().toISOString(),
-        };
-        setSession(sessionData);
-        sessionStorage.setItem('neurasync_session', JSON.stringify(sessionData));
-        setIsLoading(false);
-        return true;
-      }
-
-      // ── Supabase-based validation for other clients ──
       const codeResult = await validateAccessCode(trimmedCode);
       
       if (!codeResult) {
@@ -72,7 +78,6 @@ export const AuthProvider = ({ children }) => {
         return false;
       }
 
-      // Fetch organization info
       const org = await fetchOrganization(codeResult.organization_id);
 
       const sessionData = {
@@ -89,7 +94,9 @@ export const AuthProvider = ({ children }) => {
       return true;
 
     } catch (err) {
-      console.error('Login error:', err);
+      if (import.meta.env.DEV) {
+        console.error('Login error:', err);
+      }
       setError('Something went wrong. Please try again.');
       setIsLoading(false);
       return false;
@@ -97,10 +104,9 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const logout = useCallback(() => {
-    setSession(null);
+    clearSession();
     setError(null);
-    sessionStorage.removeItem('neurasync_session');
-  }, []);
+  }, [clearSession]);
 
   const isAuthenticated = !!session && new Date(session.expiresAt) > new Date();
 

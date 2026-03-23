@@ -212,12 +212,6 @@ ALTER TABLE public.emails_processed ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.access_codes ENABLE ROW LEVEL SECURITY;
 
--- Anon policies for code-based dashboard access
-CREATE POLICY "Anon can validate access codes" ON public.access_codes FOR SELECT TO anon USING (true);
-CREATE POLICY "Anon can read emails by org_id" ON public.emails_processed FOR SELECT TO anon USING (true);
-CREATE POLICY "Anon can read org name" ON public.organizations FOR SELECT TO anon USING (true);
-CREATE POLICY "Anon can read automation events" ON public.automation_events FOR SELECT TO anon USING (true);
-
 -- Security Helper Function: Prevents infinite recursion by fetching user's orgs safely
 CREATE OR REPLACE FUNCTION get_user_orgs()
 RETURNS SETOF UUID
@@ -247,6 +241,12 @@ CREATE POLICY "Users manage their org webhooks" ON public.webhooks FOR ALL USING
 CREATE POLICY "Users manage their org workflows" ON public.workflows FOR ALL USING (organization_id IN (SELECT get_user_orgs()));
 CREATE POLICY "Users view their org processed emails" ON public.emails_processed FOR SELECT USING (organization_id IN (SELECT get_user_orgs()));
 CREATE POLICY "Users view their org subscriptions" ON public.subscriptions FOR SELECT USING (organization_id IN (SELECT get_user_orgs()));
+
+-- Dashboard RPC execute permissions
+REVOKE EXECUTE ON FUNCTION public.get_emails_by_org(UUID) FROM anon;
+REVOKE EXECUTE ON FUNCTION public.get_org_by_id(UUID) FROM anon;
+GRANT EXECUTE ON FUNCTION public.get_emails_by_org(UUID) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.get_org_by_id(UUID) TO authenticated;
 
 -- ==========================================
 -- 5. AUTOMATION TRANSACTIONS

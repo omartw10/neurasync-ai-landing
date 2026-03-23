@@ -436,7 +436,7 @@ export const InboxPilotDashboard = () => {
                       {email.category}
                     </Badge>
                   </div>
-                  <p className="text-xs text-gray-500 mt-0.5">from {email.sender} · {email.created_at ? new Date(email.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : ''}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">from {email.sender} · {email.created_at ? new Date(email.created_at).toLocaleString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : ''}</p>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
                   {email.lead_score >= 65 && (
@@ -506,7 +506,7 @@ export const InboxPilotDashboard = () => {
                     className="group cursor-pointer hover:bg-[#00C2D1]/[0.05] border-b border-gray-100 dark:border-gray-800/50 transition-colors" 
                     onClick={() => setSelectedEmail(email)}
                   >
-                    <TableCell className="text-[11px] text-gray-500 py-3">{email.created_at ? new Date(email.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-'}</TableCell>
+                    <TableCell className="text-[11px] text-gray-500 py-3">{email.created_at ? new Date(email.created_at).toLocaleString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-'}</TableCell>
                     <TableCell className="font-semibold text-gray-900 dark:text-white text-xs max-w-[140px] truncate">{email.sender}</TableCell>
                     <TableCell><div className="max-w-[160px] truncate text-xs font-medium" title={email.subject}>{email.subject}</div></TableCell>
                     <TableCell><div className="max-w-[200px] truncate text-[11px] text-gray-500 italic" title={email.summary}>{email.summary || '—'}</div></TableCell>
@@ -560,7 +560,7 @@ export const InboxPilotDashboard = () => {
                   <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-400">
                     <span className="flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />From: <span className="text-gray-300 font-medium">{selectedEmail.sender}</span></span>
                     <span>·</span>
-                    <span>{selectedEmail.created_at ? new Date(selectedEmail.created_at).toLocaleString() : ''}</span>
+                    <span>{selectedEmail.created_at ? new Date(selectedEmail.created_at).toLocaleString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : ''}</span>
                     <span>·</span>
                     <span className="capitalize">{selectedEmail.source}</span>
                   </div>

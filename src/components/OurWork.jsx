@@ -65,7 +65,7 @@ const MergedPlatformStudio = () => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        start: "top 80%",
+        start: "top 85%",
         toggleActions: "play reverse play reverse",
       }
     });
@@ -74,15 +74,15 @@ const MergedPlatformStudio = () => {
     tl.fromTo(
       ".merged-header",
       { opacity: 0, scale: 0.95, y: 30 },
-      { opacity: 1, scale: 1, y: 0, duration: 1, ease: "expo.out" }
+      { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: "expo.out" }
     );
 
     // Bento Cards Animation Stagger
     tl.fromTo(
       ".bento-card",
       { opacity: 0, y: 50, scale: 0.98 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.15, ease: "back.out(1.5)" },
-      "-=0.6"
+      { opacity: 1, y: 0, scale: 1, duration: 0.5, stagger: 0.1, ease: "back.out(1.5)" },
+      "-=0.4"
     );
   }, { scope: containerRef });
 

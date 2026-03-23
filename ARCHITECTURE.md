@@ -21,7 +21,7 @@ This document captures how the NeuraSync AI landing site and dashboard are organ
 ## 3. Authentication & Access Control
 
 - `src/context/AuthContext.jsx` houses the session state, stored in `sessionStorage`, and exposes `login`, `logout`, `isAuthenticated`, and helper metadata (organization name/id) via context.
-- Hardcoded `neurasyncaidb` code keeps the internal team connected, while outward-facing access codes call `validateAccessCode` + `fetchOrganization` in `src/services/api.js`.
+- Access codes are validated through `validateAccessCode` + `fetchOrganization` in `src/services/api.js`, and stored sessions are revalidated against Supabase on load.
 - `ProtectedRoute` relies on `useAuth()` to block unauthenticated access, while the sidebar’s logout button clears the session and re-routes to `/dashboard/login`.
 - The Supabase client is built in `src/lib/supabase.js`, sourcing `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` from the environment.
 

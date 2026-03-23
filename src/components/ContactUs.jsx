@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Check } from "lucide-react";
 import toast from "react-hot-toast";
 
+const CONTACT_WEBHOOK_URL = import.meta.env.VITE_CONTACT_WEBHOOK_URL;
+const WEBHOOK_SECRET = import.meta.env.VITE_WEBHOOK_SECRET;
+
 const ContactUs = ({ 
   subject = "New Inquiry - NeuraSyncAI",
   defaultMessage = ""
@@ -64,8 +67,25 @@ const ContactUs = ({
     formData.append("subject", subject);
 
     try {
-      const response = await fetch("http://localhost:5678/webhook-test/neurasyncai", {
+      if (!CONTACT_WEBHOOK_URL) {
+        toast.error("Contact form is not configured.");
+        setLoading(false);
+        return;
+      }
+
+      const webhookUrl = new URL(CONTACT_WEBHOOK_URL);
+
+      if (import.meta.env.PROD && webhookUrl.protocol !== "https:") {
+        toast.error("Contact form must use HTTPS in production.");
+        setLoading(false);
+        return;
+      }
+
+      const response = await fetch(webhookUrl.toString(), {
         method: "POST",
+        headers: {
+          "x-webhook-secret": WEBHOOK_SECRET,
+        },
         body: formData,
       });
 
@@ -92,7 +112,9 @@ const ContactUs = ({
         toast.error("Something went wrong. Please try again.");
       }
     } catch (err) {
-      console.error("Contact form submission failed", err);
+      if (import.meta.env.DEV) {
+        console.error("Contact form submission failed", err);
+      }
       toast.error("Network error. Please try again.");
     } finally {
       setLoading(false);
