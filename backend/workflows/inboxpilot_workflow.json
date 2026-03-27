@@ -144,7 +144,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// ==========================\n// Webhook Sanitizer\n// ==========================\n\nconst webhookSecret = \"hruboyy2cqteubntez5fml3l9sxvjwoou\";\nconst request = items[0].json;\nconst headers = request.headers || {};\nconst providedSecret =\n  headers[\"x-webhook-secret\"] ||\n  headers[\"X-Webhook-Secret\"] ||\n  \"\";\n\nif (!webhookSecret) {\n  throw new Error(\"Webhook secret is not configured.\");\n}\n\nif (providedSecret !== webhookSecret) {\n  throw new Error(\"Unauthorized webhook request.\");\n}\n\nconst data = request.body || {};\n\n// استخراج البيانات القادمة من الفورم\nconst fromEmail = data.email || \"\";\nconst subject = data.subject || \"\";\nlet body = data.message || \"\";\n\nif (body.length > 5000) {\n  throw new Error(\"Webhook message exceeds 5000 characters.\");\n}\n\n// تنظيف\nbody = body.replace(/<[^>]+>/g, \" \");\nbody = body.replace(/\\s+/g, \" \").trim();\n\n// إخراج موحد\nreturn [{\n  json: {\n    source: \"website\",\n    from: fromEmail,\n    subject,\n    body\n  }\n}];"
+        "jsCode": "// ==========================\n// Webhook Sanitizer\n// ==========================\n\nconst webhookSecret = \"YOUR_WEBHOOK_SECRET_HERE\";\nconst request = items[0].json;\nconst headers = request.headers || {};\nconst providedSecret =\n  headers[\"x-webhook-secret\"] ||\n  headers[\"X-Webhook-Secret\"] ||\n  \"\";\n\nif (!webhookSecret) {\n  throw new Error(\"Webhook secret is not configured.\");\n}\n\nif (providedSecret !== webhookSecret) {\n  throw new Error(\"Unauthorized webhook request.\");\n}\n\nconst data = request.body || {};\n\n// استخراج البيانات القادمة من الفورم\nconst fromEmail = data.email || \"\";\nconst subject = data.subject || \"\";\nlet body = data.message || \"\";\n\nif (body.length > 5000) {\n  throw new Error(\"Webhook message exceeds 5000 characters.\");\n}\n\n// تنظيف\nbody = body.replace(/<[^>]+>/g, \" \");\nbody = body.replace(/\\s+/g, \" \").trim();\n\n// إخراج موحد\nreturn [{\n  json: {\n    source: \"website\",\n    from: fromEmail,\n    subject,\n    body\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -415,7 +415,7 @@
             },
             {
               "fieldId": "created_at",
-              "fieldValue": "={{ $now.setZone(\"Africa/Tripoli\").format('yyyy-MM-dd hh:mm:ss') }}"
+              "fieldValue": "={{ $now.setZone(\"Africa/Tripoli\").format('yyyy-MM-dd HH:mm:ss') }}"
             },
             {
               "fieldId": "organization_id",
@@ -939,7 +939,7 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "4ebf74a0-06ba-466b-bc0b-e33ffb5d1974",
+  "versionId": "c1f5b3d6-a956-4eae-ac54-c08f08405c0d",
   "meta": {
     "instanceId": "6d836d4b4aac294986f23ff4cbbd42b49d05b9166fc3cf454ff7614f5e42fafc"
   },

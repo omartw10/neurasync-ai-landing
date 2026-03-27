@@ -6,19 +6,20 @@ import { supabase } from '../lib/supabase';
 
 export const validateAccessCode = async (code) => {
   const { data, error } = await supabase
-    .rpc('validate_access_code', { input_code: code });
+    .rpc('validate_access_code', { input_code: code })
+    .single();
 
-  if (error || !data || data.length === 0) return null;
-  return data[0];
+  if (error || !data) return null;
+  return data;
 };
 
 // ==========================================
 // ORGANIZATION INFO
 // ==========================================
 
-export const fetchOrganization = async (orgId) => {
+export const fetchOrganization = async (orgId, accessCode) => {
   const { data, error } = await supabase
-    .rpc('get_org_by_id', { org_id: orgId })
+    .rpc('get_org_by_id', { org_id: orgId, input_code: accessCode })
     .single();
 
   if (error) return null;
@@ -29,9 +30,9 @@ export const fetchOrganization = async (orgId) => {
 // EMAILS (InboxPilot Data)
 // ==========================================
 
-export const fetchClientEmails = async (organizationId) => {
+export const fetchClientEmails = async (organizationId, accessCode) => {
   const { data, error } = await supabase
-    .rpc('get_emails_by_org', { org_id: organizationId });
+    .rpc('get_emails_by_org', { org_id: organizationId, input_code: accessCode });
 
   if (error) {
     if (import.meta.env.DEV) {
@@ -40,7 +41,14 @@ export const fetchClientEmails = async (organizationId) => {
     return { data: [], error };
   }
 
-  return { data: data || [], error: null };
+  // Normalize category and priority casings to Title Case to fix duplication
+  const normalizedData = (data || []).map(email => ({
+    ...email,
+    category: email.category ? email.category.charAt(0).toUpperCase() + email.category.slice(1).toLowerCase() : 'Other',
+    priority: email.priority ? email.priority.charAt(0).toUpperCase() + email.priority.slice(1).toLowerCase() : 'Low'
+  }));
+
+  return { data: normalizedData, error: null };
 };
 
 // ==========================================
@@ -91,12 +99,12 @@ export const computeMetrics = (emails) => {
   const total = emails.length;
 
   // ── Core Stats ──
-  const totalConfidence = emails.reduce((sum, e) => sum + (e.confidence || 0), 0);
-  const avgConfidence = Math.round(totalConfidence / total);
+  const totalConfidence = emails.reduce((sum, e) => sum + (e.confidence ?? 0), 0);
+  const avgConfidence = total > 0 ? Math.round(totalConfidence / total) : 0;
 
   // ── Lead Pipeline ──
-  const hotLeads = emails.filter(e => e.lead_score && e.lead_score >= 75).length;
-  const warmLeads = emails.filter(e => e.lead_score && e.lead_score >= 40 && e.lead_score < 75).length;
+  const hotLeads = emails.filter(e => e.lead_score != null && e.lead_score >= 75).length;
+  const warmLeads = emails.filter(e => e.lead_score != null && e.lead_score >= 40 && e.lead_score < 75).length;
   const coldLeads = emails.filter(e => e.lead_score != null && e.lead_score < 40).length;
   const priorityLeads = hotLeads + warmLeads;
 
@@ -111,7 +119,7 @@ export const computeMetrics = (emails) => {
   // ── Average SLA ──  
   const emailsWithSLA = emails.filter(e => e.sla_hours != null);
   const avgSLA = emailsWithSLA.length > 0
-    ? Math.round(emailsWithSLA.reduce((sum, e) => sum + e.sla_hours, 0) / emailsWithSLA.length)
+    ? Math.round(emailsWithSLA.reduce((sum, e) => sum + (e.sla_hours ?? 0), 0) / emailsWithSLA.length)
     : 0;
 
   // ── Category Breakdown ──

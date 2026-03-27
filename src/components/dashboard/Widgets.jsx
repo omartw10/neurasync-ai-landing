@@ -122,7 +122,8 @@ export const Badge = ({ children, variant = "default", className }) => {
     warning: "bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-400",
     danger: "bg-rose-100 text-rose-800 dark:bg-rose-500/15 dark:text-rose-400",
     primary: "bg-[#00C2D1]/10 text-[#009BA7] dark:bg-[#00C2D1]/15 dark:text-[#00C2D1]",
-    purple: "bg-purple-100 text-purple-800 dark:bg-purple-500/15 dark:text-purple-400"
+    purple: "bg-purple-100 text-purple-800 dark:bg-purple-500/15 dark:text-purple-400",
+    ghost: "bg-transparent text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700"
   };
   
   return (

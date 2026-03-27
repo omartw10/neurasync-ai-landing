@@ -89,7 +89,7 @@ const HBar = ({ label, value, max, color, percentage }) => (
 /*  MAIN DASHBOARD COMPONENT                      */
 /* ═══════════════════════════════════════════════ */
 export const InboxPilotDashboard = () => {
-  const { organizationId } = useAuth();
+  const { organizationId, accessCode } = useAuth();
   const [emails, setEmails] = useState([]);
   const [metrics, setMetrics] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -115,15 +115,15 @@ export const InboxPilotDashboard = () => {
   }, []);
 
   const loadData = useCallback(async () => {
-    if (!organizationId) return;
+    if (!organizationId || !accessCode) return;
     setIsLoading(true);
-    const result = await fetchClientEmails(organizationId);
+    const result = await fetchClientEmails(organizationId, accessCode);
     if (result.data) {
       setEmails(result.data);
       setMetrics(computeMetrics(result.data));
     }
     setIsLoading(false);
-  }, [organizationId]);
+  }, [organizationId, accessCode]);
 
   useEffect(() => { loadData(); }, [loadData]);
 
@@ -509,19 +509,22 @@ export const InboxPilotDashboard = () => {
                     <TableCell className="text-[11px] text-gray-500 py-3">{email.created_at ? new Date(email.created_at).toLocaleString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-'}</TableCell>
                     <TableCell className="font-semibold text-gray-900 dark:text-white text-xs max-w-[140px] truncate">{email.sender}</TableCell>
                     <TableCell><div className="max-w-[160px] truncate text-xs font-medium" title={email.subject}>{email.subject}</div></TableCell>
-                    <TableCell><div className="max-w-[200px] truncate text-[11px] text-gray-500 italic" title={email.summary}>{email.summary || '—'}</div></TableCell>
-                    <TableCell><div className="max-w-[220px] truncate text-[11px] text-gray-400" title={email.preview}>{email.preview || '—'}</div></TableCell>
+                    <TableCell><div className="max-w-[250px] truncate text-[11px] text-gray-500 italic" title={email.summary}>{email.summary || 'N/A'}</div></TableCell>
+                    <TableCell><div className="max-w-[280px] truncate text-[11px] text-gray-400" title={email.preview}>{email.preview || 'N/A'}</div></TableCell>
                     <TableCell><Badge variant={email.category === 'Sales' ? 'primary' : email.category === 'Support' ? 'purple' : email.category === 'Client' ? 'success' : email.category === 'Spam' ? 'default' : 'warning'}>{email.category}</Badge></TableCell>
                     <TableCell><Badge variant={email.priority === 'Critical' || email.priority === 'High' ? 'danger' : email.priority === 'Medium' ? 'warning' : 'success'}>{email.priority}</Badge></TableCell>
                     <TableCell>
                       {email.lead_score != null ? (
-                        <div className={cn("inline-flex items-center justify-center w-7 h-7 rounded-lg border text-[10px] font-bold",
-                          email.lead_score >= 75 ? 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-400' :
-                          email.lead_score >= 40 ? 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400' :
-                          'border-gray-200 bg-gray-50 text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400')}>
-                          {email.lead_score}
+                        <div className="inline-flex items-center gap-1">
+                          {email.lead_score >= 80 && <Flame className="w-3 h-3 text-rose-500 fill-rose-500" />}
+                          <div className={cn("inline-flex items-center justify-center w-7 h-7 rounded-lg border text-[10px] font-bold",
+                            email.lead_score >= 75 ? 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-400' :
+                            email.lead_score >= 40 ? 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400' :
+                            'border-gray-200 bg-gray-50 text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400')}>
+                            {email.lead_score}
+                          </div>
                         </div>
-                      ) : <span className="text-gray-300 dark:text-gray-700 text-xs">—</span>}
+                      ) : <span className="text-gray-300 dark:text-gray-700 text-xs">N/A</span>}
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
@@ -531,7 +534,20 @@ export const InboxPilotDashboard = () => {
                         <span className="text-[10px] font-bold text-gray-500 tabular-nums">{email.confidence}%</span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-xs font-semibold text-gray-600 dark:text-gray-300">{email.sla_hours ? `${email.sla_hours}h` : '—'}</TableCell>
+                    <TableCell>
+                      <span className={cn(
+                        "text-xs font-bold px-2 py-1 rounded-md",
+                        email.sla_hours != null 
+                          ? email.sla_hours <= 4 
+                            ? "bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400" 
+                            : email.sla_hours <= 24 
+                              ? "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400"
+                              : "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400"
+                          : "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-500"
+                      )}>
+                        {email.sla_hours != null ? `${email.sla_hours}h` : 'N/A'}
+                      </span>
+                    </TableCell>
                     <TableCell><span className="text-xs font-bold text-[#00C2D1] bg-[#00C2D1]/10 px-2 py-1 rounded-md">{email.route_to}</span></TableCell>
                   </TableRow>
                 ))
@@ -569,11 +585,11 @@ export const InboxPilotDashboard = () => {
                 {/* Metrics Grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3 mb-6">
                   {[
-                    { label: 'Category', value: selectedEmail.category, color: '#7C3AED' },
-                    { label: 'Priority', value: selectedEmail.priority, color: selectedEmail.priority === 'Critical' || selectedEmail.priority === 'High' ? '#EF4444' : '#F59E0B' },
-                    { label: 'Lead Score', value: selectedEmail.lead_score != null ? `${selectedEmail.lead_score}/100` : '—', color: '#F59E0B' },
-                    { label: 'SLA', value: selectedEmail.sla_hours ? `${selectedEmail.sla_hours} hrs` : '—', color: '#00C2D1' },
-                    { label: 'Confidence', value: `${selectedEmail.confidence}%`, color: '#10B981' },
+                    { label: 'Category', value: selectedEmail.category || 'N/A', color: '#7C3AED' },
+                    { label: 'Priority', value: selectedEmail.priority || 'N/A', color: selectedEmail.priority === 'Critical' || selectedEmail.priority === 'High' ? '#EF4444' : '#F59E0B' },
+                    { label: 'Lead Score', value: selectedEmail.lead_score != null ? `${selectedEmail.lead_score}/100` : 'N/A', color: '#F59E0B' },
+                    { label: 'SLA', value: selectedEmail.sla_hours != null ? `${selectedEmail.sla_hours} hrs` : 'N/A', color: '#00C2D1' },
+                    { label: 'Confidence', value: selectedEmail.confidence != null ? `${selectedEmail.confidence}%` : 'N/A', color: '#10B981' },
                   ].map(m => (
                     <div key={m.label} className="p-3 rounded-xl bg-white/5 border border-white/10 text-center">
                       <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: m.color }}>{m.label}</p>

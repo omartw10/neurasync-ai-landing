@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }) => {
         organizationId: parsed.organizationId,
         organizationName: parsed.organizationName || 'Client Workspace',
         codeLabel: parsed.codeLabel,
+        accessCode: parsed.accessCode,
         expiresAt: parsed.expiresAt,
         authenticatedAt: parsed.authenticatedAt || new Date().toISOString(),
       };
@@ -78,12 +79,13 @@ export const AuthProvider = ({ children }) => {
         return false;
       }
 
-      const org = await fetchOrganization(codeResult.organization_id);
+      const org = await fetchOrganization(codeResult.organization_id, trimmedCode);
 
       const sessionData = {
         organizationId: codeResult.organization_id,
         organizationName: org?.name || 'Client Workspace',
         codeLabel: codeResult.label,
+        accessCode: trimmedCode,
         expiresAt: codeResult.expires_at,
         authenticatedAt: new Date().toISOString(),
       };
@@ -120,6 +122,7 @@ export const AuthProvider = ({ children }) => {
       logout,
       organizationId: session?.organizationId,
       organizationName: session?.organizationName,
+      accessCode: session?.accessCode,
     }}>
       {children}
     </AuthContext.Provider>

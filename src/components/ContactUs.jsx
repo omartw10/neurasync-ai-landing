@@ -3,8 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Check } from "lucide-react";
 import toast from "react-hot-toast";
 
-const CONTACT_WEBHOOK_URL = import.meta.env.VITE_CONTACT_WEBHOOK_URL;
-const WEBHOOK_SECRET = import.meta.env.VITE_WEBHOOK_SECRET;
+// Webhook credentials safely moved to Vercel api endpoint
 
 const ContactUs = ({ 
   subject = "New Inquiry - NeuraSyncAI",
@@ -67,26 +66,23 @@ const ContactUs = ({
     formData.append("subject", subject);
 
     try {
-      if (!CONTACT_WEBHOOK_URL) {
-        toast.error("Contact form is not configured.");
-        setLoading(false);
-        return;
-      }
+      // Prepare the JSON payload from the extracted form data
+      const payload = {
+        name,
+        email,
+        inquiryType,
+        productName,
+        message,
+        subject
+      };
 
-      const webhookUrl = new URL(CONTACT_WEBHOOK_URL);
-
-      if (import.meta.env.PROD && webhookUrl.protocol !== "https:") {
-        toast.error("Contact form must use HTTPS in production.");
-        setLoading(false);
-        return;
-      }
-
-      const response = await fetch(webhookUrl.toString(), {
+      // Send request to our secure Vercel Serverless Function
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
-          "x-webhook-secret": WEBHOOK_SECRET,
+          "Content-Type": "application/json",
         },
-        body: formData,
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
