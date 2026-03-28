@@ -8,7 +8,7 @@ This document captures how the NeuraSync AI landing site and dashboard are organ
 - `src/main.jsx` boots the app, applies `index.css`, and renders `<App />` inside `<React.StrictMode>`.
 - `src/App.jsx` wires global providers, smooth scrolling, and React Router v6 routes.
 - `src/components/*`, `src/pages/*`, and `src/layouts/*` hold the UI, with dashboard-specific widgets isolated under `src/components/dashboard/`.
-- Backend artifacts live under `backend/` (Supabase SQL schema, functions, workflow metadata), while `src/services/api.js` and `src/lib/supabase.js` encapsulate remote calls.
+- Backend artifacts live under `backend/` (Supabase SQL schema in `backend/sql/`, workflow metadata in `backend/workflows/`), while `src/services/api.js` and `src/lib/supabase.js` encapsulate remote calls.
 
 ## 2. Frontend Flow & Layout
 
@@ -34,9 +34,9 @@ This document captures how the NeuraSync AI landing site and dashboard are organ
 
 ## 5. Backend & Supabase Schema
 
-- `backend/database_schema.sql` defines tenant-aware tables: `organizations`, `users`, `memberships`, `services`, `organization_services`, `automation_events`, `audit_logs`, `usage_metrics`, `api_keys`, `integrations`, `webhooks`, `workflows`, `emails_processed`, `subscriptions`, and `access_codes`.
-- Row-Level Security is enabled for every table, with helper policies (`get_user_orgs`) ensuring tenants only see their own records, while `access_codes`, `emails_processed`, `organizations`, and `automation_events` expose light `anon` policies for code validation and dashboard-level read access.
-- `backend/dashboard_functions.sql` registers RPC functions (`get_emails_by_org`, `get_org_by_id`) and grants `anon` execute permissions so the frontend (only with the anon key) can consume the dashboard data safely.
+- `backend/sql/` defines tenant-aware tables, security policies, and triggers across `01-schema.sql`, `02-policies.sql`, and `03-triggers.sql`.
+- Row-Level Security is enabled for every table, with helper policies (`get_user_orgs`) ensuring tenants only see their own records.
+- `backend/sql/04-rpc.sql` registers RPC functions (`get_emails_by_org`, `get_org_by_id`) and grants `authenticated` execute permissions so the frontend (after anonymous sign-in) can consume the dashboard data safely.
 - Trigger-based automation keeps the schema resilient: `handle_new_user` keeps `public.users` aligned to Supabase auth users, and `activate_default_service` ensures new orgs immediately get the `InboxPilot` service.
 
 ## 6. Operational Notes
@@ -44,7 +44,7 @@ This document captures how the NeuraSync AI landing site and dashboard are organ
 - Keep `.env.local`/environment secrets out of source control; only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are required for local development.
 - `npm run lint` targets ESLint, but Tailwind/Tre bundler ensures styles stay inline without additional build steps.
 - Deployment follows `npm run build` > Vite, so anything that depends on generated assets (e.g., `dist/index.html`) should be treated as ephemeral.
-- When onboarding product teams, point them to `CodeGate`, `AuthContext`, and `backend/database_schema.sql` for understanding how access codes map to Supabase data.
+- When onboarding product teams, point them to `CodeGate`, `AuthContext`, and `backend/sql/` for understanding how access codes map to Supabase data.
 
 ## 7. Next Steps for Contributors
 

@@ -36,4 +36,5 @@ npm-debug.log*
 .cache/
 .eslintcache
 
-.vercel
+# Internal dev notes (never publish)
+SESSION_HANDOFF.md

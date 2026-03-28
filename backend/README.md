@@ -1,42 +1,35 @@
-# NeuraSync AI Backend
+# NeuraSync AI — Backend Setup
 
-Supabase database schema and functions for the NeuraSync AI platform.
+This directory contains the database schema, security policies, and n8n workflows for the NeuraSync AI platform.
 
-## Structure
+## 🗄️ Database Setup (Supabase)
 
-```
-backend/
-├── sql/
-│   ├── 01-schema.sql     # Tables, types, seed data
-│   ├── 02-policies.sql   # Row-level security (RLS) policies
-│   └── 03-triggers.sql   # Database triggers
-├── functions/
-│   └── dashboard.sql     # RPC functions for dashboard access
-└── workflows/
-    └── inboxpilot.json   # n8n workflow export
-```
+To prepare your Supabase project, execute the SQL files in the `backend/sql/` directory in the following order:
 
-## Deployment
+1.  **`01-schema.sql`**: Creates all necessary tables and standard types.
+2.  **`02-policies.sql`**: Enables Row-Level Security (RLS) and defines multi-tenant isolation policies.
+3.  **`03-triggers.sql`**: Sets up automation triggers for user record handling and default service activation.
+4.  **`04-rpc.sql`**: Registers the RPC functions used by the dashboard for access code validation and data retrieval.
 
-### Option 1: Supabase Dashboard (Recommended)
-1. Open your Supabase project
-2. Go to **SQL Editor**
-3. Run the files in order:
-   ```
-   01-schema.sql
-   02-policies.sql
-   03-triggers.sql
-   dashboard.sql (from functions/)
-   ```
+### Manual configuration in Supabase Auth
 
-### Option 2: Supabase CLI
-```bash
-supabase db push
-```
+1.  **Anonymous Sign-In**: Ensure *Anonymous Sign-Ins* are enabled in your Supabase project settings.
+2.  **Turnstile (Optional but Recommended)**: If using Cloudflare Turnstile, configure the site and secret keys in the Supabase Auth captcha settings.
 
-## Notes
+---
 
-- The schema uses **Row-Level Security (RLS)** for tenant isolation
-- Access codes allow public dashboard access without user authentication
-- The `get_user_orgs()` helper function prevents RLS policy recursion
-- All timestamps use UTC timezone
+## ⚙️ n8n Workflows
+
+The `backend/workflows/` directory contains n8n workflow JSON exports.
+
+- **`inboxpilot_workflow.json`**: The core AI-powered email processing pipeline.
+  - **Prerequisites**: OpenAI n8n node, Supabase n8n node.
+  - **Variables**: Make sure to set `WEBHOOK_SECRET` in your n8n environment to match your Vercel proxy configuration.
+
+---
+
+## 🔐 Security Standards
+
+-   **Multi-tenancy**: All data is strictly isolated by `organization_id` through RLS.
+-   **Dashboard Access**: Users log in via an `access_code`. Upon successful validation, the app creates an anonymous Supabase session to fetch data through specialized, secure RPCs.
+-   **Webhook Protection**: The internal n8n webhook is exposed only through a Vercel serverless proxy with rate-limiting and secret validation.

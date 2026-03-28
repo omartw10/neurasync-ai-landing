@@ -46,7 +46,6 @@ function isRateLimited(ip) {
 const MAX_BODY_SIZE = 10000;
 
 export default async function handler(req, res) {
-  console.log('[api/contact] Incoming request:', req.method);
 
   // ── Method check ──
   if (req.method !== 'POST') {
@@ -108,7 +107,6 @@ export default async function handler(req, res) {
     // Fix Node.js IPv6 resolution issue: localhost may resolve to ::1
     // but n8n typically binds to 127.0.0.1 (IPv4 only)
     const resolvedUrl = webhookUrl.replace('://localhost', '://127.0.0.1');
-    console.log(`[api/contact] Forwarding to: ${resolvedUrl}`);
 
     // 10-second timeout to prevent hanging if n8n is unreachable
     const controller = new AbortController();
@@ -131,7 +129,6 @@ export default async function handler(req, res) {
       return res.status(response.status).json({ error: 'Failed to process request' });
     }
 
-    console.log('[api/contact] Message sent successfully');
     return res.status(200).json({ success: true, message: 'Message sent successfully' });
   } catch (error) {
     // Detailed error logging for terminal debugging
@@ -140,7 +137,6 @@ export default async function handler(req, res) {
       return res.status(504).json({ error: 'Webhook service is not responding' });
     }
     console.error(`[api/contact] Fetch failed — ${error.code || error.name}: ${error.message}`);
-    console.error(`[api/contact] Target URL: ${webhookUrl}`);
     return res.status(502).json({ error: 'Unable to reach webhook service' });
   }
 }
