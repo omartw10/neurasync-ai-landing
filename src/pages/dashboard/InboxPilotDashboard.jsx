@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { fetchClientEmails, computeMetrics } from '../../services/api';
 import { Card, CardHeader, CardTitle, CardContent, Table, TableHeader, TableRow, TableHead, TableBody, TableCell, Badge, cn } from '../../components/dashboard/Widgets';
+import LogoSpinner from '../../components/LogoSpinner';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, BarChart, Bar
@@ -133,18 +134,7 @@ export const InboxPilotDashboard = () => {
   }, [emails, tableFilter]);
 
   if (isLoading) {
-    return (
-      <div className="flex h-[60vh] items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="relative w-16 h-16">
-            <div className="absolute inset-0 border-4 border-gray-800 rounded-full" />
-            <div className="absolute inset-0 border-4 border-transparent border-t-[#00C2D1] rounded-full animate-spin" />
-            <Mail className="absolute inset-0 m-auto w-6 h-6 text-[#00C2D1] animate-pulse" />
-          </div>
-          <p className="text-gray-500 font-semibold animate-pulse">Loading InboxPilot analytics...</p>
-        </div>
-      </div>
-    );
+    return <LogoSpinner size="lg" text="Loading InboxPilot analytics..." fullScreen={false} />;
   }
 
   const maxRoute = Math.max(...(metrics?.routingBreakdown?.map(r => r.value) || [1]));

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Check } from "lucide-react";
-import toast from "react-hot-toast";
 
 // Webhook credentials safely moved to Vercel api endpoint
 
@@ -10,6 +9,8 @@ const ContactUs = ({
   defaultMessage = ""
 }) => {
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [messageLength, setMessageLength] = useState(defaultMessage ? defaultMessage.length : 0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedInquiry, setSelectedInquiry] = useState("");
@@ -47,18 +48,21 @@ const ContactUs = ({
 
     // ===== Validation =====
     if (!name || !email || !inquiryType || !message) {
-      toast.error("Please complete all fields.");
+      setErrorMessage("Please complete all required fields before sending.");
+      setTimeout(() => setErrorMessage(""), 6000);
       return;
     }
 
     if (inquiryType === "Existing Service / Product" && !productName) {
-      toast.error("Please select a service or product.");
+      setErrorMessage("Please select a service or product to continue.");
+      setTimeout(() => setErrorMessage(""), 6000);
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      toast.error("Please enter a valid email address.");
+      setErrorMessage("The email address you entered doesn't look right. Please check and try again.");
+      setTimeout(() => setErrorMessage(""), 6000);
       return;
     }
 
@@ -86,34 +90,26 @@ const ContactUs = ({
       });
 
       if (response.ok) {
-        toast.success("Message sent successfully 🚀", {
-          duration: 4000,
-          position: "top-center",
-          style: {
-            background: "#0E1624",
-            color: "#E6F7FA",
-            border: "1px solid #00C2D1",
-            padding: "14px 18px",
-            borderRadius: "12px",
-            boxShadow: "0 0 25px rgba(0,194,209,0.3)",
-          },
-          iconTheme: {
-            primary: "#00C2D1",
-            secondary: "#0E1624",
-          },
-        });
-
         form.reset();
+        setMessageLength(0);
+        setSelectedInquiry("");
+        setSelectedProduct("");
+        setLoading(false);
+        setSuccess(true);
+        // Auto-dismiss success after 5 seconds
+        setTimeout(() => setSuccess(false), 5000);
       } else {
-        toast.error("Something went wrong. Please try again.");
+        setLoading(false);
+        setErrorMessage("Something went wrong on our end. Please try again in a moment.");
+        setTimeout(() => setErrorMessage(""), 6000);
       }
     } catch (err) {
       if (import.meta.env.DEV) {
         console.error("Contact form submission failed", err);
       }
-      toast.error("Network error. Please try again.");
-    } finally {
       setLoading(false);
+      setErrorMessage("Unable to reach our servers. Please check your connection and try again.");
+      setTimeout(() => setErrorMessage(""), 6000);
     }
   };
 
@@ -356,17 +352,283 @@ const ContactUs = ({
               {/* Button */}
               <div className="sm:col-span-2 mt-4 relative">
                 <motion.button 
-                  whileHover={{ scale: 1.01 }} 
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: loading ? 1 : 1.01 }} 
+                  whileTap={{ scale: loading ? 1 : 0.98 }}
                   type="submit"
-                  disabled={loading}
-                  className="group relative w-full py-4 rounded-xl font-bold transition-all duration-300 disabled:opacity-60 overflow-hidden bg-gradient-to-r from-[#00A8B5] to-[#00C2D1] hover:from-[#00C2D1] hover:to-[#2EE2F0] text-[#0B1F3B] shadow-[0_4px_20px_rgba(0,194,209,0.25)] hover:shadow-[0_8px_30px_rgba(0,194,209,0.4)]"
+                  disabled={loading || success}
+                  className="group relative w-full py-4 rounded-xl font-bold transition-all duration-300 disabled:opacity-80 overflow-hidden bg-gradient-to-r from-[#00A8B5] to-[#00C2D1] hover:from-[#00C2D1] hover:to-[#2EE2F0] text-[#0B1F3B] shadow-[0_4px_20px_rgba(0,194,209,0.25)] hover:shadow-[0_8px_30px_rgba(0,194,209,0.4)]"
                 >
-                  <span className="relative z-10 text-base">{loading ? "Sending..." : "Send Message"}</span>
+                  <span className="relative z-10 text-base flex items-center justify-center gap-3">
+                    {loading ? (
+                      <>
+                        <img
+                          src="/logo_icon.png"
+                          alt=""
+                          className="w-5 h-5 object-contain"
+                          style={{ animation: "contactLogoSpin 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite" }}
+                        />
+                        Sending...
+                      </>
+                    ) : "Send Message"}
+                  </span>
                   <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
                 </motion.button>
               </div>
             </form>
+
+            {/* ═══ SUCCESS OVERLAY ═══ */}
+            <AnimatePresence>
+              {success && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="absolute inset-0 z-50 flex items-center justify-center rounded-3xl overflow-hidden"
+                >
+                  {/* Blurred backdrop */}
+                  <div className="absolute inset-0 bg-white/80 dark:bg-[#060D18]/90 backdrop-blur-xl" />
+
+                  {/* Animated particles */}
+                  <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                    {[...Array(12)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="absolute w-1.5 h-1.5 rounded-full"
+                        style={{
+                          left: `${50 + (Math.cos(i * 30 * Math.PI / 180) * 30)}%`,
+                          top: `${50 + (Math.sin(i * 30 * Math.PI / 180) * 30)}%`,
+                          background: i % 3 === 0 ? '#00C2D1' : i % 3 === 1 ? '#7C3AED' : '#10B981',
+                          animation: `particleBurst 1s ease-out ${i * 0.05}s forwards`,
+                          opacity: 0,
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Content */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                    transition={{ duration: 0.5, delay: 0.1, type: "spring", stiffness: 200, damping: 20 }}
+                    className="relative flex flex-col items-center text-center px-8"
+                  >
+                    {/* Animated checkmark circle */}
+                    <div className="relative w-20 h-20 mb-6">
+                      {/* Glow ring */}
+                      <div 
+                        className="absolute inset-0 rounded-full"
+                        style={{
+                          background: 'radial-gradient(circle, rgba(0,194,209,0.2) 0%, transparent 70%)',
+                          animation: 'successGlow 2s ease-in-out infinite',
+                          transform: 'scale(1.8)',
+                        }}
+                      />
+                      {/* Circle + Checkmark SVG */}
+                      <svg viewBox="0 0 80 80" className="w-full h-full" style={{ filter: 'drop-shadow(0 0 12px rgba(0,194,209,0.4))' }}>
+                        {/* Background circle */}
+                        <circle
+                          cx="40" cy="40" r="36"
+                          fill="none"
+                          stroke="#00C2D1"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          opacity="0.15"
+                        />
+                        {/* Animated circle */}
+                        <circle
+                          cx="40" cy="40" r="36"
+                          fill="none"
+                          stroke="url(#successGrad)"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          strokeDasharray="226"
+                          strokeDashoffset="226"
+                          style={{ animation: 'circleDraw 0.6s ease-out 0.2s forwards' }}
+                        />
+                        {/* Checkmark */}
+                        <path
+                          d="M25 42 L35 52 L56 30"
+                          fill="none"
+                          stroke="#00C2D1"
+                          strokeWidth="3.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeDasharray="50"
+                          strokeDashoffset="50"
+                          style={{ animation: 'checkDraw 0.4s ease-out 0.7s forwards' }}
+                        />
+                        <defs>
+                          <linearGradient id="successGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#00C2D1" />
+                            <stop offset="100%" stopColor="#10B981" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                    </div>
+
+                    {/* Logo icon faded */}
+                    <div className="mb-4">
+                      <img
+                        src="/logo_icon.png"
+                        alt=""
+                        className="w-6 h-6 object-contain opacity-40 dark:hidden"
+                      />
+                      <img
+                        src="/logo_icon_dark.png"
+                        alt=""
+                        className="w-6 h-6 object-contain opacity-40 hidden dark:block"
+                      />
+                    </div>
+
+                    <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight mb-2">
+                      Message Sent!
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 font-medium max-w-xs leading-relaxed mb-6">
+                      Thank you for reaching out. Our team will review your inquiry and get back to you shortly.
+                    </p>
+
+                    <button
+                      onClick={() => setSuccess(false)}
+                      className="text-xs font-bold text-[#00C2D1] hover:text-[#00D4E3] transition-colors tracking-wide uppercase"
+                    >
+                      Send Another Message
+                    </button>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* ═══ ERROR OVERLAY ═══ */}
+            <AnimatePresence>
+              {errorMessage && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.35 }}
+                  className="absolute inset-0 z-50 flex items-center justify-center rounded-3xl overflow-hidden"
+                >
+                  {/* Blurred backdrop */}
+                  <div className="absolute inset-0 bg-white/80 dark:bg-[#060D18]/90 backdrop-blur-xl" />
+
+                  {/* Content */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.85, y: 15 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                    transition={{ duration: 0.45, delay: 0.05, type: "spring", stiffness: 250, damping: 22 }}
+                    className="relative flex flex-col items-center text-center px-8"
+                  >
+                    {/* Animated X circle */}
+                    <div className="relative w-20 h-20 mb-6">
+                      {/* Glow ring */}
+                      <div 
+                        className="absolute inset-0 rounded-full"
+                        style={{
+                          background: 'radial-gradient(circle, rgba(239,68,68,0.15) 0%, transparent 70%)',
+                          animation: 'errorGlow 2s ease-in-out infinite',
+                          transform: 'scale(1.8)',
+                        }}
+                      />
+                      {/* Circle + X SVG */}
+                      <svg viewBox="0 0 80 80" className="w-full h-full" style={{ filter: 'drop-shadow(0 0 12px rgba(239,68,68,0.35))' }}>
+                        {/* Background circle */}
+                        <circle
+                          cx="40" cy="40" r="36"
+                          fill="none"
+                          stroke="#EF4444"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          opacity="0.12"
+                        />
+                        {/* Animated circle */}
+                        <circle
+                          cx="40" cy="40" r="36"
+                          fill="none"
+                          stroke="url(#errorGrad)"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          strokeDasharray="226"
+                          strokeDashoffset="226"
+                          style={{ animation: 'circleDraw 0.5s ease-out 0.15s forwards' }}
+                        />
+                        {/* X mark - line 1 */}
+                        <path
+                          d="M28 28 L52 52"
+                          fill="none"
+                          stroke="#EF4444"
+                          strokeWidth="3.5"
+                          strokeLinecap="round"
+                          strokeDasharray="34"
+                          strokeDashoffset="34"
+                          style={{ animation: 'checkDraw 0.3s ease-out 0.55s forwards' }}
+                        />
+                        {/* X mark - line 2 */}
+                        <path
+                          d="M52 28 L28 52"
+                          fill="none"
+                          stroke="#EF4444"
+                          strokeWidth="3.5"
+                          strokeLinecap="round"
+                          strokeDasharray="34"
+                          strokeDashoffset="34"
+                          style={{ animation: 'checkDraw 0.3s ease-out 0.7s forwards' }}
+                        />
+                        <defs>
+                          <linearGradient id="errorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#EF4444" />
+                            <stop offset="100%" stopColor="#F97316" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                    </div>
+
+                    <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight mb-2">
+                      Oops, Something Went Wrong
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 font-medium max-w-xs leading-relaxed mb-6">
+                      {errorMessage}
+                    </p>
+
+                    <button
+                      onClick={() => setErrorMessage("")}
+                      className="text-xs font-bold text-rose-500 hover:text-rose-400 transition-colors tracking-wide uppercase"
+                    >
+                      Try Again
+                    </button>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Inline Keyframes */}
+            <style>{`
+              @keyframes contactLogoSpin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+              @keyframes circleDraw {
+                to { stroke-dashoffset: 0; }
+              }
+              @keyframes checkDraw {
+                to { stroke-dashoffset: 0; }
+              }
+              @keyframes successGlow {
+                0%, 100% { opacity: 0.5; transform: scale(1.6); }
+                50% { opacity: 1; transform: scale(2); }
+              }
+              @keyframes errorGlow {
+                0%, 100% { opacity: 0.4; transform: scale(1.6); }
+                50% { opacity: 0.8; transform: scale(2); }
+              }
+              @keyframes particleBurst {
+                0% { transform: translate(0, 0) scale(0); opacity: 1; }
+                50% { opacity: 1; }
+                100% { transform: translate(var(--tx, 0), var(--ty, 0)) scale(1); opacity: 0; }
+              }
+            `}</style>
           </div>
         </div>
       </motion.div>

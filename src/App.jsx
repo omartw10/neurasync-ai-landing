@@ -9,6 +9,7 @@ import { InboxPilotDashboard } from "./pages/dashboard/InboxPilotDashboard";
 import { CodeGate } from "./pages/dashboard/CodeGate";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import SmoothScroll from "./components/SmoothScroll";
+import LogoSpinner from "./components/LogoSpinner";
 
 const getInitialTheme = () => {
   const saved = localStorage.getItem("theme");
@@ -26,14 +27,7 @@ const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-[#060D18]">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-4 border-gray-800 border-t-[#00C2D1] rounded-full animate-spin" />
-          <p className="text-gray-500 font-medium animate-pulse">Loading...</p>
-        </div>
-      </div>
-    );
+    return <LogoSpinner text="Loading..." />;
   }
 
   if (!isAuthenticated) {
