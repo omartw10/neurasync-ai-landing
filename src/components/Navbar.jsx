@@ -122,7 +122,7 @@ const Navbar = ({ theme, setTheme }) => {
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-7xl flex justify-between items-center px-4 sm:px-5 py-3 rounded-2xl backdrop-blur-xl bg-white/70 dark:bg-[#0A101C]/80 border border-gray-200/50 dark:border-white/10 shadow-sm dark:shadow-[0_4px_20px_rgba(0,0,0,0.5)]"
+        className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-[1000] w-[calc(100%-2rem)] max-w-7xl flex justify-between items-center px-4 sm:px-5 py-3 rounded-2xl backdrop-blur-xl bg-white/70 dark:bg-[#0A101C]/80 border border-gray-200/50 dark:border-white/10 shadow-sm dark:shadow-[0_4px_20px_rgba(0,0,0,0.5)]"
       >
         {/* Logo */}
         <button onClick={(e) => scrollToSection(e, "hero")} className="shrink-0 group flex items-center cursor-pointer">
@@ -138,14 +138,13 @@ const Navbar = ({ theme, setTheme }) => {
           {navLinks.map((item) => {
             const isActive = activeSection === item.id;
             return (
-              <button 
-                key={item.id} 
-                onClick={(e) => scrollToSection(e, item.id)} 
-                className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all duration-300 cursor-pointer relative z-10 ${
-                  isActive 
-                    ? "text-gray-900 dark:text-white bg-white dark:bg-white/10 shadow-sm" 
+              <button
+                key={item.id}
+                onClick={(e) => scrollToSection(e, item.id)}
+                className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all duration-300 cursor-pointer relative z-10 ${isActive
+                    ? "text-gray-900 dark:text-white bg-white dark:bg-white/10 shadow-sm"
                     : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-white/5"
-                }`}
+                  }`}
               >
                 {item.label}
               </button>
@@ -208,11 +207,10 @@ const Navbar = ({ theme, setTheme }) => {
                   setMobileMenuOpen(false);
                   scrollToSection(e, item.id);
                 }}
-                className={`text-left px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
-                  isActive
+                className={`text-left px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${isActive
                     ? "text-[#00C2D1] bg-[#00C2D1]/10"
                     : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5"
-                }`}
+                  }`}
               >
                 {item.label}
               </button>

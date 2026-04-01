@@ -8,7 +8,33 @@
   font-weight: 500;
 }
 
-html, body {
+html {
+  /* Mobile devices: mostly normal size so text remains readable */
+  font-size: 95%;
+}
+
+@media (min-width: 768px) {
+  /* Tablets: slightly scaled down */
+  html {
+    font-size: 90%;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Laptops (like 16-inch): scaled down to 80% for compact, premium slide-like feel */
+  html {
+    font-size: 80%;
+  }
+}
+
+@media (min-width: 1536px) {
+  /* Ultra-wide 4k monitors: scale back up so it isn't microscopic */
+  html {
+    font-size: 95%;
+  }
+}
+
+body {
   margin: 0;
   padding: 0;
 }

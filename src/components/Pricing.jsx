@@ -55,7 +55,7 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-32 text-gray-900 dark:text-white bg-gray-50/50 dark:bg-[#060D18]/50">
+    <section id="pricing" className="relative min-h-[100svh] flex flex-col justify-center scroll-mt-24 md:scroll-mt-32 px-6 sm:px-12 lg:px-24 xl:px-40 pt-[120px] pb-16 text-gray-900 dark:text-white bg-gray-50/50 dark:bg-[#060D18]/50">
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -63,15 +63,15 @@ const Pricing = () => {
         viewport={{ once: true }}
         className="text-center max-w-3xl mx-auto mb-20"
       >
-        <h2 className="text-4xl sm:text-5xl font-semibold">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
           Transparent <span className="text-[#00C2D1]">Pricing</span>
         </h2>
-        <p className="mt-6 text-gray-600 dark:text-gray-300 text-lg">
+        <p className="mt-4 text-gray-600 dark:text-gray-300 text-sm sm:text-base font-medium">
           Simple, predictable pricing. No hidden fees. Start automating and scale as you grow.
         </p>
       </motion.div>
 
-      <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-6">
         {tiers.map((tier, index) => (
           <motion.div
             key={index}
@@ -81,7 +81,7 @@ const Pricing = () => {
             transition={{ duration: 0.5, delay: index * 0.15, type: "spring", bounce: 0.4 }}
             viewport={{ once: true }}
             className={`
-              relative p-8 rounded-3xl border
+              relative p-6 rounded-3xl border
               ${tier.popular ? 'border-[#00C2D1] shadow-2xl shadow-[#00C2D1]/10 bg-white dark:bg-[#0B1120]' : 'border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-[#0E1624]/60'}
               backdrop-blur-xl flex flex-col
             `}
@@ -94,17 +94,17 @@ const Pricing = () => {
               </div>
             )}
 
-            <div className="mb-8">
+            <div className="mb-6">
               <h3 className="text-xl font-semibold mb-2">{tier.name}</h3>
               <p className="text-sm text-gray-500 dark:text-gray-400 h-10">{tier.description}</p>
             </div>
 
-            <div className="mb-8 flex items-baseline gap-1">
+            <div className="mb-6 flex items-baseline gap-1">
               <span className="text-4xl sm:text-5xl font-bold">{tier.price}</span>
               <span className="text-gray-500 dark:text-gray-400 font-medium">{tier.billing}</span>
             </div>
 
-            <ul className="space-y-4 mb-10 flex-1">
+            <ul className="space-y-3 mb-8 flex-1">
               {tier.features.map((feature, idx) => (
                 <li key={idx} className="flex items-start gap-3">
                   {feature.included ? (

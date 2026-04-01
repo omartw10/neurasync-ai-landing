@@ -44,14 +44,14 @@ const About = ({ theme, setTheme }) => {
       <main className="pt-32 pb-16">
         
         {/* ===== HERO ===== */}
-        <section id="about-hero" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-24 md:py-32 relative">
+        <section id="about-hero" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-16 md:py-24 relative">
           
           <div className="max-w-4xl mx-auto text-center relative z-10">
             <motion.h1 
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-tighter mb-8"
+              className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter mb-4"
             >
               About <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-[#00C2D1] dark:from-[#00C2D1] dark:to-blue-500">NeuraSyncAI</span>
             </motion.h1>
@@ -60,7 +60,7 @@ const About = ({ theme, setTheme }) => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 font-medium leading-relaxed mb-8"
+              className="text-base md:text-lg text-gray-600 dark:text-gray-300 font-medium leading-relaxed mb-6 max-w-2xl mx-auto"
             >
               NeuraSyncAI was created from curiosity, passion, and a deep belief that businesses should not be slowed down by manual operations.
             </motion.p>
@@ -69,7 +69,7 @@ const About = ({ theme, setTheme }) => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto space-y-4"
+              className="text-sm text-gray-500 dark:text-gray-400 max-w-2xl mx-auto space-y-3"
             >
               <p>
                 Our mission is simple: to build intelligent systems that help companies operate faster, smarter, and with fewer limitations.
@@ -82,15 +82,15 @@ const About = ({ theme, setTheme }) => {
         </section>
 
         {/* ===== WHY NeuraSyncAI EXISTS ===== */}
-        <section id="about-why" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-24 relative">
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+        <section id="about-why" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-16 md:py-20 relative">
+          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 items-center">
             <FadeIn>
               <SectionTitle badge="The Problem" badgeIcon={Target}>
                 Why We Built NeuraSyncAI
               </SectionTitle>
-              <div className="space-y-6 text-lg text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
+              <div className="space-y-4 text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
                 <p>Modern companies lose countless hours managing repetitive tasks.</p>
-                <div className="pl-6 border-l-2 border-[#00C2D1] py-2 space-y-2 text-gray-800 dark:text-gray-200 font-bold">
+                <div className="pl-6 border-l-2 border-[#00C2D1] py-2 space-y-1.5 text-gray-800 dark:text-gray-200 font-bold">
                   <p>Emails pile up.</p>
                   <p>Leads go unanswered.</p>
                   <p>Opportunities slip through the cracks.</p>
@@ -99,7 +99,7 @@ const About = ({ theme, setTheme }) => {
                 <p>Instead of forcing teams to adapt to rigid software, we build intelligent automation systems that adapt to how businesses actually operate.</p>
               </div>
             </FadeIn>
-            <FadeIn delay={0.2} className="relative aspect-square md:aspect-auto md:h-[500px] w-full">
+            <FadeIn delay={0.2} className="relative aspect-square md:aspect-auto md:h-[400px] w-full">
               <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-white dark:from-[#0D1524] dark:to-[#0A101C] rounded-3xl border border-gray-200 dark:border-white/10 flex items-center justify-center overflow-hidden shadow-2xl">
                 <div className="absolute w-[200%] h-[200%] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] dark:opacity-[0.05]" />
                 
@@ -190,8 +190,8 @@ const About = ({ theme, setTheme }) => {
         </section>
 
         {/* ===== WHAT WE BUILD ===== */}
-        <section id="about-what" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-24 md:py-32 relative">
-          <div className="max-w-4xl mx-auto text-center mb-20">
+        <section id="about-what" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-16 md:py-20 relative">
+          <div className="max-w-3xl mx-auto text-center mb-16">
              <FadeIn>
                <SectionTitle badge="Our Products" badgeIcon={Layers}>
                  <span className="w-full text-center block">What We Build</span>
@@ -210,11 +210,11 @@ const About = ({ theme, setTheme }) => {
               "automate repetitive operational tasks"
             ].map((feature, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="flex items-center gap-4 p-6 bg-white dark:bg-[#0A101C] rounded-2xl border border-gray-200 dark:border-white/5 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-[#00C2D1]/10 flex items-center justify-center shrink-0">
-                    <Zap className="w-6 h-6 text-blue-600 dark:text-[#00C2D1]" />
+                <div className="flex items-center gap-4 p-5 bg-white dark:bg-[#0A101C] rounded-2xl border border-gray-200 dark:border-white/5 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-[#00C2D1]/10 flex items-center justify-center shrink-0">
+                    <Zap className="w-5 h-5 text-blue-600 dark:text-[#00C2D1]" />
                   </div>
-                  <span className="text-lg font-bold text-gray-800 dark:text-gray-200">{feature}</span>
+                  <span className="text-sm sm:text-base font-bold text-gray-800 dark:text-gray-200">{feature}</span>
                 </div>
               </FadeIn>
             ))}
@@ -230,18 +230,18 @@ const About = ({ theme, setTheme }) => {
         </section>
 
         {/* ===== OUR APPROACH ===== */}
-        <section id="about-approach" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-24 relative">
-          <div className="max-w-6xl mx-auto">
-             <div className="mb-16">
-               <FadeIn>
-                 <SectionTitle badge="Philosophy" badgeIcon={BrainCircuit}>
-                   Our Approach
-                 </SectionTitle>
-                 <p className="text-xl text-gray-600 dark:text-gray-400">Our philosophy is based on three core principles.</p>
-               </FadeIn>
-             </div>
+        <section id="about-approach" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-16 md:py-20 relative">
+          <div className="max-w-5xl mx-auto">
+            <div className="mb-12">
+              <FadeIn>
+                <SectionTitle badge="Philosophy" badgeIcon={BrainCircuit}>
+                  Our Approach
+                </SectionTitle>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Our philosophy is based on three core principles.</p>
+              </FadeIn>
+            </div>
 
-             <div className="grid md:grid-cols-3 gap-8 md:gap-12">
+            <div className="grid md:grid-cols-3 gap-6 md:gap-8">
                {[
                  {
                    title: "Automation First",
@@ -277,10 +277,10 @@ const About = ({ theme, setTheme }) => {
         </section>
 
         {/* ===== FOUNDER ===== */}
-        <section id="about-founder" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-24 md:py-32 relative">
-          <div className="max-w-6xl mx-auto grid md:grid-cols-12 gap-12 lg:gap-24 items-center">
+        <section id="about-founder" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-16 md:py-24 relative">
+          <div className="max-w-5xl mx-auto grid md:grid-cols-12 gap-10 lg:gap-16 items-center">
             
-            <div className="md:col-span-4 lg:col-span-5 flex justify-center perspective-1200">
+            <div className="md:col-span-5 flex justify-center perspective-1200">
               <FadeIn className="relative group transform-style-3d">
                 <div className="absolute -inset-4 rounded-[40px] bg-gradient-to-tr from-[#00C2D1]/30 to-blue-500/30 blur-2xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
                 <div className="relative rounded-[32px] p-[1.5px] bg-gradient-to-tr from-gray-200 dark:from-white/10 to-gray-50 dark:to-transparent shadow-xl dark:shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-700">
@@ -296,12 +296,12 @@ const About = ({ theme, setTheme }) => {
               </FadeIn>
             </div>
 
-            <div className="md:col-span-8 lg:col-span-7 flex flex-col items-start px-2">
+            <div className="md:col-span-7 flex flex-col items-start px-2">
               <FadeIn>
                 <SectionTitle badge="Founder">
-                  Omar Abutwairat
+                  <span className="text-2xl sm:text-3xl lg:text-4xl font-black">Omar Abutwairat</span>
                 </SectionTitle>
-                <div className="space-y-6 text-lg text-gray-600 dark:text-gray-400 font-medium leading-relaxed">
+                <div className="space-y-4 text-sm sm:text-base text-gray-600 dark:text-gray-400 font-medium leading-relaxed">
                   <p>
                     NeuraSyncAI was founded by Omar Abutwairat, a software engineer with a deep passion for automation and artificial intelligence.
                   </p>
@@ -325,22 +325,22 @@ const About = ({ theme, setTheme }) => {
         </section>
 
         {/* ===== VISION ===== */}
-        <section id="about-vision" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-24 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] dark:opacity-[0.05] pointer-events-none mix-blend-overlay" />
+        <section id="about-vision" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-16 md:py-20 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] dark:opacity-[0.05] pointer-events-none mix-blend-overlay" />
           
           <div className="max-w-4xl mx-auto text-center relative z-10">
             <FadeIn>
-              <Sparkles className="w-12 h-12 text-[#00C2D1] mx-auto mb-6" />
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white tracking-tight leading-none mb-8">
+              <Sparkles className="w-10 h-10 text-[#00C2D1] mx-auto mb-6" />
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 dark:text-white tracking-tight leading-none mb-4">
                 The Future We're Building
               </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-400 font-medium leading-relaxed mb-12 max-w-2xl mx-auto">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 font-medium leading-relaxed mb-10 max-w-xl mx-auto">
                 Our vision is to create a platform where businesses of any size can operate with the same technological advantage as the world's largest companies.
               </p>
               
-              <div className="inline-block text-left bg-white dark:bg-[#0A101C] p-8 rounded-3xl border border-gray-200 dark:border-white/5 shadow-xl">
-                <h4 className="font-bold text-gray-900 dark:text-white mb-6 uppercase tracking-widest text-sm">A future where:</h4>
-                <ul className="space-y-4">
+              <div className="inline-block text-left bg-white dark:bg-[#0A101C] p-6 sm:p-8 rounded-3xl border border-gray-200 dark:border-white/5 shadow-xl">
+                <h4 className="font-bold text-gray-900 dark:text-white mb-4 uppercase tracking-widest text-xs">A future where:</h4>
+                <ul className="space-y-3">
                   {[
                     "Operational workflows run autonomously",
                     "Communication is intelligently organized",
@@ -363,17 +363,17 @@ const About = ({ theme, setTheme }) => {
         </section>
 
         {/* ===== CTA ===== */}
-        <section id="about-cta" className="px-6 sm:px-12 lg:px-24 xl:px-40 pb-20 pt-10 text-center">
-          <FadeIn className="max-w-4xl mx-auto rounded-[2.5rem] bg-gray-900 dark:bg-[#070D18] p-12 lg:p-20 border border-gray-800 dark:border-white/10 shadow-2xl relative overflow-hidden group">
+        <section id="about-cta" className="px-6 sm:px-12 lg:px-24 xl:px-40 pb-16 pt-8 text-center">
+          <FadeIn className="max-w-3xl mx-auto rounded-[2.5rem] bg-gray-900 dark:bg-[#070D18] p-10 lg:p-14 border border-gray-800 dark:border-white/10 shadow-2xl relative overflow-hidden group">
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none" />
             <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-[#00C2D1]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
             
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-6 relative z-10 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-4 relative z-10 tracking-tight">
               Start Building Your <br className="hidden sm:block" />
               <span className="text-[#00C2D1]">Automation System</span>
             </h2>
             
-            <p className="text-lg text-gray-300 mb-10 max-w-xl mx-auto relative z-10 font-medium leading-relaxed">
+            <p className="text-sm sm:text-base text-gray-300 mb-8 max-w-lg mx-auto relative z-10 font-medium leading-relaxed">
               Tell us what process you want to automate. We'll help design the intelligent system that runs it.
             </p>
             

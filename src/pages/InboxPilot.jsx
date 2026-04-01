@@ -39,7 +39,7 @@ const InboxPilot = ({ theme, setTheme }) => {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tight"
+            className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight"
           >
             InboxPilot <span className="text-[#00C2D1]">AI</span>
           </motion.h1>
@@ -90,12 +90,12 @@ const InboxPilot = ({ theme, setTheme }) => {
       <PoweredByInboxPilot />
 
       {/* ===== VIDEO DEMONSTRATION ===== */}
-      <section id="inboxpilot-video" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-24 relative">
+      <section id="inboxpilot-video" className="scroll-mt-24 md:scroll-mt-32 px-6 sm:px-12 lg:px-24 xl:px-40 py-[80px] md:py-[100px] lg:py-[120px] relative">
         <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-6 text-gray-900 dark:text-white">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-4 text-gray-900 dark:text-white">
             Watch InboxPilot in Action
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto mb-16 font-medium">
+          <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base max-w-2xl mx-auto mb-16 font-medium">
             This walkthrough demonstrates how InboxPilot reads incoming emails, classifies them using AI, and routes them to the correct team automatically. See how businesses eliminate inbox chaos and accelerate response times using intelligent automation.
           </p>
 
@@ -130,14 +130,14 @@ const InboxPilot = ({ theme, setTheme }) => {
       </section>
 
       {/* ===== FEATURE BREAKDOWN ===== */}
-      <section id="inboxpilot-features" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-24 relative">
+      <section id="inboxpilot-features" className="scroll-mt-24 md:scroll-mt-32 px-6 sm:px-12 lg:px-24 xl:px-40 py-[80px] md:py-[100px] lg:py-[120px] relative">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-4">
               Powerful <span className="text-[#00C2D1]">Features</span>
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
-              Everything you need to automate your communications and transform unstructured inbox data into structured, actionable business intelligence.
+            <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base max-w-2xl mx-auto font-medium">
+              Everything you need to automate your communications and transform unstructured inbox data into actionable business intelligence.
             </p>
           </div>
 
@@ -173,15 +173,15 @@ const InboxPilot = ({ theme, setTheme }) => {
       </section>
 
       {/* ===== DASHBOARD PREVIEW ===== */}
-      <section id="inboxpilot-dashboard" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-24 relative">
+      <section id="inboxpilot-dashboard" className="scroll-mt-24 md:scroll-mt-32 px-6 sm:px-12 lg:px-24 xl:px-40 py-[80px] md:py-[100px] lg:py-[120px] relative">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16">
           <div className="lg:w-1/2">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-6 leading-tight">
               Total Visibility.<br/>
               <span className="text-[#00C2D1]">Zero Blind Spots.</span>
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-8 font-medium">
-              Every client gets access to a dedicated monitoring dashboard. Watch your email intelligence perform in real-time. Review KPI metrics, evaluate classification confidence scores, and analyze volume trends to ensure your automations are perfectly scaled.
+            <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-8 font-medium">
+              Every client gets access to a dedicated monitoring dashboard. Watch your email intelligence perform in real-time. Review KPI metrics, evaluate classification confidence scores, and analyze volume trends.
             </p>
             <ul className="space-y-4">
               {['Live processed email table preview', 'Department routing analytics', 'SLA and lead volume tracking'].map((item, i) => (
@@ -232,7 +232,7 @@ const InboxPilot = ({ theme, setTheme }) => {
       </section>
 
       {/* ===== FLEXIBLE PRICING ===== */}
-      <section id="inboxpilot-pricing" className="px-6 sm:px-12 lg:px-24 xl:px-40 py-24 relative">
+      <section id="inboxpilot-pricing" className="scroll-mt-24 md:scroll-mt-32 px-6 sm:px-12 lg:px-24 xl:px-40 py-24 relative">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
              <h2 className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white mb-6">
@@ -274,7 +274,7 @@ const InboxPilot = ({ theme, setTheme }) => {
       {/* ===== CONTACT FORM ===== */}
       <section
         id="contact-inboxpilot"
-        className="px-6 sm:px-12 lg:px-24 xl:px-40 py-20"
+        className="scroll-mt-24 md:scroll-mt-32 px-6 sm:px-12 lg:px-24 xl:px-40 py-20"
       >
         <ContactUs
           subject="InboxPilot AI Booking Request"

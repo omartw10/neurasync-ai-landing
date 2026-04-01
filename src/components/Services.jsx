@@ -70,14 +70,14 @@ const Services = () => {
     <section
       ref={sectionRef}
       id="solutions"
-      className="px-6 sm:px-12 lg:px-24 xl:px-40 py-[100px] md:py-[120px] lg:py-[140px] text-gray-900 dark:text-white perspective-1000"
+      className="relative min-h-[80svh] flex flex-col justify-center scroll-mt-24 md:scroll-mt-32 px-6 sm:px-12 lg:px-24 xl:px-40 py-24 text-gray-900 dark:text-white perspective-1000"
     >
       {/* Header */}
-      <div className="services-header text-center max-w-3xl mx-auto mb-20 opacity-0 transform-gpu">
-        <h2 className="text-4xl sm:text-5xl font-semibold">
+      <div className="services-header text-center max-w-3xl mx-auto mb-16 opacity-0 transform-gpu">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black mb-4 tracking-tight">
           The <span className="text-[#00C2D1]">Platform</span> Map
         </h2>
-        <p className="mt-6 text-gray-600 dark:text-gray-300 text-lg">
+        <p className="mt-4 text-gray-600 dark:text-gray-300 text-sm sm:text-base font-medium">
           One central hub. Multiple high-impact AI modules ready to deploy into your business ecosystem instantly.
         </p>
       </div>
@@ -131,7 +131,7 @@ const Services = () => {
                   )}
                 </div>
 
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed min-h-[80px]">
+                <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm leading-relaxed max-w-sm font-medium">
                   {service.desc}
                 </p>
               </div>

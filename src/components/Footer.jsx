@@ -34,10 +34,10 @@ const Footer = ({ theme }) => {
           <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-500/10 blur-[100px] rounded-full pointer-events-none" />
 
           <div className="relative z-10 max-w-4xl mx-auto">
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white mb-6 tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-6 tracking-tight leading-tight">
               Ready to automate your workflows <br className="hidden sm:block" /> and <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-[#00C2D1] dark:from-[#00C2D1] dark:to-blue-500">scale faster?</span>
             </h2>
-            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto font-medium">
+            <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto font-medium">
               Join forward-thinking companies saving thousands of hours every month using NeuraSyncAI.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

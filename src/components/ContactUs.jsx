@@ -116,16 +116,16 @@ const ContactUs = ({
   return (
     <section
       id="contact-us"
-      className="relative w-full px-6 sm:px-12 lg:px-24 xl:px-40 py-[100px] md:py-[120px] lg:py-[160px] overflow-hidden transition-colors duration-500"
+      className="relative min-h-[100svh] flex flex-col justify-center scroll-mt-24 md:scroll-mt-32 w-full px-6 sm:px-12 lg:px-24 xl:px-40 pt-[120px] pb-16 overflow-hidden transition-colors duration-500"
     >
-      <div className="max-w-4xl mx-auto text-center mb-16 relative z-10">
+      <div className="max-w-4xl mx-auto text-center mb-10 w-full relative z-10">
         <motion.div
            initial={{ opacity: 0, scale: 0.9, y: 20 }}
            whileInView={{ opacity: 1, scale: 1, y: 0 }}
            transition={{ duration: 0.6, ease: "easeOut" }}
            viewport={{ once: true }}
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-5xl font-black text-gray-900 dark:text-white mb-5 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-4 tracking-tight">
             Start Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-[#00C2D1] dark:from-[#00C2D1] dark:to-blue-500">Automation</span>
           </h2>
         </motion.div>
@@ -135,7 +135,7 @@ const ContactUs = ({
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
           viewport={{ once: true }}
-          className="text-lg text-gray-600 dark:text-gray-400 font-medium max-w-xl mx-auto"
+          className="text-sm sm:text-base text-gray-600 dark:text-gray-400 font-medium max-w-xl mx-auto"
         >
           Tell us about the workflow you want to automate and our team will design the right AI system for you.
         </motion.p>
@@ -153,8 +153,8 @@ const ContactUs = ({
           {/* Subtle gradient glow behind the card that activates on interaction */}
           <div className="absolute -inset-1 bg-gradient-to-r from-[#00C2D1]/10 to-blue-500/10 dark:from-[#00C2D1]/30 dark:to-blue-600/30 rounded-[2rem] blur-xl opacity-0 group-hover/form:opacity-100 transition duration-700 pointer-events-none" />
           
-          <div className="relative rounded-3xl p-8 sm:p-12 bg-white/70 dark:bg-[#0A101C]/80 backdrop-blur-2xl border border-gray-200/50 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.4)] transition-all duration-300 group-hover/form:border-gray-300 dark:group-hover/form:border-white/20">
-            <form onSubmit={onSubmit} className="relative grid sm:grid-cols-2 gap-x-6 gap-y-8">
+          <div className="relative rounded-3xl p-6 sm:p-10 bg-white/70 dark:bg-[#0A101C]/80 backdrop-blur-2xl border border-gray-200/50 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.4)] transition-all duration-300 group-hover/form:border-gray-300 dark:group-hover/form:border-white/20">
+            <form onSubmit={onSubmit} className="relative grid sm:grid-cols-2 gap-x-6 gap-y-6">
               <input type="checkbox" name="botcheck" className="hidden" />
 
               {/* Name */}
@@ -164,8 +164,9 @@ const ContactUs = ({
                   type="text"
                   name="name"
                   required
+                  rows="3"
                   placeholder="John Doe"
-                  className="w-full rounded-xl px-5 py-3.5 outline-none transition-all duration-300 bg-white/50 dark:bg-[#060D18]/80 text-gray-900 dark:text-white placeholder-gray-400 border border-gray-200 dark:border-white/10 focus:-translate-y-0.5 focus:border-[#00C2D1] focus:ring-4 focus:ring-[#00C2D1]/10 focus:shadow-[0_8px_20px_rgba(0,194,209,0.1)] focus:bg-white dark:focus:bg-[#060D18]"
+                  className="w-full rounded-xl px-5 py-3.5 outline-none transition-all duration-300 bg-white/50 dark:bg-[#060D18]/80 text-gray-900 dark:text-white placeholder-gray-400 border border-gray-200 dark:border-white/10 focus:-translate-y-0.5 focus:border-[#00C2D1] focus:ring-4 focus:ring-[#00C2D1]/10 focus:shadow-[0_8px_20px_rgba(0,194,209,0.1)] focus:bg-white dark:focus:bg-[#060D18] resize-none"
                 />
               </div>
 
@@ -350,13 +351,13 @@ const ContactUs = ({
               </div>
 
               {/* Button */}
-              <div className="sm:col-span-2 mt-4 relative">
+              <div className="sm:col-span-2 mt-4 relative z-10">
                 <motion.button 
                   whileHover={{ scale: loading ? 1 : 1.01 }} 
                   whileTap={{ scale: loading ? 1 : 0.98 }}
                   type="submit"
                   disabled={loading || success}
-                  className="group relative w-full py-4 rounded-xl font-bold transition-all duration-300 disabled:opacity-80 overflow-hidden bg-gradient-to-r from-[#00A8B5] to-[#00C2D1] hover:from-[#00C2D1] hover:to-[#2EE2F0] text-[#0B1F3B] shadow-[0_4px_20px_rgba(0,194,209,0.25)] hover:shadow-[0_8px_30px_rgba(0,194,209,0.4)]"
+                  className="group relative w-full py-3.5 rounded-xl font-bold transition-all duration-300 disabled:opacity-80 overflow-hidden bg-gradient-to-r from-[#00A8B5] to-[#00C2D1] hover:from-[#00C2D1] hover:to-[#2EE2F0] text-[#0B1F3B] shadow-[0_4px_20px_rgba(0,194,209,0.25)] hover:shadow-[0_8px_30px_rgba(0,194,209,0.4)]"
                 >
                   <span className="relative z-10 text-base flex items-center justify-center gap-3">
                     {loading ? (
